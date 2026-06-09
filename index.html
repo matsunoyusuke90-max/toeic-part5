@@ -150,6 +150,7 @@
     <button class="random-btn" id="randomBtn">🔀 ランダム10問（応用・別問題）</button>
     <button class="random-btn" id="vocabBtn" style="background:#2f7a34; margin-top:10px;">📚 単語・熟語トレーニング</button>
     <button class="random-btn" id="recordsBtn" style="background:#e7edf6; color:#245a99; margin-top:10px;">📊 学習の記録を見る</button>
+    <button class="random-btn" id="downloadBtn" style="background:#eef1f5; color:#5b6b7b; margin-top:10px; font-size:.95rem;">📥 このアプリを保存（オフラインでも使う）</button>
     <footer>文法150問＋ランダム20問／単語・熟語つき／記録はこの端末に保存されます</footer>
   </section>
 
@@ -1698,6 +1699,24 @@ $("#recordsBtn").onclick=()=>{ renderRecords(); show("records"); };
 $("#recBack").onclick=()=>{ renderHome(); show("home"); };
 $("#recCopy").onclick=copyRecords;
 $("#recClear").onclick=()=>{ if(confirm("すべての学習記録を消去しますか？この操作は取り消せません。")){ localStorage.removeItem(HIST_KEY); renderRecords(); } };
+
+/* このアプリ（HTML）自身を保存する */
+async function downloadApp(){
+  try{
+    const res=await fetch(location.href,{cache:"no-store"});
+    if(!res.ok) throw new Error("fetch failed");
+    const html=await res.text();
+    const blob=new Blob([html],{type:"text/html;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url; a.download="toeic-part5.html";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }catch(e){
+    alert("自動保存ができませんでした。\nブラウザのメニュー（…）から「ページを保存」または「名前を付けて保存」をお試しください。");
+  }
+}
+$("#downloadBtn").onclick=downloadApp;
 
 function escapeHtml(s){ return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
