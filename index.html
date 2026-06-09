@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#2f6db5">
+<title>TOEIC Part 5 トレーニング｜1日10分</title>
+<style>
+  :root{
+    --ink:#1d2733; --sub:#5b6b7b; --line:#dde4ee; --accent:#2f6db5; --accent-d:#245a99;
+    --bg:#eef2f8; --card:#ffffff;
+    --ok:#1f9d57; --ok-bg:#e7f7ee; --ng:#d8483f; --ng-bg:#fdeceb;
+    --chip:#eaf1fb;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html{font-size:18px;}
+  html,body{margin:0; padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); line-height:1.7;
+    min-height:100vh; -webkit-text-size-adjust:100%;
+  }
+  .app{max-width:720px; margin:0 auto; padding:0 18px 48px; min-height:100vh;}
+
+  .topbar{position:sticky; top:0; z-index:5; background:var(--bg); padding:14px 2px 8px; display:flex; align-items:center; gap:10px;}
+  .topbar h1{font-size:1.05rem; margin:0; flex:1;}
+  .topbar .small{font-size:.8rem; color:var(--sub); font-weight:400;}
+  .btn-back{background:none; border:none; color:var(--accent); font-size:.95rem; padding:6px 4px; cursor:pointer; font-weight:600;}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; margin:12px 0; box-shadow:0 1px 3px rgba(30,50,80,.05);}
+
+  .hero{background:linear-gradient(135deg,var(--accent),#5a93d4); color:#fff; border-radius:18px; padding:22px 20px; margin:8px 0 4px;}
+  .hero h2{margin:0 0 4px; font-size:1.35rem;}
+  .hero p{margin:0; opacity:.92; font-size:.92rem;}
+
+  .genre-h{margin:22px 2px 2px; padding-top:4px;}
+  .genre-h .gname{font-weight:800; font-size:1.05rem;}
+  .genre-h .gsub{display:block; font-size:.78rem; color:var(--sub);}
+
+  .set-list{display:flex; flex-direction:column; gap:9px; margin-top:6px;}
+  .set-btn{display:flex; align-items:center; gap:14px; width:100%; text-align:left; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 16px; cursor:pointer; font:inherit; color:inherit; transition:transform .05s;}
+  .set-btn:active{transform:scale(.985);}
+  .set-num{flex:none; width:40px; height:40px; border-radius:11px; background:var(--chip); color:var(--accent-d); font-weight:800; display:flex; align-items:center; justify-content:center; font-size:1rem;}
+  .set-meta{flex:1; min-width:0;}
+  .set-title{font-weight:700; font-size:.97rem;}
+  .set-sub{font-size:.8rem; color:var(--sub);}
+  .badge{flex:none; font-size:.76rem; font-weight:700; color:var(--ok); background:var(--ok-bg); border-radius:999px; padding:3px 10px;}
+  .badge.none{color:var(--sub); background:#f0f3f8;}
+  .random-btn{width:100%; margin-top:14px; background:var(--accent); color:#fff; border:none; border-radius:14px; padding:15px; font-size:1rem; font-weight:700; cursor:pointer;}
+  .random-btn:active{background:var(--accent-d);}
+
+  .qmeta{display:flex; align-items:center; justify-content:space-between; font-size:.85rem; color:var(--sub); margin:2px 2px 6px;}
+  .qmeta .timer{font-variant-numeric:tabular-nums; font-weight:700; color:var(--ink);}
+  .progress{height:7px; background:#e0e7f1; border-radius:999px; overflow:hidden; margin:0 2px 14px;}
+  .progress > i{display:block; height:100%; background:var(--accent); width:0; transition:width .3s;}
+
+  .chip{display:inline-block; font-size:.74rem; font-weight:700; color:var(--accent-d); background:var(--chip); border-radius:999px; padding:3px 11px; margin-bottom:10px;}
+  .q-text{font-size:1.3rem; line-height:1.9; margin:2px 0 4px; font-weight:500;}
+  .q-text .blank{color:var(--accent); font-weight:800; letter-spacing:1px;}
+
+  .choices{display:flex; flex-direction:column; gap:9px; margin-top:14px;}
+  .choice{display:flex; align-items:flex-start; gap:12px; width:100%; text-align:left; background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:15px 17px; cursor:pointer; font:inherit; color:inherit; font-size:1.12rem; transition:border-color .12s, background .12s;}
+  .choice:hover{border-color:var(--accent);}
+  .choice:active{background:#f6f9fd;}
+  .choice .lab{flex:none; width:26px; height:26px; border-radius:7px; background:#eef2f8; color:var(--sub); font-weight:800; font-size:.9rem; display:flex; align-items:center; justify-content:center;}
+  .choice.correct{border-color:var(--ok); background:var(--ok-bg);}
+  .choice.correct .lab{background:var(--ok); color:#fff;}
+  .choice.wrong{border-color:var(--ng); background:var(--ng-bg);}
+  .choice.wrong .lab{background:var(--ng); color:#fff;}
+  .choice.dim{opacity:.55;}
+  .choice[disabled]{cursor:default;}
+
+  .explain{margin-top:14px; border-radius:12px; padding:13px 15px; font-size:.93rem; border:1px solid var(--line); background:#f7faff; display:none;}
+  .explain.show{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);}to{opacity:1; transform:none;}}
+  .explain .verdict{font-weight:800; margin-bottom:4px;}
+  .explain .verdict.ok{color:var(--ok);}
+  .explain .verdict.ng{color:var(--ng);}
+  .explain .ans-line{font-size:.88rem; color:var(--sub); margin-bottom:6px;}
+  .explain .ans-line b{color:var(--ink);}
+  .explain .point{margin-bottom:4px;}
+
+  .cdetail{margin-top:12px; border-top:1px dashed var(--line); padding-top:10px;}
+  .cdetail .cdh{font-weight:800; font-size:.84rem; color:var(--sub); margin-bottom:4px;}
+  .cdrow{display:flex; gap:9px; padding:7px 0; align-items:flex-start;}
+  .cdrow + .cdrow{border-top:1px solid #eef2f7;}
+  .cdrow.isans{background:#f0faf4; border-radius:9px; padding:8px 9px; margin:2px -9px;}
+  .cdlab{flex:none; width:22px; height:22px; border-radius:6px; background:#eef2f8; color:#5b6b7b; font-weight:800; font-size:.78rem; display:flex; align-items:center; justify-content:center; margin-top:1px;}
+  .cdrow.isans .cdlab{background:var(--ok); color:#fff;}
+  .cdword{font-weight:700;}
+  .okmark{color:var(--ok); font-size:.76rem; font-weight:800; margin-left:4px;}
+  .cdtext{font-size:.86rem; color:#33414f; display:block;}
+
+  .next-btn{width:100%; margin-top:14px; background:var(--accent); color:#fff; border:none; border-radius:13px; padding:15px; font-size:1.02rem; font-weight:700; cursor:pointer; display:none;}
+  .next-btn.show{display:block;}
+  .next-btn:active{background:var(--accent-d);}
+
+  .score-ring{text-align:center; padding:8px 0 4px;}
+  .score-big{font-size:3.2rem; font-weight:800; color:var(--accent); line-height:1.1;}
+  .score-big .denom{font-size:1.4rem; color:var(--sub); font-weight:700;}
+  .score-msg{font-size:1.05rem; font-weight:700; margin-top:4px;}
+  .score-time{color:var(--sub); font-size:.88rem;}
+  .review-h{font-weight:800; margin:18px 2px 6px; font-size:.98rem;}
+  .review-item{border-top:1px solid var(--line); padding:13px 2px;}
+  .review-item .rq{font-size:.95rem;}
+  .review-item .ra{font-size:.86rem; color:var(--sub); margin-top:3px;}
+  .review-item .ra b{color:var(--ok);}
+  .result-actions{display:flex; gap:10px; margin-top:18px;}
+  .result-actions button{flex:1; border:none; border-radius:13px; padding:14px; font-size:1rem; font-weight:700; cursor:pointer;}
+  .ra-retry{background:var(--accent); color:#fff;}
+  .ra-home{background:#e7edf6; color:var(--accent-d);}
+
+  .stat-row{display:flex; gap:10px;}
+  .stat{flex:1; text-align:center; background:var(--chip); border-radius:12px; padding:12px 6px;}
+  .stat .v{font-size:1.5rem; font-weight:800; color:var(--accent-d); line-height:1.1;}
+  .stat .l{font-size:.74rem; color:var(--sub);}
+  .cat-h{font-weight:800; font-size:.95rem; margin:18px 2px 8px;}
+  .cat-bar{margin:8px 2px;}
+  .cat-bar .ctop{display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:3px;}
+  .cat-bar .ctop b{font-weight:700;}
+  .cat-bar .track{height:9px; background:#e6ecf4; border-radius:999px; overflow:hidden;}
+  .cat-bar .track > i{display:block; height:100%; border-radius:999px;}
+  .hist-h{font-weight:800; font-size:.95rem; margin:20px 2px 6px;}
+  details.hist{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:4px 14px; margin:9px 0;}
+  details.hist summary{list-style:none; cursor:pointer; padding:9px 0; display:flex; align-items:center; gap:10px;}
+  details.hist summary::-webkit-details-marker{display:none;}
+  .hist-date{font-size:.8rem; color:var(--sub); flex:none; width:88px; font-variant-numeric:tabular-nums;}
+  .hist-title{flex:1; font-size:.88rem; font-weight:600; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .hist-score{flex:none; font-weight:800; color:var(--accent-d);}
+  .hist-detail{border-top:1px dashed var(--line); padding:10px 0; font-size:.88rem;}
+  .hist-detail .wq{margin:8px 0;}
+  .hist-detail .wq .ra{color:var(--sub); font-size:.85rem;}
+  .hist-detail .wq .ra b{color:var(--ok);}
+  .empty{color:var(--sub); text-align:center; padding:30px 10px;}
+
+  footer{text-align:center; color:var(--sub); font-size:.78rem; margin-top:26px;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <section id="home">
+    <div class="topbar"><h1>TOEIC <span class="small">Part 5 トレーニング</span></h1></div>
+    <div class="hero">
+      <h2>1日10分・10問</h2>
+      <p>短文穴埋め（Part 5）を毎日1セット。各ジャンル3セット・全150問＋詳しい解説つき。</p>
+    </div>
+    <div class="set-list" id="setList"></div>
+    <button class="random-btn" id="randomBtn">🔀 ランダム10問（応用・別問題）</button>
+    <button class="random-btn" id="vocabBtn" style="background:#2f7a34; margin-top:10px;">📚 単語・熟語トレーニング</button>
+    <button class="random-btn" id="recordsBtn" style="background:#e7edf6; color:#245a99; margin-top:10px;">📊 学習の記録を見る</button>
+    <footer>文法150問＋ランダム20問／単語・熟語つき／記録はこの端末に保存されます</footer>
+  </section>
+
+  <section id="vocabMenu" class="hidden">
+    <div class="topbar"><button class="btn-back" id="vmBack">← ホーム</button><h1>単語・熟語</h1></div>
+    <div class="hero"><h2>単語・熟語トレーニング</h2><p>英単語・熟語の意味を4択で答える1問1答。レベル別に出題します。</p></div>
+    <div id="vmList" class="set-list"></div>
+    <footer>レベルを選ぶと、その語彙からランダムに出題されます。何度でも挑戦できます。</footer>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <div class="topbar"><button class="btn-back" id="quitBtn">← やめる</button><h1 id="quizTitle" style="font-size:.98rem;"></h1></div>
+    <div class="qmeta"><span id="qCount"></span><span class="timer" id="timer">00:00</span></div>
+    <div class="progress"><i id="progBar"></i></div>
+    <div class="card">
+      <span class="chip" id="qChip"></span>
+      <div class="q-text" id="qText"></div>
+      <div class="choices" id="choices"></div>
+      <div class="explain" id="explain"></div>
+    </div>
+    <button class="next-btn" id="nextBtn">次へ →</button>
+  </section>
+
+  <section id="records" class="hidden">
+    <div class="topbar"><button class="btn-back" id="recBack">← ホーム</button><h1>学習の記録</h1></div>
+    <div id="recBody"></div>
+    <div class="result-actions" id="recActions">
+      <button class="ra-home" id="recCopy">📋 記録をコピー</button>
+      <button class="ra-home" id="recClear" style="background:#fdeceb; color:#d8483f;">記録を消去</button>
+    </div>
+  </section>
+
+  <section id="result" class="hidden">
+    <div class="topbar"><h1>結果</h1></div>
+    <div class="card">
+      <div class="score-ring">
+        <div class="score-big"><span id="scoreNum">0</span><span class="denom"> / <span id="scoreDen">10</span></span></div>
+        <div class="score-msg" id="scoreMsg"></div>
+        <div class="score-time" id="scoreTime"></div>
+      </div>
+    </div>
+    <div id="reviewArea"></div>
+    <div class="result-actions">
+      <button class="ra-retry" id="retryBtn">もう一度</button>
+      <button class="ra-home" id="homeBtn">ホームへ</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   問題データ
+   item: {q, c:[4選択肢], a:正解index, cat:分類,
+          e:要点解説, d:[各選択肢の意味・用法・例文 ×4]}
+   ========================================================= */
+
+/* ----- ランダム10問 専用プール（ジャンル別とは別問題・全20問）----- */
+const RANDOM_POOL = [
+  {q:"The CEO emphasized the ____ of teamwork during her speech.",c:["important","importantly","importance","importing"],a:2,cat:"品詞",
+   e:"the ____ of ～ の形なので名詞 importance が入る。",
+   d:["important（形容詞）重要な：名詞を修飾。例) an important meeting（重要な会議）",
+      "importantly（副詞）重要なことに：例) More importantly, it works.（さらに重要なのは、それが機能することだ）",
+      "importance（名詞）重要性：the ___ of ～ で名詞が必要。例) the importance of sleep（睡眠の重要性）→正解",
+      "importing（動名詞）輸入すること：動詞 import 由来で意味が合わない。例) importing goods（商品を輸入すること）"]},
+  {q:"Visitors are required to wear identification badges ____ they are in the building.",c:["while","during","despite","because of"],a:0,cat:"接続詞",
+   e:"後ろが文(they are ...)なので接続詞 while が必要。",
+   d:["while（接続詞）～する間：後ろは文。例) Read while you wait.（待つ間に読む）→正解",
+      "during（前置詞）～の間：後ろは名詞。例) during the meeting（会議の間）",
+      "despite（前置詞）～にもかかわらず：後ろは名詞。例) despite the rain（雨にもかかわらず）",
+      "because of（前置詞句）～が理由で：後ろは名詞。例) because of the delay（遅れのせいで）"]},
+  {q:"The technician will ____ the equipment before the demonstration.",c:["inspect","inspection","inspecting","inspector"],a:0,cat:"動詞",
+   e:"助動詞 will の後ろは動詞の原形。inspect が入る。",
+   d:["inspect（動詞）点検する：will の後は原形。例) inspect the car（車を点検する）→正解",
+      "inspection（名詞）点検：例) a safety inspection（安全点検）",
+      "inspecting（動名詞・分詞）点検すること：will の後には置けない。例) after inspecting it",
+      "inspector（名詞）検査官：人を指す。例) a health inspector（衛生検査官）"]},
+  {q:"____ of the employees has access to the confidential files.",c:["Few","Many","None","Several"],a:2,cat:"代名詞",
+   e:"動詞が単数 has なので、of+複数で単数扱いもできる None が正解。",
+   d:["Few（ほとんど～ない）：複数扱いで have を取る。例) Few were present.（出席者はわずか）",
+      "Many（多くの）：複数扱い。例) Many have left.（多くが去った）",
+      "None（誰も～ない）：None of+複数は単数 has も可。例) None of them is ready. →正解",
+      "Several（数人の）：複数扱い。例) Several were chosen.（数名が選ばれた）"]},
+  {q:"The merger resulted ____ a significant increase in revenue.",c:["in","on","to","from"],a:0,cat:"語彙",
+   e:"result in ～「～という結果になる」。結果を導く前置詞 in。",
+   d:["in：result in ～「～という結果に終わる」結果を導く。例) resulted in delays（遅延を招いた）→正解",
+      "on：result on という語法はない",
+      "to：result to は誤り（lead to ～なら正しい）",
+      "from：result from ～は「～が原因で生じる」原因を導く。例) Delays resulted from the error.（逆の関係）"]},
+  {q:"The new model is far more efficient than the ____ one.",c:["previous","previously","previousness","prevail"],a:0,cat:"品詞",
+   e:"名詞 one を前から修飾する形容詞 previous。",
+   d:["previous（形容詞）以前の：名詞を修飾。例) the previous version（以前の版）→正解",
+      "previously（副詞）以前に：例) previously announced（以前発表された）",
+      "previousness：通常使われない語形",
+      "prevail（動詞）勝つ・普及する：例) Justice will prevail.（正義は勝つ）"]},
+  {q:"Employees who work overtime will be compensated ____.",c:["accord","according","accordingly","accordance"],a:2,cat:"品詞",
+   e:"文末で動詞 compensated を修飾する副詞 accordingly。",
+   d:["accord（名詞・動詞）一致／合致する：例) in accord with ～（～と一致して）",
+      "according：according to ～「～によれば」の形で使う。例) according to the report",
+      "accordingly（副詞）それに応じて：例) Plan accordingly.（それに応じて計画する）→正解",
+      "accordance：in accordance with ～「～に従って」の形でのみ。例) in accordance with the rules"]},
+  {q:"The proposal was rejected ____ its high cost.",c:["due to","because","although","so"],a:0,cat:"前置詞",
+   e:"後ろが名詞句(its high cost)なので前置詞句 due to。",
+   d:["due to（前置詞句）～が理由で：後ろは名詞。例) due to bad weather（悪天候のため）→正解",
+      "because（接続詞）～なので：後ろは文。例) because it rained（雨が降ったので）",
+      "although（接続詞）～だが：後ろは文。例) although it was late",
+      "so（接続詞）だから：節と節をつなぐ。例) It rained, so we stayed."]},
+  {q:"The manager, along with her assistants, ____ attending the seminar.",c:["are","is","were","have"],a:1,cat:"数の一致",
+   e:"主語の核は単数 manager。along with ～ は数に影響しないので is。",
+   d:["are（be動詞・複数現在）：複数主語に対応。主語は単数なので不可",
+      "is（be動詞・単数現在）：主語 manager は単数。along with ～ は付け足し。例) The boss is here. →正解",
+      "were（be動詞・複数過去）：数も時制も合わない",
+      "have（持つ／完了の助動詞）：be動詞が必要な文脈で不適"]},
+  {q:"We are looking forward to ____ from you soon.",c:["hear","hearing","heard","hears"],a:1,cat:"語法",
+   e:"look forward to の to は前置詞。後ろは動名詞 hearing。",
+   d:["hear（動詞・原形）聞く：to が前置詞なので原形は不可",
+      "hearing（動名詞）聞くこと：look forward to + 動名詞。例) look forward to seeing you →正解",
+      "heard（過去・過去分詞）：この形では入らない",
+      "hears（3人称単数現在）：入らない"]},
+  {q:"The store offers a refund to ____ is not satisfied with the product.",c:["whoever","whomever","whose","which"],a:0,cat:"関係詞",
+   e:"後ろの動詞 is の主語になる主格の whoever。",
+   d:["whoever（複合関係代名詞・主格）～する人は誰でも：後ろの is の主語。例) Whoever wins gets a prize. →正解",
+      "whomever（目的格）：目的語が必要な場面で使う。ここは主語が必要で不可",
+      "whose（所有格）誰の：後ろに名詞が必要",
+      "which（どれ・もの）：人には通常使わない"]},
+  {q:"The construction project is expected to be completed ____ schedule.",c:["ahead of","in front of","on top of","instead of"],a:0,cat:"語彙",
+   e:"ahead of schedule「予定より早く」という定型。",
+   d:["ahead of（～より先んじて）：ahead of schedule「予定より早く」。例) finished ahead of schedule →正解",
+      "in front of（～の前に）：位置を表す。例) in front of the door（ドアの前に）",
+      "on top of（～の上に・加えて）：例) on top of that（その上）",
+      "instead of（～の代わりに）：例) tea instead of coffee（コーヒーの代わりに紅茶）"]},
+  {q:"Mr. Yamada has been with the company ____ 2010.",c:["for","since","from","in"],a:1,cat:"前置詞",
+   e:"現在完了＋時の起点（2010）には since。",
+   d:["for（～の間）：期間に使う。例) for ten years（10年間）",
+      "since（～以来）：現在完了＋起点の一点。例) since 2010 →正解",
+      "from（～から）：起点だが完了形の継続には since を使う。例) from Monday to Friday",
+      "in（～に）：年・月など一点。例) in 2010（2010年に）継続の意味は出ない"]},
+  {q:"The instructions must be followed ____ to avoid accidents.",c:["exact","exactly","exactness","exacting"],a:1,cat:"品詞",
+   e:"動詞 followed を修飾する副詞 exactly。",
+   d:["exact（形容詞）正確な：名詞を修飾。例) the exact time（正確な時刻）",
+      "exactly（副詞）正確に：動詞を修飾。例) Do exactly as I say. →正解",
+      "exactness（名詞）正確さ：例) with exactness（正確に）まれ",
+      "exacting（形容詞）厳しい・骨の折れる：例) an exacting job（きつい仕事）意味が違う"]},
+  {q:"The factory operates 24 hours a day ____ increase production.",c:["in order to","so that","because of","due to"],a:0,cat:"語法",
+   e:"後ろが動詞の原形 increase なので in order to「～するために」。",
+   d:["in order to（～するために）：後ろは動詞の原形。例) in order to save time →正解",
+      "so that（～するように）：後ろは文。例) so that we can save time",
+      "because of（～が理由で）：後ろは名詞。目的ではなく理由",
+      "due to（～が理由で）：後ろは名詞。目的を表せない"]},
+  {q:"The committee has not yet reached a ____ on the matter.",c:["decide","decision","decisive","decisively"],a:1,cat:"品詞",
+   e:"冠詞 a の後ろは名詞 decision。reach a decision「結論に達する」。",
+   d:["decide（動詞）決める：冠詞 a の後には置けない。例) decide quickly",
+      "decision（名詞）決定：a ___ で名詞。reach a decision「決定に至る」→正解",
+      "decisive（形容詞）決定的な：例) a decisive moment（決定的瞬間）",
+      "decisively（副詞）決定的に：例) act decisively（断固として行動する）"]},
+  {q:"The seminar was so informative that many attendees stayed ____ the end.",c:["until","by","for","since"],a:0,cat:"前置詞",
+   e:"「最後までずっと」継続の終点は until。",
+   d:["until（～までずっと）：継続の終点。例) stay until noon（正午までいる）→正解",
+      "by（～までに）：期限・締切。例) finish by noon（正午までに終える）",
+      "for（～の間）：期間。例) for an hour（1時間）",
+      "since（～以来）：起点＋完了形で使う"]},
+  {q:"Our company is committed to ____ high-quality products.",c:["provide","providing","provided","provides"],a:1,cat:"語法",
+   e:"be committed to の to は前置詞。後ろは動名詞 providing。",
+   d:["provide（動詞・原形）提供する：to が前置詞なので原形は不可",
+      "providing（動名詞）提供すること：to + 動名詞。例) committed to providing →正解",
+      "provided（過去分詞・接続詞）：「～という条件で」は別用法。ここは不可",
+      "provides（3人称単数現在）：入らない"]},
+  {q:"The report should be both accurate ____ concise.",c:["and","or","but","so"],a:0,cat:"接続詞",
+   e:"both A and B「AとBの両方」の相関接続詞。",
+   d:["and：both A and B「AとBの両方」。例) both fast and cheap（速くて安い）→正解",
+      "or：either A or B「AかBか」で使う。both とは組まない",
+      "but：逆接「しかし」。both とは組まない",
+      "so：結果「だから」。both とは組まない"]},
+  {q:"The new policy will take ____ on the first of next month.",c:["effect","affect","effective","effectively"],a:0,cat:"語彙",
+   e:"take effect「効力を生じる・施行される」という定型。",
+   d:["effect（名詞）効果・効力：take effect「効力を生じる」。例) The law takes effect today. →正解",
+      "affect（動詞）影響する：例) Noise affects sleep.（騒音は睡眠に影響する）名詞位置に置けない",
+      "effective（形容詞）効果的な・有効な：例) an effective method（効果的な方法）",
+      "effectively（副詞）効果的に：例) work effectively（効果的に働く）"]}
+];
+
+/* ----- ジャンル別（5ジャンル × 3セット = 150問）----- */
+const GENRES = [
+{ g:"品詞（語形）", sub:"形容詞・副詞・名詞などの正しい形を選ぶ", sets:[
+  { items:[
+    {q:"The marketing team worked ____ to meet the project deadline.",c:["diligent","diligently","diligence","diligentness"],a:1,cat:"品詞",
+     e:"動詞 worked を修飾するので副詞 diligently。",
+     d:["diligent（形容詞）勤勉な：名詞を修飾。例) a diligent worker（勤勉な働き手）",
+        "diligently（副詞）熱心に：動詞を修飾。例) study diligently（熱心に勉強する）→ worked を説明するので正解",
+        "diligence（名詞）勤勉さ：例) Her diligence paid off.（彼女の勤勉さが実を結んだ）",
+        "diligentness：通常使われない語形（diligence を使う）"]},
+    {q:"All employees must submit their expense reports for ____ by Friday.",c:["approve","approval","approved","approves"],a:1,cat:"品詞",
+     e:"前置詞 for の後ろは名詞。approval が入る。",
+     d:["approve（動詞）承認する：例) approve the plan（計画を承認する）",
+        "approval（名詞）承認：前置詞 for の後は名詞。例) for approval（承認を得るために）→正解",
+        "approved（過去・過去分詞／形容詞）承認された：例) an approved budget（承認済み予算）",
+        "approves（3人称単数現在）：動詞なので前置詞の後に置けない"]},
+    {q:"The new software has significantly improved the ____ of our operations.",c:["efficient","efficiently","efficiency","efficiencies"],a:2,cat:"品詞",
+     e:"the ____ of ～ の形で、単数の名詞 efficiency。",
+     d:["efficient（形容詞）効率的な：例) an efficient system（効率的な仕組み）",
+        "efficiently（副詞）効率的に：例) work efficiently（効率よく働く）",
+        "efficiency（名詞・不可算）効率：the ___ of ～ で単数名詞。例) improve efficiency →正解",
+        "efficiencies（複数形）：ここでは不可算で使うため複数は不自然"]},
+    {q:"Ms. Tanaka is ____ for managing the company's overseas accounts.",c:["response","responsible","responsibly","responsibility"],a:1,cat:"品詞",
+     e:"be ____ の補語になる形容詞。be responsible for ～「～を担当する」。",
+     d:["response（名詞）返答・反応：例) a quick response（迅速な返答）",
+        "responsible（形容詞）責任がある：be動詞の補語。be responsible for ～ →正解",
+        "responsibly（副詞）責任を持って：例) act responsibly（責任を持って行動する）",
+        "responsibility（名詞）責任：例) take responsibility（責任を取る）"]},
+    {q:"The conference room is ____ available between 2 and 4 P.M.",c:["current","currently","currency","currents"],a:1,cat:"品詞",
+     e:"形容詞 available を修飾する副詞 currently。",
+     d:["current（形容詞）現在の：名詞を修飾。例) the current price（現在の価格）",
+        "currently（副詞）現在は：形容詞 available を修飾。例) currently closed →正解",
+        "currency（名詞）通貨：例) foreign currency（外国通貨）",
+        "currents（名詞・複数）海流・電流：例) ocean currents（海流）"]},
+    {q:"Our company offers a wide ____ of financial services.",c:["varies","various","variety","variously"],a:2,cat:"品詞",
+     e:"a wide ____ of ～ は定型。名詞 variety「種類」。",
+     d:["varies（動詞・3単現）異なる：例) The price varies.（価格は変動する）",
+        "various（形容詞）さまざまな：例) various options（さまざまな選択肢）",
+        "variety（名詞）種類・多様性：a wide variety of ～「幅広い種類の～」→正解",
+        "variously（副詞）さまざまに：例) variously described（さまざまに描写される）"]},
+    {q:"The instructions were written so ____ that everyone understood them.",c:["clear","clearly","clarity","clearness"],a:1,cat:"品詞",
+     e:"動詞 written を修飾する副詞 clearly。so ～ that 構文。",
+     d:["clear（形容詞）明確な：例) a clear explanation（明確な説明）",
+        "clearly（副詞）明確に：written を修飾。so clearly that ～「とても明確に書かれていたので～」→正解",
+        "clarity（名詞）明確さ：例) with clarity（明確に）",
+        "clearness（名詞）：通常 clarity を使う"]},
+    {q:"The manager praised the team for their ____ performance.",c:["impress","impressive","impressively","impression"],a:1,cat:"品詞",
+     e:"名詞 performance を前から修飾する形容詞 impressive。",
+     d:["impress（動詞）感心させる：例) impress the client（顧客を感心させる）",
+        "impressive（形容詞）印象的な：名詞を修飾。例) impressive results（見事な成績）→正解",
+        "impressively（副詞）見事に：例) perform impressively（見事に行う）",
+        "impression（名詞）印象：例) a good impression（好印象）"]},
+    {q:"Please review the attached document ____ before the meeting.",c:["care","careful","carefully","caring"],a:2,cat:"品詞",
+     e:"動詞 review を修飾する副詞 carefully。",
+     d:["care（名詞・動詞）注意／気にかける：例) take care（気をつける）",
+        "careful（形容詞）注意深い：例) a careful reader（注意深い読み手）",
+        "carefully（副詞）注意深く：動詞 review を修飾。例) read carefully →正解",
+        "caring（形容詞）思いやりのある：例) a caring person（思いやりのある人）"]},
+    {q:"The factory increased its production ____ last quarter.",c:["substantial","substantially","substance","substantively"],a:1,cat:"品詞",
+     e:"動詞 increased を修飾する副詞 substantially「大幅に」。",
+     d:["substantial（形容詞）かなりの：名詞を修飾。例) a substantial amount（かなりの量）",
+        "substantially（副詞）大幅に：動詞 increased を修飾。例) grow substantially →正解",
+        "substance（名詞）物質・実質：例) a harmful substance（有害物質）",
+        "substantively（副詞）実質的に：意味がやや異なり文意に合わない"]}
+  ]},
+  { items:[
+    {q:"The renovation will make the office more ____.",c:["produce","productive","productively","production"],a:1,cat:"品詞",
+     e:"make + 目的語 + 形容詞「～を…にする」。形容詞 productive。",
+     d:["produce（動詞）生産する：例) produce goods（商品を生産する）",
+        "productive（形容詞）生産的な：make ... more productive「より生産的にする」→正解",
+        "productively（副詞）生産的に：例) work productively（生産的に働く）",
+        "production（名詞）生産：例) mass production（大量生産）"]},
+    {q:"The technician explained the procedure ____.",c:["patient","patience","patiently","patients"],a:2,cat:"品詞",
+     e:"動詞 explained を修飾する副詞 patiently。",
+     d:["patient（形容詞）忍耐強い／（名詞）患者：例) a patient teacher（忍耐強い先生）",
+        "patience（名詞）忍耐：例) lose patience（我慢を失う）",
+        "patiently（副詞）辛抱強く：explained を修飾。例) wait patiently →正解",
+        "patients（名詞・複数）患者たち：例) treat patients（患者を治療する）"]},
+    {q:"The company's ____ to quality has earned customer trust.",c:["commit","committed","commitment","commits"],a:2,cat:"品詞",
+     e:"所有格 's の後ろは名詞。commitment to ～「～への献身」。",
+     d:["commit（動詞）専念する・委ねる：例) commit to a goal（目標に専念する）",
+        "committed（過去分詞／形容詞）献身的な：例) a committed employee（熱心な社員）",
+        "commitment（名詞）献身・約束：'s の後は名詞。commitment to quality →正解",
+        "commits（3人称単数現在）：動詞なのでここには入らない"]},
+    {q:"The manager gave a ____ presentation to the board.",c:["persuade","persuasive","persuasively","persuasion"],a:1,cat:"品詞",
+     e:"名詞 presentation を前から修飾する形容詞 persuasive。",
+     d:["persuade（動詞）説得する：例) persuade him（彼を説得する）",
+        "persuasive（形容詞）説得力のある：名詞を修飾。例) a persuasive argument →正解",
+        "persuasively（副詞）説得力をもって：例) speak persuasively（説得力をもって話す）",
+        "persuasion（名詞）説得：例) the art of persuasion（説得術）"]},
+    {q:"Employees should keep their workspaces ____.",c:["organize","organized","organizingly","organization"],a:1,cat:"品詞",
+     e:"keep + 目的語 + 形容詞（過去分詞）「～を…の状態に保つ」。organized。",
+     d:["organize（動詞）整理する：例) organize files（ファイルを整理する）",
+        "organized（過去分詞／形容詞）整理された：keep ... organized「整理された状態に保つ」→正解",
+        "organizingly：存在しない語形",
+        "organization（名詞）組織・整理：例) a large organization（大きな組織）"]},
+    {q:"The training program was ____ designed for beginners.",c:["specific","specifically","specify","specification"],a:1,cat:"品詞",
+     e:"動詞（過去分詞）designed を修飾する副詞 specifically。",
+     d:["specific（形容詞）特定の：例) a specific date（特定の日付）",
+        "specifically（副詞）特に・専用に：designed を修飾。例) specifically made for ～ →正解",
+        "specify（動詞）明記する：例) specify the size（サイズを明記する）",
+        "specification（名詞）仕様：例) technical specifications（技術仕様）"]},
+    {q:"The store guarantees the ____ of all its products.",c:["authentic","authentically","authenticity","authenticate"],a:2,cat:"品詞",
+     e:"the ____ of ～ の形で名詞 authenticity「本物であること」。",
+     d:["authentic（形容詞）本物の：例) authentic leather（本革）",
+        "authentically（副詞）本物らしく：例) authentically made（本格的に作られた）",
+        "authenticity（名詞）真正性：the ___ of ～ で名詞。例) prove authenticity →正解",
+        "authenticate（動詞）本物だと証明する：例) authenticate the signature（署名を認証する）"]},
+    {q:"Our team responded to the complaint ____.",c:["prompt","promptly","promptness","prompted"],a:1,cat:"品詞",
+     e:"動詞 responded を修飾する副詞 promptly「迅速に」。",
+     d:["prompt（形容詞）迅速な／（動詞）促す：例) a prompt reply（迅速な返事）",
+        "promptly（副詞）すぐに：responded を修飾。例) reply promptly →正解",
+        "promptness（名詞）迅速さ：例) thank you for your promptness（迅速な対応に感謝）",
+        "prompted（過去・過去分詞）促された：例) prompted by the news（その知らせに促されて）"]},
+    {q:"The new policy had a ____ effect on morale.",c:["benefit","beneficial","beneficially","benefited"],a:1,cat:"品詞",
+     e:"名詞 effect を前から修飾する形容詞 beneficial「有益な」。",
+     d:["benefit（名詞・動詞）利益／利益を得る：例) health benefits（健康上の利点）",
+        "beneficial（形容詞）有益な：名詞 effect を修飾。例) a beneficial effect →正解",
+        "beneficially（副詞）有益に：例) act beneficially（有益に働く）",
+        "benefited（過去・過去分詞）利益を得た：例) benefited from it（それで得をした）"]},
+    {q:"The instructions should be as ____ as possible.",c:["simple","simply","simplicity","simplify"],a:0,cat:"品詞",
+     e:"be動詞の補語＋as ～ as 構文には形容詞 simple。",
+     d:["simple（形容詞）簡単な：be の補語。as simple as possible「できるだけ簡単に」→正解",
+        "simply（副詞）単に：例) simply put（簡単に言えば）",
+        "simplicity（名詞）簡潔さ：例) for simplicity（簡潔さのために）",
+        "simplify（動詞）簡単にする：例) simplify the process（手順を簡素化する）"]}
+  ]},
+  { items:[
+    {q:"The report provides a ____ analysis of the market.",c:["detail","detailed","detailing","details"],a:1,cat:"品詞",
+     e:"名詞 analysis を前から修飾する形容詞 detailed「詳細な」。",
+     d:["detail（名詞）詳細：例) in detail（詳細に）",
+        "detailed（形容詞）詳細な：名詞を修飾。例) a detailed report →正解",
+        "detailing（動名詞・分詞）詳述すること：例) a memo detailing the plan（計画を詳述するメモ）",
+        "details（名詞・複数）詳細：例) for more details（詳細は）"]},
+    {q:"She handled the negotiation ____.",c:["skill","skillful","skillfully","skillfulness"],a:2,cat:"品詞",
+     e:"動詞 handled を修飾する副詞 skillfully「巧みに」。",
+     d:["skill（名詞）技術：例) communication skills（コミュニケーション能力）",
+        "skillful（形容詞）熟練した：例) a skillful negotiator（巧みな交渉者）",
+        "skillfully（副詞）巧みに：handled を修飾。例) play skillfully →正解",
+        "skillfulness（名詞）：通常 skill を使う"]},
+    {q:"The factory operates with great ____.",c:["precise","precisely","precision","preciser"],a:2,cat:"品詞",
+     e:"前置詞 with ＋形容詞 great の後ろは名詞 precision「正確さ」。",
+     d:["precise（形容詞）正確な：例) precise measurements（正確な測定）",
+        "precisely（副詞）正確に：例) at precisely noon（ちょうど正午に）",
+        "precision（名詞）正確さ：with great precision「きわめて正確に」→正解",
+        "preciser：比較級として不自然（more precise を使う）"]},
+    {q:"The candidate seemed highly ____ during the interview.",c:["motivate","motivated","motivation","motivating"],a:1,cat:"品詞",
+     e:"seem の補語になる形容詞。motivated「意欲的な」。",
+     d:["motivate（動詞）動機づける：例) motivate the team（チームを鼓舞する）",
+        "motivated（過去分詞／形容詞）やる気のある：seemed の補語。highly motivated →正解",
+        "motivation（名詞）動機・意欲：例) lack of motivation（意欲の欠如）",
+        "motivating（現在分詞／形容詞）動機づける：物事が主語のとき。例) a motivating speech（やる気を起こす演説）"]},
+    {q:"Customers appreciate the ____ of our staff.",c:["friendly","friendliness","friend","friendlily"],a:1,cat:"品詞",
+     e:"the ____ of ～ の形で名詞 friendliness「親しみやすさ」。",
+     d:["friendly（形容詞）親しみやすい：例) a friendly smile（親しみのある笑顔）※-ly でも形容詞",
+        "friendliness（名詞）友好的なこと：the ___ of ～ で名詞。例) staff friendliness →正解",
+        "friend（名詞）友人：例) an old friend（旧友）",
+        "friendlily：ほとんど使われない副詞形"]},
+    {q:"The manager reviewed the figures ____ before the meeting.",c:["thorough","thoroughly","thoroughness","thoroughgoing"],a:1,cat:"品詞",
+     e:"動詞 reviewed を修飾する副詞 thoroughly「徹底的に」。",
+     d:["thorough（形容詞）徹底的な：例) a thorough check（徹底的な点検）",
+        "thoroughly（副詞）徹底的に：reviewed を修飾。例) clean thoroughly →正解",
+        "thoroughness（名詞）徹底：例) praised for thoroughness（徹底ぶりを称賛された）",
+        "thoroughgoing（形容詞）完全な：例) a thoroughgoing reform（徹底的な改革）"]},
+    {q:"The new design is both modern and ____.",c:["function","functional","functionally","functionality"],a:1,cat:"品詞",
+     e:"both A and B で A が形容詞 modern なので B も形容詞 functional。",
+     d:["function（名詞・動詞）機能／機能する：例) a key function（重要な機能）",
+        "functional（形容詞）機能的な：modern と並ぶ形容詞。both modern and functional →正解",
+        "functionally（副詞）機能的に：例) functionally identical（機能的に同一）",
+        "functionality（名詞）機能性：例) added functionality（追加機能）"]},
+    {q:"The supervisor praised the intern's ____.",c:["reliable","reliably","reliability","rely"],a:2,cat:"品詞",
+     e:"所有格 's の後ろは名詞。reliability「信頼性」。",
+     d:["reliable（形容詞）信頼できる：例) a reliable car（信頼できる車）",
+        "reliably（副詞）確実に：例) work reliably（確実に動く）",
+        "reliability（名詞）信頼性：'s の後は名詞。the intern's reliability →正解",
+        "rely（動詞）頼る：例) rely on him（彼を頼る）"]},
+    {q:"The software updates are released ____.",c:["regular","regularly","regularity","regulars"],a:1,cat:"品詞",
+     e:"動詞 released を修飾する副詞 regularly「定期的に」。",
+     d:["regular（形容詞）定期的な：例) a regular customer（常連客）",
+        "regularly（副詞）定期的に：released を修飾。例) exercise regularly →正解",
+        "regularity（名詞）規則正しさ：例) with regularity（規則正しく）",
+        "regulars（名詞・複数）常連：例) the bar's regulars（その店の常連たち）"]},
+    {q:"A ____ increase in sales was reported this quarter.",c:["signify","significant","significantly","significance"],a:1,cat:"品詞",
+     e:"名詞 increase を前から修飾する形容詞 significant「著しい」。",
+     d:["signify（動詞）意味する：例) signify approval（賛成を示す）",
+        "significant（形容詞）著しい・重要な：名詞を修飾。a significant increase →正解",
+        "significantly（副詞）著しく：例) improve significantly（著しく改善する）",
+        "significance（名詞）重要性：例) of great significance（非常に重要な）"]}
+  ]}
+]},
+{ g:"前置詞・接続詞", sub:"つなぎ言葉（後ろが名詞か文かで判断）", sets:[
+  { items:[
+    {q:"The shipment will arrive ____ three business days.",c:["within","among","between","during"],a:0,cat:"前置詞",
+     e:"「3営業日以内に」は within ＋期間。",
+     d:["within（～以内に）：期間の上限。例) within a week（1週間以内に）→正解",
+        "among（～の間で）：3つ以上の中で。例) among friends（友人の間で）",
+        "between（～の間で）：2つの間。例) between A and B",
+        "during（～の間中）：期間の長さには使わない。例) during the trip（旅行中）"]},
+    {q:"____ the heavy rain, the outdoor event was postponed.",c:["Because","Because of","Although","So"],a:1,cat:"前置詞/接続詞",
+     e:"後ろが名詞句なので前置詞 because of。",
+     d:["Because（接続詞）～なので：後ろは文。例) Because it rained, ...",
+        "Because of（前置詞句）～が理由で：後ろは名詞。Because of the rain →正解",
+        "Although（接続詞）～だが：後ろは文",
+        "So（接続詞）だから：節をつなぐ"]},
+    {q:"Employees may take a break ____ they have completed their assigned tasks.",c:["once","despite","during","in spite of"],a:0,cat:"接続詞",
+     e:"後ろが文なので接続詞 once「いったん～したら」。",
+     d:["once（接続詞）いったん～すれば：後ろは文。例) once you finish →正解",
+        "despite（前置詞）～にもかかわらず：後ろは名詞",
+        "during（前置詞）～の間：後ろは名詞",
+        "in spite of（前置詞句）～にもかかわらず：後ろは名詞"]},
+    {q:"The report must be submitted ____ the end of the month.",c:["by","until","for","since"],a:0,cat:"前置詞",
+     e:"提出などの「期限」は by「～までに」。",
+     d:["by（～までに）：締め切り・完了の期限。例) by Friday（金曜までに）→正解",
+        "until（～までずっと）：継続。提出には合わない",
+        "for（～の間）：期間",
+        "since（～以来）：起点＋完了形"]},
+    {q:"____ the budget was limited, the team delivered excellent results.",c:["Despite","Although","Because of","During"],a:1,cat:"接続詞",
+     e:"後ろが文で逆接なので接続詞 Although。",
+     d:["Despite（前置詞）～にもかかわらず：後ろは名詞",
+        "Although（接続詞）～だが：後ろは文。Although the budget was ... →正解",
+        "Because of（前置詞句）～が理由で：後ろは名詞、意味も逆接でない",
+        "During（前置詞）～の間：後ろは名詞"]},
+    {q:"The store is open ____ 9 A.M. to 8 P.M. on weekdays.",c:["from","since","at","in"],a:0,cat:"前置詞",
+     e:"from A to B「AからBまで」の定型。",
+     d:["from（～から）：from ... to ... で範囲。from 9 to 8 →正解",
+        "since（～以来）：現在完了とともに使う",
+        "at（～に）：時刻の一点。例) at 9 A.M.",
+        "in（～に）：月・年など"]},
+    {q:"Mr. Lee will lead the project ____ the current manager retires.",c:["after","despite","during","because of"],a:0,cat:"接続詞",
+     e:"後ろが文なので接続詞 after「～した後で」。",
+     d:["after（接続詞）～の後で：後ろは文。after he retires →正解",
+        "despite（前置詞）～にもかかわらず：後ろは名詞",
+        "during（前置詞）～の間：後ろは名詞",
+        "because of（前置詞句）～が理由で：後ろは名詞"]},
+    {q:"The package was delivered ____ schedule despite the storm.",c:["on","in","at","for"],a:0,cat:"前置詞",
+     e:"on schedule「予定通りに」の定型表現。",
+     d:["on（～通りに）：on schedule「予定通り」/ on time「時間通り」→正解",
+        "in（～に）：in time なら「間に合って」だが schedule とは組まない",
+        "at（～に）：時刻の一点",
+        "for（～の間）：期間"]},
+    {q:"Please call us ____ you need any assistance.",c:["if","despite","during","because of"],a:0,cat:"接続詞",
+     e:"後ろが文で「もし～なら」なので接続詞 if。",
+     d:["if（接続詞）もし～なら：後ろは文。if you need help →正解",
+        "despite（前置詞）～にもかかわらず：後ろは名詞",
+        "during（前置詞）～の間：後ろは名詞",
+        "because of（前置詞句）～が理由で：後ろは名詞"]},
+    {q:"The new policy applies to all employees ____ their department.",c:["regardless of","because of","instead of","in addition"],a:0,cat:"前置詞",
+     e:"regardless of ～「～に関係なく」。",
+     d:["regardless of（～に関係なく）：例) regardless of age（年齢に関係なく）→正解",
+        "because of（～が理由で）：意味が合わない",
+        "instead of（～の代わりに）：意味が合わない",
+        "in addition（加えて）：後ろに to が必要（in addition to）で単独では文意に合わない"]}
+  ]},
+  { items:[
+    {q:"The meeting was rescheduled ____ a conflict in the manager's calendar.",c:["due to","although","so that","even if"],a:0,cat:"前置詞",
+     e:"後ろが名詞句なので前置詞句 due to「～が理由で」。",
+     d:["due to（前置詞句）～が理由で：後ろは名詞。due to a conflict →正解",
+        "although（接続詞）～だが：後ろは文",
+        "so that（接続詞）～するように：後ろは文",
+        "even if（接続詞）たとえ～でも：後ろは文"]},
+    {q:"____ you submit the form by noon, it will be processed today.",c:["As long as","Despite","During","In spite of"],a:0,cat:"接続詞",
+     e:"後ろが文で条件を表すので接続詞 as long as「～しさえすれば」。",
+     d:["As long as（接続詞）～する限り：後ろは文。As long as you pay ... →正解",
+        "Despite（前置詞）～にもかかわらず：後ろは名詞",
+        "During（前置詞）～の間：後ろは名詞",
+        "In spite of（前置詞句）～にもかかわらず：後ろは名詞"]},
+    {q:"The samples will be shipped ____ the order is confirmed.",c:["as soon as","because of","due to","in case of"],a:0,cat:"接続詞",
+     e:"後ろが文なので接続詞 as soon as「～するとすぐに」。",
+     d:["as soon as（接続詞）～するとすぐに：後ろは文。as soon as it arrives →正解",
+        "because of（前置詞句）～が理由で：後ろは名詞",
+        "due to（前置詞句）～が理由で：後ろは名詞",
+        "in case of（前置詞句）～の場合：後ろは名詞"]},
+    {q:"The library stays open late ____ exam periods.",c:["during","while","although","since"],a:0,cat:"前置詞",
+     e:"後ろが名詞 exam periods なので前置詞 during。",
+     d:["during（前置詞）～の間：後ろは名詞。during the exams →正解",
+        "while（接続詞）～する間：後ろは文",
+        "although（接続詞）～だが：後ろは文",
+        "since（接続詞/前置詞）～以来：意味・形が合わない"]},
+    {q:"____ working overtime, the team could not meet the deadline.",c:["Despite","Although","Because","Unless"],a:0,cat:"前置詞",
+     e:"後ろが動名詞句(working ...)なので前置詞 Despite「～にもかかわらず」。",
+     d:["Despite（前置詞）～にもかかわらず：後ろは名詞/動名詞。Despite working ... →正解",
+        "Although（接続詞）～だが：後ろは文(主語+動詞)が必要",
+        "Because（接続詞）～なので：後ろは文",
+        "Unless（接続詞）～しない限り：後ろは文"]},
+    {q:"Please keep your receipt ____ you need to return the item.",c:["in case","because of","despite","during"],a:0,cat:"接続詞",
+     e:"後ろが文で「～する場合に備えて」なので in case。",
+     d:["in case（接続詞）～する場合に備えて：後ろは文。in case it breaks →正解",
+        "because of（前置詞句）～が理由で：後ろは名詞",
+        "despite（前置詞）～にもかかわらず：後ろは名詞",
+        "during（前置詞）～の間：後ろは名詞"]},
+    {q:"The product is popular ____ its high price.",c:["despite","although","because","so"],a:0,cat:"前置詞",
+     e:"後ろが名詞句なので前置詞 despite「～にもかかわらず」。",
+     d:["despite（前置詞）～にもかかわらず：後ろは名詞。despite the price →正解",
+        "although（接続詞）～だが：後ろは文",
+        "because（接続詞）～なので：後ろは文、意味も逆接でない",
+        "so（接続詞）だから：節をつなぐ"]},
+    {q:"The flight was delayed ____ the storm passed.",c:["until","by","for","since"],a:0,cat:"接続詞",
+     e:"後ろが文で「～するまで」継続を表す接続詞 until。",
+     d:["until（接続詞）～するまで：後ろは文。until it stopped →正解",
+        "by（前置詞）～までに：後ろは名詞、締め切りの意味",
+        "for（前置詞）～の間：後ろは名詞（期間）",
+        "since（～以来）：意味が合わない"]},
+    {q:"____ the report nor the invoice was attached to the email.",c:["Neither","Either","Both","Not only"],a:0,cat:"接続詞",
+     e:"neither A nor B「AもBも～ない」の相関接続詞。",
+     d:["Neither（どちらも～ない）：Neither A nor B。was と単数一致 →正解",
+        "Either（どちらか）：either A or B で使う",
+        "Both（両方）：both A and B で、動詞は were（複数）になる",
+        "Not only（～だけでなく）：not only A but also B で使う"]},
+    {q:"We can offer a discount ____ you order in bulk.",c:["provided that","in spite of","regardless of","due to"],a:0,cat:"接続詞",
+     e:"後ろが文で条件を表す接続詞 provided that「～という条件で」。",
+     d:["provided that（接続詞）～という条件で：後ろは文。provided that you pay now →正解",
+        "in spite of（前置詞句）～にもかかわらず：後ろは名詞",
+        "regardless of（前置詞句）～に関係なく：後ろは名詞",
+        "due to（前置詞句）～が理由で：後ろは名詞"]}
+  ]},
+  { items:[
+    {q:"The store accepts returns ____ 30 days of purchase.",c:["within","among","between","throughout"],a:0,cat:"前置詞",
+     e:"「購入から30日以内」は within ＋期間。",
+     d:["within（～以内に）：期間の上限。within 30 days →正解",
+        "among（～の間で）：3つ以上の中で",
+        "between（～の間で）：2つの間",
+        "throughout（～の間ずっと）：例) throughout the year（一年中）意味が合わない"]},
+    {q:"____ being new to the team, she quickly took the lead.",c:["Despite","Although","Because","Since"],a:0,cat:"前置詞",
+     e:"後ろが動名詞句なので前置詞 Despite。",
+     d:["Despite（前置詞）～にもかかわらず：後ろは名詞/動名詞。Despite being new →正解",
+        "Although（接続詞）～だが：後ろは文",
+        "Because（接続詞）～なので：後ろは文",
+        "Since（接続詞）～なので/以来：後ろは文"]},
+    {q:"The presentation will begin ____ all participants have arrived.",c:["once","due to","because of","in case of"],a:0,cat:"接続詞",
+     e:"後ろが文なので接続詞 once「いったん～したら」。",
+     d:["once（接続詞）いったん～すれば：後ろは文。once everyone is here →正解",
+        "due to（前置詞句）～が理由で：後ろは名詞",
+        "because of（前置詞句）～が理由で：後ろは名詞",
+        "in case of（前置詞句）～の場合：後ろは名詞"]},
+    {q:"Sign here ____ you agree to the terms.",c:["if","despite","during","because of"],a:0,cat:"接続詞",
+     e:"後ろが文で「もし～なら」なので接続詞 if。",
+     d:["if（接続詞）もし～なら：後ろは文。if you agree →正解",
+        "despite（前置詞）～にもかかわらず：後ろは名詞",
+        "during（前置詞）～の間：後ろは名詞",
+        "because of（前置詞句）～が理由で：後ろは名詞"]},
+    {q:"The road will be closed ____ construction.",c:["because of","because","although","so"],a:0,cat:"前置詞",
+     e:"後ろが名詞 construction なので前置詞句 because of。",
+     d:["because of（前置詞句）～が理由で：後ろは名詞。because of construction →正解",
+        "because（接続詞）～なので：後ろは文(主語+動詞)が必要",
+        "although（接続詞）～だが：後ろは文",
+        "so（接続詞）だから：節をつなぐ"]},
+    {q:"The team worked overtime ____ finish the project on time.",c:["in order to","so that","because","due to"],a:0,cat:"語法",
+     e:"後ろが動詞の原形 finish なので in order to「～するために」。",
+     d:["in order to（～するために）：後ろは原形。in order to finish →正解",
+        "so that（～するように）：後ろは文(they can ...)が必要",
+        "because（～なので）：後ろは文",
+        "due to（～が理由で）：後ろは名詞"]},
+    {q:"____ the manager approves it, the plan cannot proceed.",c:["Unless","Despite","During","Because of"],a:0,cat:"接続詞",
+     e:"後ろが文で「～しない限り」なので接続詞 Unless。",
+     d:["Unless（接続詞）～しない限り：後ろは文。Unless he agrees ... →正解",
+        "Despite（前置詞）～にもかかわらず：後ろは名詞",
+        "During（前置詞）～の間：後ろは名詞",
+        "Because of（前置詞句）～が理由で：後ろは名詞"]},
+    {q:"Payment can be made ____ in cash or by card.",c:["either","both","neither","not"],a:0,cat:"接続詞",
+     e:"either A or B「AかBのどちらか」の相関接続詞。",
+     d:["either（どちらか）：either A or B。either in cash or by card →正解",
+        "both（両方）：both A and B で and と組む",
+        "neither（どちらも～ない）：neither A nor B で nor と組む",
+        "not（～でない）：not A but B などで使い、ここでは合わない"]},
+    {q:"The warranty remains valid ____ the product is used properly.",c:["as long as","because of","due to","in spite of"],a:0,cat:"接続詞",
+     e:"後ろが文で条件を表す接続詞 as long as「～する限り」。",
+     d:["as long as（接続詞）～する限り：後ろは文。as long as you follow the rules →正解",
+        "because of（前置詞句）～が理由で：後ろは名詞",
+        "due to（前置詞句）～が理由で：後ろは名詞",
+        "in spite of（前置詞句）～にもかかわらず：後ろは名詞"]},
+    {q:"He stayed late ____ everyone else had gone home.",c:["even though","because of","despite","during"],a:0,cat:"接続詞",
+     e:"後ろが文で逆接なので接続詞 even though「～だけれども」。",
+     d:["even though（接続詞）～にもかかわらず：後ろは文。even though it was late →正解",
+        "because of（前置詞句）～が理由で：後ろは名詞",
+        "despite（前置詞）～にもかかわらず：後ろは名詞",
+        "during（前置詞）～の間：後ろは名詞"]}
+  ]}
+]},
+{ g:"動詞（時制・態・一致）", sub:"時制・受動態・主述の一致・仮定法", sets:[
+  { items:[
+    {q:"The committee ____ the proposal at yesterday's meeting.",c:["approve","approves","approved","will approve"],a:2,cat:"時制",
+     e:"yesterday があるので過去形 approved。",
+     d:["approve（原形/現在）：主語が単数なので現在なら approves。時制も合わない",
+        "approves（3単現）：yesterday と合わない",
+        "approved（過去形）：yesterday＝過去。→正解",
+        "will approve（未来）：過去の出来事に合わない"]},
+    {q:"By the time you arrive, the presentation ____ already started.",c:["has","will have","had","have"],a:1,cat:"時制",
+     e:"By the time＋現在形(未来)→主節は未来完了 will have started。",
+     d:["has（現在完了）：未来の基準時点には合わない",
+        "will have（未来完了の助動詞）：will have started。「あなたが着く頃には始まっているだろう」→正解",
+        "had（過去完了）：過去の基準時点に使う",
+        "have（複数現在完了）：主語 the presentation は単数で不一致"]},
+    {q:"Each of the applicants ____ required to submit a résumé.",c:["are","is","were","being"],a:1,cat:"数の一致",
+     e:"主語の核 Each は単数扱いなので is。",
+     d:["are（複数）：Each は単数扱いで不可",
+        "is（単数）：Each of ～ は単数。Each is required →正解",
+        "were（複数過去）：数も時制も合わない",
+        "being（分詞/動名詞）：述語動詞になれない"]},
+    {q:"The documents ____ to the client last week.",c:["sent","were sent","have sent","sending"],a:1,cat:"態",
+     e:"書類は「送られる」側なので受動態 were sent。",
+     d:["sent（過去・能動）：書類が「送る」ことはなく能動は不自然",
+        "were sent（過去・受動）：be＋過去分詞。last week＝過去。→正解",
+        "have sent（現在完了・能動）：主語が物で能動は不自然、last week とも不一致",
+        "sending（分詞）：述語動詞になれない"]},
+    {q:"Sales ____ steadily since the new product launch.",c:["increase","increased","have increased","increasing"],a:2,cat:"時制",
+     e:"since（～以来）は現在完了とセット。have increased。",
+     d:["increase（現在）：since と合わない",
+        "increased（過去）：since には現在完了が必要",
+        "have increased（現在完了）：since the launch とセット。→正解",
+        "increasing（分詞）：述語動詞になれない"]},
+    {q:"The manager asked that the report ____ by Monday.",c:["is finished","be finished","finishes","finishing"],a:1,cat:"仮定法",
+     e:"ask that ～ の後は動詞の原形（仮定法現在）。受動で be finished。",
+     d:["is finished（直説法）：要求の that 節では原形を使う",
+        "be finished（原形・受動）：ask/request that ... be 〜。→正解",
+        "finishes（3単現）：要求の that 節に合わない",
+        "finishing（分詞）：述語動詞になれない"]},
+    {q:"Neither the manager nor the employees ____ aware of the change.",c:["was","is","were","has"],a:2,cat:"数の一致",
+     e:"neither A nor B は B（近い方 employees）に一致 → were。",
+     d:["was（単数過去）：近い名詞 employees は複数で不可",
+        "is（単数現在）：複数 employees と不一致",
+        "were（複数過去）：nor の後ろ employees に一致。→正解",
+        "has（単数）：be動詞が必要な文脈で不適"]},
+    {q:"The new equipment ____ next week.",c:["will install","will be installed","is installing","installs"],a:1,cat:"態",
+     e:"機器は「設置される」側なので受動態の未来 will be installed。",
+     d:["will install（未来・能動）：機器が「設置する」ことはない",
+        "will be installed（未来・受動）：will be＋過去分詞。→正解",
+        "is installing（現在進行・能動）：物が主語で能動は不自然",
+        "installs（3単現・能動）：能動で不自然、未来でもない"]},
+    {q:"If the client ____ the contract, we will begin production.",c:["sign","signs","signed","will sign"],a:1,cat:"時制",
+     e:"条件のif節は未来でも現在形。主語が3人称単数なので signs。",
+     d:["sign（原形）：主語 the client は3単現で -s が必要",
+        "signs（3単現）：if節は現在形で未来を表す。→正解",
+        "signed（過去）：仮定法過去でなく現実条件なので現在形",
+        "will sign（未来）：条件のif節では will を使わない"]},
+    {q:"The team ____ working on the project for three months.",c:["is","has been","have","was"],a:1,cat:"時制",
+     e:"for three months＋進行の意味で現在完了進行形 has been working。",
+     d:["is（現在進行）：is working だと「今だけ」で for three months と弱い",
+        "has been（現在完了進行）：has been working。3か月続けている。→正解",
+        "have（複数）：team は単数扱いが基本で has",
+        "was（過去進行）：現在まで継続の意味が出ない"]}
+  ]},
+  { items:[
+    {q:"The CEO ____ the new branch next month.",c:["opens","will open","opened","has opened"],a:1,cat:"時制",
+     e:"next month＝未来なので will open。",
+     d:["opens（現在/習慣）：未来の一回の予定には弱い",
+        "will open（未来）：next month と一致。→正解",
+        "opened（過去）：未来に合わない",
+        "has opened（現在完了）：すでに開いた意味で未来と矛盾"]},
+    {q:"The results ____ by an independent auditor every year.",c:["review","reviews","are reviewed","reviewing"],a:2,cat:"態",
+     e:"results は「検査される」側なので受動態 are reviewed。",
+     d:["review（能動・現在）：結果が「検査する」ことはない",
+        "reviews（3単現・能動）：主語は複数 results で不一致、能動も不自然",
+        "are reviewed（受動・現在）：be＋過去分詞。every year の習慣。→正解",
+        "reviewing（分詞）：述語動詞になれない"]},
+    {q:"If I ____ you, I would accept the offer.",c:["am","was","were","be"],a:2,cat:"仮定法",
+     e:"仮定法過去 If I were you「もし私があなたなら」。",
+     d:["am（現在）：仮定法では were を使う",
+        "was（過去）：仮定法では人称に関わらず were が標準",
+        "were（仮定法過去）：If I were you, I would ～。→正解",
+        "be（原形）：この構文では使えない"]},
+    {q:"The shipment ____ before the holidays if we order now.",c:["arrives","will arrive","arrived","has arrived"],a:1,cat:"時制",
+     e:"現実的な条件文の主節は未来 will arrive。",
+     d:["arrives（現在）：主節は未来の予測で will が自然",
+        "will arrive（未来）：if節が現在(order)、主節は will。→正解",
+        "arrived（過去）：未来の予測に合わない",
+        "has arrived（現在完了）：すでに到着の意味で矛盾"]},
+    {q:"The number of applicants ____ increasing every year.",c:["are","is","have","were"],a:1,cat:"数の一致",
+     e:"The number of ～「～の数」は単数扱い → is。",
+     d:["are（複数）：The number は単数扱いで不可",
+        "is（単数）：The number of ～ is ～。→正解（cf. A number of ～ なら複数）",
+        "have（複数）：be動詞が必要、数も不一致",
+        "were（複数過去）：数も時制も合わない"]},
+    {q:"She suggested that he ____ the report again.",c:["checks","check","checked","checking"],a:1,cat:"仮定法",
+     e:"suggest that ～ の後は動詞の原形（仮定法現在）。check。",
+     d:["checks（3単現）：提案の that 節では原形を使う",
+        "check（原形）：suggest that he check ～。→正解",
+        "checked（過去）：提案の that 節に合わない",
+        "checking（分詞）：述語動詞になれない"]},
+    {q:"By next year, the company ____ its headquarters to Tokyo.",c:["moves","moved","will have moved","has moved"],a:2,cat:"時制",
+     e:"By next year（未来の基準時点）→未来完了 will have moved。",
+     d:["moves（現在）：未来完了の文脈に合わない",
+        "moved（過去）：未来の基準時点に合わない",
+        "will have moved（未来完了）：By next year, ～ will have moved。→正解",
+        "has moved（現在完了）：未来の基準時点 by next year と不一致"]},
+    {q:"Neither of the proposals ____ acceptable to the board.",c:["are","were","is","have"],a:2,cat:"数の一致",
+     e:"Neither of ～ は単数扱い → is。",
+     d:["are（複数）：Neither は単数扱いで不可",
+        "were（複数過去）：数も時制も合わない",
+        "is（単数）：Neither of ～ is ～。→正解",
+        "have（複数）：be動詞が必要、数も不一致"]},
+    {q:"The reports ____ to all managers every Monday.",c:["send","are sent","sending","sends"],a:1,cat:"態",
+     e:"reports は「送られる」側なので受動態 are sent。",
+     d:["send（能動・現在）：報告書が「送る」ことはない",
+        "are sent（受動・現在）：be＋過去分詞。every Monday の習慣。→正解",
+        "sending（分詞）：述語動詞になれない",
+        "sends（3単現・能動）：主語は複数 reports で不一致"]},
+    {q:"The manager insisted that the meeting ____ postponed.",c:["is","be","was","being"],a:1,cat:"仮定法",
+     e:"insist that ～ の後は原形（仮定法現在）。受動で be postponed。",
+     d:["is（直説法）：要求・主張の that 節では原形",
+        "be（原形・受動）：insist that ... be postponed。→正解",
+        "was（過去）：要求の that 節に合わない",
+        "being（分詞）：述語動詞になれない"]}
+  ]},
+  { items:[
+    {q:"The factory ____ in operation since 1995.",c:["is","has been","was","being"],a:1,cat:"時制",
+     e:"since 1995（起点）→現在完了 has been。",
+     d:["is（現在）：since と継続には現在完了が必要",
+        "has been（現在完了）：has been in operation since 1995。→正解",
+        "was（過去）：現在まで続く意味が出ない",
+        "being（分詞）：述語動詞になれない"]},
+    {q:"All visitors ____ to sign in at the front desk.",c:["requires","are required","requiring","require"],a:1,cat:"態",
+     e:"visitors は「求められる」側なので受動態 are required。",
+     d:["requires（3単現・能動）：主語は複数 visitors で不一致",
+        "are required（受動・現在）：be required to do「～するよう求められる」。→正解",
+        "requiring（分詞）：述語動詞になれない",
+        "require（能動・現在）：be required to の受動が自然"]},
+    {q:"If the weather ____ bad tomorrow, the event will be held indoors.",c:["is","will be","were","be"],a:0,cat:"時制",
+     e:"条件のif節は未来でも現在形 is。",
+     d:["is（現在）：if節は現在形で未来を表す。→正解",
+        "will be（未来）：条件のif節では will を使わない",
+        "were（仮定法過去）：現実的な条件なので現在形",
+        "be（原形）：この位置では使えない"]},
+    {q:"The board ____ the budget at next week's meeting.",c:["approved","will approve","has approved","approves"],a:1,cat:"時制",
+     e:"next week＝未来なので will approve。",
+     d:["approved（過去）：未来に合わない",
+        "will approve（未来）：next week と一致。→正解",
+        "has approved（現在完了）：すでに承認の意味で未来と矛盾",
+        "approves（現在/習慣）：未来の一回の予定には弱い"]},
+    {q:"Every employee ____ a security badge to enter the building.",c:["need","needs","are needing","have"],a:1,cat:"数の一致",
+     e:"Every ＋単数名詞は単数扱い → needs。",
+     d:["need（原形/複数現在）：Every employee は3単現で -s が必要",
+        "needs（3単現）：Every employee needs ～。→正解",
+        "are needing（複数進行）：数も合わず need は通常進行にしない",
+        "have（複数）：主語は単数扱いで has 系"]},
+    {q:"The contract ____ by both parties last Friday.",c:["signed","was signed","has signed","signing"],a:1,cat:"態",
+     e:"契約は「署名される」側なので受動態 was signed。last Friday＝過去。",
+     d:["signed（過去・能動）：契約が「署名する」ことはない",
+        "was signed（過去・受動）：be＋過去分詞。last Friday と一致。→正解",
+        "has signed（現在完了・能動）：能動で不自然、last Friday とも不一致",
+        "signing（分詞）：述語動詞になれない"]},
+    {q:"The team ____ the project by the end of this week.",c:["completes","will have completed","completed","is completing"],a:1,cat:"時制",
+     e:"by the end of this week（未来の期限）→未来完了 will have completed。",
+     d:["completes（現在）：未来完了の文脈に合わない",
+        "will have completed（未来完了）：by ～ までに完了している。→正解",
+        "completed（過去）：未来の期限に合わない",
+        "is completing（現在進行）：完了のニュアンスが出ない"]},
+    {q:"The prices ____ since the new tax was introduced.",c:["rise","rose","have risen","rising"],a:2,cat:"時制",
+     e:"since（～以来）→現在完了 have risen。",
+     d:["rise（現在）：since と合わない",
+        "rose（過去）：since には現在完了が必要",
+        "have risen（現在完了）：since the tax ～ とセット。→正解（rise-rose-risen）",
+        "rising（分詞）：述語動詞になれない"]},
+    {q:"The manager recommended that the policy ____ revised.",c:["is","be","was","been"],a:1,cat:"仮定法",
+     e:"recommend that ～ の後は原形（仮定法現在）。受動で be revised。",
+     d:["is（直説法）：提案の that 節では原形",
+        "be（原形・受動）：recommend that ... be revised。→正解",
+        "was（過去）：提案の that 節に合わない",
+        "been（過去分詞）：単独では述語にならない（has/have が必要）"]},
+    {q:"A list of attendees ____ posted on the website.",c:["are","is","have","were"],a:1,cat:"数の一致",
+     e:"主語の核は単数 A list（of attendees は修飾）→ is。",
+     d:["are（複数）：核は A list で単数。attendees に引っぱられない",
+        "is（単数）：A list of ～ is ～。→正解",
+        "have（複数）：be動詞が必要、数も不一致",
+        "were（複数過去）：数も時制も合わない"]}
+  ]}
+]},
+{ g:"代名詞・関係詞", sub:"who / which / whose / 関係副詞・所有格など", sets:[
+  { items:[
+    {q:"The employees completed the training by ____.",c:["them","they","themselves","their"],a:2,cat:"代名詞",
+     e:"by oneself「自分たちだけで」。主語と同じなので再帰代名詞 themselves。",
+     d:["them（目的格）：主語と同一人物を指せない",
+        "they（主格）：前置詞 by の後ろは目的格・再帰",
+        "themselves（再帰代名詞）：by themselves「自分たちだけで」。→正解",
+        "their（所有格）：後ろに名詞が必要"]},
+    {q:"The candidate ____ résumé impressed the panel was hired.",c:["who","whom","whose","which"],a:2,cat:"関係詞",
+     e:"直後に名詞 résumé が続き所有を表すので whose。",
+     d:["who（主格）：後ろに動詞が来る",
+        "whom（目的格）：後ろに主語＋動詞が来る",
+        "whose（所有格）：後ろに名詞。whose résumé「その人の履歴書」→正解",
+        "which（物）：先行詞が人なので不可"]},
+    {q:"This is the building ____ our headquarters are located.",c:["which","where","who","whose"],a:1,cat:"関係詞",
+     e:"後ろが完全な文（場所）なので関係副詞 where。",
+     d:["which（関係代名詞）：後ろに不完全な文（主語/目的語の欠け）が来る",
+        "where（関係副詞）：後ろは完全文。場所を表す。→正解",
+        "who（人）：先行詞が場所なので不可",
+        "whose（所有格）：後ろに名詞が必要"]},
+    {q:"The manager distributed the reports to ____ attended the meeting.",c:["whoever","whomever","whose","which"],a:0,cat:"関係詞",
+     e:"後ろの動詞 attended の主語が必要 → 主格 whoever。",
+     d:["whoever（主格）：～する人は誰でも。attended の主語。→正解",
+        "whomever（目的格）：目的語が必要な場面で使う",
+        "whose（所有格）：後ろに名詞が必要",
+        "which（物）：人に使わない"]},
+    {q:"The product, ____ was launched last year, has become very popular.",c:["who","which","where","whose"],a:1,cat:"関係詞",
+     e:"先行詞は物(product)、コンマ付き非制限用法 → which。",
+     d:["who（人）：先行詞が物なので不可",
+        "which（物・非制限）：, which ～ で補足説明。→正解",
+        "where（場所）：場所でないので不可",
+        "whose（所有格）：後ろに名詞が必要"]},
+    {q:"All staff members are expected to do ____ best.",c:["their","theirs","them","they"],a:0,cat:"代名詞",
+     e:"名詞 best を修飾する所有格 their。do one's best。",
+     d:["their（所有格）：名詞 best を修飾。do their best「全力を尽くす」→正解",
+        "theirs（所有代名詞）：後ろに名詞を取らない",
+        "them（目的格）：名詞を修飾できない",
+        "they（主格）：名詞を修飾できない"]},
+    {q:"The proposal that the board approved was ____.",c:["my","mine","me","I"],a:1,cat:"代名詞",
+     e:"be動詞の補語で「私のもの」を表す所有代名詞 mine。",
+     d:["my（所有格）：後ろに名詞が必要",
+        "mine（所有代名詞）：= my proposal。補語になれる。→正解",
+        "me（目的格）：補語に置くと意味をなさない",
+        "I（主格）：補語の位置に主格は不自然"]},
+    {q:"We need someone ____ can speak both English and Japanese.",c:["who","whom","which","whose"],a:0,cat:"関係詞",
+     e:"先行詞は人(someone)、後ろは動詞 can speak の主語 → 主格 who。",
+     d:["who（主格）：後ろに動詞。someone who can speak →正解",
+        "whom（目的格）：後ろに主語＋動詞が来る",
+        "which（物）：人に使わない",
+        "whose（所有格）：後ろに名詞が必要"]},
+    {q:"The two departments share ____ resources to cut costs.",c:["its","their","theirs","them"],a:1,cat:"代名詞",
+     e:"複数(two departments)を受け、名詞 resources を修飾する所有格 their。",
+     d:["its（単数の所有格）：主語が複数なので不可",
+        "their（複数の所有格）：名詞 resources を修飾。→正解",
+        "theirs（所有代名詞）：後ろに名詞を取らない",
+        "them（目的格）：名詞を修飾できない"]},
+    {q:"____ of the two proposals is more cost-effective?",c:["What","Which","Who","Whose"],a:1,cat:"代名詞",
+     e:"限られた2つから選ぶときは Which。",
+     d:["What（何）：選択肢が限定されないとき",
+        "Which（どちら）：限られた中から選ぶ。of the two → Which。→正解",
+        "Who（誰）：人を尋ねる",
+        "Whose（誰の）：所有を尋ね、後ろに名詞が必要"]}
+  ]},
+  { items:[
+    {q:"The employees ____ attended the workshop received a certificate.",c:["who","whom","whose","which"],a:0,cat:"関係詞",
+     e:"先行詞は人、後ろは動詞 attended の主語 → 主格 who。",
+     d:["who（主格）：後ろに動詞。employees who attended →正解",
+        "whom（目的格）：後ろに主語＋動詞が来る",
+        "whose（所有格）：後ろに名詞が必要",
+        "which（物）：人に使わない"]},
+    {q:"The company ____ products we use is based in Germany.",c:["who","which","whose","where"],a:2,cat:"関係詞",
+     e:"後ろに名詞 products が続き所有を表すので whose。",
+     d:["who（主格）：後ろに名詞は取らない",
+        "which（物）：後ろは不完全文で名詞は続かない",
+        "whose（所有格）：whose products「その会社の製品」→正解",
+        "where（場所）：後ろは完全文"]},
+    {q:"The clients with ____ we met were very satisfied.",c:["who","whom","which","whose"],a:1,cat:"関係詞",
+     e:"前置詞 with の後ろは目的格 whom。",
+     d:["who（主格）：前置詞の直後には置けない",
+        "whom（目的格）：with whom we met。前置詞＋目的格。→正解",
+        "which（物）：人に使わない",
+        "whose（所有格）：後ろに名詞が必要"]},
+    {q:"____ is responsible for this error must report to the manager.",c:["Whoever","Whomever","Whatever","Whichever"],a:0,cat:"関係詞",
+     e:"後ろの is の主語になる主格 Whoever「～する人は誰でも」。",
+     d:["Whoever（主格）：is の主語。Whoever is responsible →正解",
+        "Whomever（目的格）：目的語が必要な場面で使う",
+        "Whatever（何でも）：人を指すのに不自然",
+        "Whichever（どちらでも）：限られた選択肢のとき"]},
+    {q:"The hotel ____ we stayed had excellent service.",c:["which","where","who","what"],a:1,cat:"関係詞",
+     e:"後ろが完全な文（stayed が自動詞）なので関係副詞 where。",
+     d:["which（関係代名詞）：後ろは不完全文。ここは完全文で不可（stay at which なら可）",
+        "where（関係副詞）：場所＋完全文。the hotel where we stayed →正解",
+        "who（人）：先行詞が場所なので不可",
+        "what（関係代名詞）：先行詞を取らない"]},
+    {q:"Please return the equipment to ____ you borrowed it from.",c:["whoever","whomever","whose","which"],a:1,cat:"関係詞",
+     e:"borrow from の目的語にあたるので目的格 whomever。",
+     d:["whoever（主格）：主語が必要な場面で使う",
+        "whomever（目的格）：from の目的語。borrowed it from whomever →正解",
+        "whose（所有格）：後ろに名詞が必要",
+        "which（物）：人に使わない"]},
+    {q:"The report ____ was submitted yesterday contains some errors.",c:["who","which","whose","whom"],a:1,cat:"関係詞",
+     e:"先行詞は物(report)、後ろは動詞の主語 → which。",
+     d:["who（人）：先行詞が物なので不可",
+        "which（物・主格）：the report which was submitted →正解",
+        "whose（所有格）：後ろに名詞が必要",
+        "whom（目的格・人）：先行詞が物で不可"]},
+    {q:"Neither of the candidates had ____ qualifications verified.",c:["their","theirs","them","they"],a:0,cat:"代名詞",
+     e:"名詞 qualifications を修飾する所有格 their。",
+     d:["their（所有格）：名詞を修飾。their qualifications →正解",
+        "theirs（所有代名詞）：後ろに名詞を取らない",
+        "them（目的格）：名詞を修飾できない",
+        "they（主格）：名詞を修飾できない"]},
+    {q:"This is the reason ____ the project was delayed.",c:["why","which","who","where"],a:0,cat:"関係詞",
+     e:"先行詞 reason ＋完全文なので関係副詞 why。",
+     d:["why（関係副詞）：the reason why ～「～な理由」。→正解",
+        "which（関係代名詞）：後ろは不完全文が必要",
+        "who（人）：先行詞が理由で不可",
+        "where（場所）：場所でないので不可"]},
+    {q:"The two managers respect ____ other's opinions.",c:["each","every","all","both"],a:0,cat:"代名詞",
+     e:"each other「お互い」の定型。each other's opinions。",
+     d:["each（それぞれ）：each other「お互い」。→正解",
+        "every（あらゆる）：every other は「一つおき」で意味が違う",
+        "all（すべて）：all other とは言うが「お互い」の意味にならない",
+        "both（両方）：both other という言い方はない"]}
+  ]},
+  { items:[
+    {q:"The new intern, ____ started last week, is doing well.",c:["who","whom","which","whose"],a:0,cat:"関係詞",
+     e:"先行詞は人、非制限用法で後ろは動詞の主語 → who。",
+     d:["who（主格・人）：, who started ～。→正解",
+        "whom（目的格）：後ろに主語＋動詞が来る",
+        "which（物）：人に使わない",
+        "whose（所有格）：後ろに名詞が必要"]},
+    {q:"We offer support to customers ____ orders are delayed.",c:["who","which","whose","whom"],a:2,cat:"関係詞",
+     e:"後ろに名詞 orders が続き所有を表すので whose。",
+     d:["who（主格）：後ろに名詞は取らない",
+        "which（物）：後ろは不完全文で名詞は続かない",
+        "whose（所有格）：whose orders「その客の注文」→正解",
+        "whom（目的格）：後ろに名詞は取らない"]},
+    {q:"The day ____ the store opened was very busy.",c:["when","which","who","whose"],a:0,cat:"関係詞",
+     e:"先行詞 day ＋完全文なので関係副詞 when。",
+     d:["when（関係副詞）：the day when ～「～した日」。→正解",
+        "which（関係代名詞）：後ろは不完全文が必要",
+        "who（人）：先行詞が日で不可",
+        "whose（所有格）：後ろに名詞が必要"]},
+    {q:"The manager will hire ____ is most qualified.",c:["whoever","whomever","whose","which"],a:0,cat:"関係詞",
+     e:"後ろの is の主語になる主格 whoever。",
+     d:["whoever（主格）：is の主語。hire whoever is qualified →正解",
+        "whomever（目的格）：目的語が必要な場面で使う",
+        "whose（所有格）：後ろに名詞が必要",
+        "which（物）：人に使わない"]},
+    {q:"The documents, ____ were confidential, were locked away.",c:["who","which","where","whose"],a:1,cat:"関係詞",
+     e:"先行詞は物、コンマ付き非制限用法 → which。",
+     d:["who（人）：先行詞が物なので不可",
+        "which（物・非制限）：, which were confidential →正解",
+        "where（場所）：場所でないので不可",
+        "whose（所有格）：後ろに名詞が必要"]},
+    {q:"Each of the departments submitted ____ own budget.",c:["its","their","theirs","them"],a:0,cat:"代名詞",
+     e:"Each は単数扱いなので所有格 its。",
+     d:["its（単数の所有格）：Each ... its own budget。→正解",
+        "their（複数の所有格）：Each は単数扱いで原則 its",
+        "theirs（所有代名詞）：後ろに名詞を取らない",
+        "them（目的格）：名詞を修飾できない"]},
+    {q:"The colleague ____ I share an office is on vacation.",c:["who","with whom","whose","which"],a:1,cat:"関係詞",
+     e:"share an office with ～ の with が前に出て with whom。",
+     d:["who（主格）：share ... with の目的語が欠けており前置詞が必要",
+        "with whom（前置詞＋目的格）：share an office with whom。→正解",
+        "whose（所有格）：後ろに名詞が必要",
+        "which（物）：人に使わない"]},
+    {q:"The award goes to ____ sells the most this month.",c:["whoever","whomever","whose","whom"],a:0,cat:"関係詞",
+     e:"後ろの動詞 sells の主語になる主格 whoever。",
+     d:["whoever（主格）：sells の主語。whoever sells the most →正解",
+        "whomever（目的格）：目的語が必要な場面で使う",
+        "whose（所有格）：後ろに名詞が必要",
+        "whom（目的格）：後ろに主語＋動詞が来る"]},
+    {q:"Customers may exchange items ____ are defective.",c:["who","that","whose","whom"],a:1,cat:"関係詞",
+     e:"先行詞は物(items)、後ろは動詞の主語 → that（which も可）。",
+     d:["who（人）：先行詞が物なので不可",
+        "that（関係代名詞）：物・人どちらにも使え、主格でOK。items that are defective →正解",
+        "whose（所有格）：後ろに名詞が必要",
+        "whom（目的格・人）：先行詞が物で不可"]},
+    {q:"____ of the two applicants was interviewed separately.",c:["Each","Every","All","Both"],a:0,cat:"代名詞",
+     e:"Each of the two ～「2人それぞれ」は単数扱い → was と一致。",
+     d:["Each（それぞれ）：Each of the two ... was。単数一致。→正解",
+        "Every（あらゆる）：every of ～ という形は不可（every＋単数名詞）",
+        "All（すべて）：all of two は不自然、動詞も were になる",
+        "Both（両方）：both は複数で were が必要"]}
+  ]}
+]},
+{ g:"語彙", sub:"意味とコロケーション（語の組み合わせ）", sets:[
+  { items:[
+    {q:"The company plans to ____ its operations into Asian markets.",c:["expand","expend","extend","expense"],a:0,cat:"語彙",
+     e:"expand into ～「～へ事業を拡大する」。",
+     d:["expand（動詞）拡大する：expand into markets「市場へ拡大する」→正解",
+        "expend（動詞）費やす：例) expend energy（労力を費やす）意味が違う",
+        "extend（動詞）延長する・伸ばす：例) extend the deadline（締切を延ばす）",
+        "expense（名詞）経費：例) travel expenses（旅費）動詞ではない"]},
+    {q:"Please ____ to the attached file for more details.",c:["refer","reflect","relate","remind"],a:0,cat:"語彙",
+     e:"refer to ～「～を参照する」。",
+     d:["refer（動詞）参照する：refer to ～。→正解",
+        "reflect（動詞）反映する・反射する：例) reflect light（光を反射する）",
+        "relate（動詞）関連づける：relate A to B",
+        "remind（動詞）思い出させる：remind 人 of ～"]},
+    {q:"The new manager has extensive ____ in the retail industry.",c:["experience","experiment","expert","expense"],a:0,cat:"語彙",
+     e:"experience「経験」。have experience in ～。",
+     d:["experience（名詞）経験：extensive experience in ～「豊富な経験」→正解",
+        "experiment（名詞）実験：例) conduct an experiment（実験を行う）",
+        "expert（名詞）専門家：人を指す",
+        "expense（名詞）経費：意味が違う"]},
+    {q:"All visitors must ____ with the safety regulations.",c:["comply","apply","reply","supply"],a:0,cat:"語彙",
+     e:"comply with ～「（規則）に従う」。",
+     d:["comply（動詞）従う：comply with rules →正解",
+        "apply（動詞）申し込む・適用する：apply for/to",
+        "reply（動詞）返答する：reply to",
+        "supply（動詞）供給する：supply A with B"]},
+    {q:"The discount is only ____ to members.",c:["available","capable","possible","reachable"],a:0,cat:"語彙",
+     e:"available to ～「～が利用できる」。",
+     d:["available（形容詞）利用できる：available to members →正解",
+        "capable（形容詞）能力がある：be capable of ～",
+        "possible（形容詞）可能な：It is possible to ～",
+        "reachable（形容詞）連絡がつく：人に対して使うことが多い"]},
+    {q:"We would like to ____ you for your outstanding contribution.",c:["recognize","realize","remind","require"],a:0,cat:"語彙",
+     e:"recognize「（功績を）称える・認める」。",
+     d:["recognize（動詞）称える・認識する：recognize someone for ～「功績を称える」→正解",
+        "realize（動詞）気づく・実現する：例) realize a mistake（誤りに気づく）",
+        "remind（動詞）思い出させる：remind 人 of ～",
+        "require（動詞）必要とする：require something"]},
+    {q:"The manager will ____ the new procedures at the meeting.",c:["introduce","include","increase","indicate"],a:0,cat:"語彙",
+     e:"introduce「（新手順を）導入・紹介する」。",
+     d:["introduce（動詞）導入する・紹介する：introduce procedures →正解",
+        "include（動詞）含む：例) include tax（税を含む）",
+        "increase（動詞）増やす：例) increase sales（売上を増やす）",
+        "indicate（動詞）示す：例) indicate a trend（傾向を示す）"]},
+    {q:"Customer satisfaction is our top ____.",c:["priority","property","probability","productivity"],a:0,cat:"語彙",
+     e:"top priority「最優先事項」。",
+     d:["priority（名詞）優先事項：top priority「最優先」→正解",
+        "property（名詞）財産・特性：例) intellectual property（知的財産）",
+        "probability（名詞）確率：例) high probability（高い確率）",
+        "productivity（名詞）生産性：例) boost productivity（生産性を高める）"]},
+    {q:"The contract will ____ at the end of the year.",c:["expire","export","expose","expand"],a:0,cat:"語彙",
+     e:"expire「（契約・期限が）切れる」。",
+     d:["expire（動詞）期限が切れる：The contract expires. →正解",
+        "export（動詞）輸出する：例) export cars（車を輸出する）",
+        "expose（動詞）さらす・暴露する：expose to ～",
+        "expand（動詞）拡大する：意味が違う"]},
+    {q:"The company is ____ for its excellent customer service.",c:["known","knowing","knowledge","knew"],a:0,cat:"語彙",
+     e:"be known for ～「～で知られている」。",
+     d:["known（過去分詞）：be known for ～「～で有名」。→正解",
+        "knowing（現在分詞）：be known の受動が正しい",
+        "knowledge（名詞）知識：be動詞の後に名詞では意味をなさない",
+        "knew（過去形）：受動態 be known が必要"]}
+  ]},
+  { items:[
+    {q:"The manager decided to ____ the meeting until next week.",c:["postpone","propose","promote","provide"],a:0,cat:"語彙",
+     e:"postpone「延期する」。postpone ... until ～。",
+     d:["postpone（動詞）延期する：postpone until next week →正解",
+        "propose（動詞）提案する：例) propose a plan（計画を提案する）",
+        "promote（動詞）促進・昇進させる：例) promote sales（販売を促進する）",
+        "provide（動詞）提供する：provide A with B"]},
+    {q:"We need to ____ our marketing strategy to attract more customers.",c:["revise","refuse","remove","recall"],a:0,cat:"語彙",
+     e:"revise「（戦略を）見直す・修正する」。",
+     d:["revise（動詞）見直す：revise a strategy →正解",
+        "refuse（動詞）拒否する：例) refuse an offer（申し出を断る）",
+        "remove（動詞）取り除く：例) remove an obstacle（障害を取り除く）",
+        "recall（動詞）回収する・思い出す：例) recall products（製品を回収する）"]},
+    {q:"The company offers competitive ____ to attract skilled workers.",c:["benefits","belongings","beliefs","behaviors"],a:0,cat:"語彙",
+     e:"benefits「（給与以外の）福利厚生・手当」。",
+     d:["benefits（名詞）福利厚生：competitive benefits「好待遇の手当」→正解",
+        "belongings（名詞）持ち物：例) personal belongings（私物）",
+        "beliefs（名詞）信念：例) religious beliefs（宗教的信念）",
+        "behaviors（名詞）行動：例) consumer behaviors（消費者行動）"]},
+    {q:"All staff must ____ to the new dress code.",c:["adhere","attend","attach","admit"],a:0,cat:"語彙",
+     e:"adhere to ～「（規則）を守る・順守する」。",
+     d:["adhere（動詞）順守する・付着する：adhere to rules →正解",
+        "attend（動詞）出席する：attend a meeting",
+        "attach（動詞）添付する：attach a file",
+        "admit（動詞）認める・入場を許す：admit a mistake"]},
+    {q:"The shipment was ____ due to bad weather.",c:["delayed","delivered","declined","declared"],a:0,cat:"語彙",
+     e:"delay「遅らせる」。was delayed「遅れた」。",
+     d:["delayed（動詞・過去分詞）遅らせる：was delayed「遅延した」→正解",
+        "delivered（動詞）配達する：意味が逆（届いた）",
+        "declined（動詞）断る・減少する：例) decline an invitation（招待を断る）",
+        "declared（動詞）宣言する・申告する：例) declare goods（物品を申告する）"]},
+    {q:"Please ____ your receipt in case you need a refund.",c:["retain","remain","refrain","retire"],a:0,cat:"語彙",
+     e:"retain「（領収書を）保管しておく」。",
+     d:["retain（動詞）保持する：retain the receipt →正解",
+        "remain（動詞）とどまる・残る：自動詞で目的語を取らない",
+        "refrain（動詞）控える：refrain from ～",
+        "retire（動詞）退職する：例) retire at 65（65歳で退職する）"]},
+    {q:"The new system will ____ productivity significantly.",c:["boost","burst","borrow","bother"],a:0,cat:"語彙",
+     e:"boost「（生産性を）押し上げる・高める」。",
+     d:["boost（動詞）高める：boost productivity →正解",
+        "burst（動詞）破裂する：例) The pipe burst.（管が破裂した）",
+        "borrow（動詞）借りる：borrow money",
+        "bother（動詞）悩ます：例) Don't bother him.（彼を煩わせるな）"]},
+    {q:"The two companies decided to ____ their resources.",c:["combine","confine","confirm","confront"],a:0,cat:"語彙",
+     e:"combine「（資源を）結合する・合わせる」。",
+     d:["combine（動詞）結合する：combine resources →正解",
+        "confine（動詞）閉じ込める・限定する：confine to ～",
+        "confirm（動詞）確認する：confirm a reservation",
+        "confront（動詞）直面する・対決する：confront a problem"]},
+    {q:"Customers can ____ their orders online.",c:["track","trade","treat","trap"],a:0,cat:"語彙",
+     e:"track「（注文を）追跡する」。",
+     d:["track（動詞）追跡する：track an order「注文状況を追う」→正解",
+        "trade（動詞）取引する：trade stocks（株を取引する）",
+        "treat（動詞）扱う・治療する：treat patients",
+        "trap（動詞）閉じ込める：trap heat（熱を閉じ込める）"]},
+    {q:"The report ____ several areas for improvement.",c:["identifies","imagines","imitates","implies"],a:0,cat:"語彙",
+     e:"identify「（改善点を）特定する・指摘する」。",
+     d:["identifies（動詞）特定する：identify areas for improvement →正解",
+        "imagines（動詞）想像する：例) imagine a future（未来を想像する）",
+        "imitates（動詞）まねる：例) imitate a style（様式をまねる）",
+        "implies（動詞）ほのめかす：直接「指摘」より弱く文意に合わない"]}
+  ]},
+  { items:[
+    {q:"The manager will ____ the candidates next week.",c:["interview","interrupt","interfere","interact"],a:0,cat:"語彙",
+     e:"interview「（候補者を）面接する」。",
+     d:["interview（動詞）面接する：interview candidates →正解",
+        "interrupt（動詞）中断する：interrupt a speech（話を遮る）",
+        "interfere（動詞）干渉する：interfere with ～",
+        "interact（動詞）交流する：interact with ～"]},
+    {q:"Our goal is to ____ customer satisfaction.",c:["enhance","enclose","endure","enroll"],a:0,cat:"語彙",
+     e:"enhance「（満足度を）高める・向上させる」。",
+     d:["enhance（動詞）高める：enhance satisfaction →正解",
+        "enclose（動詞）同封する：enclose a document",
+        "endure（動詞）耐える：endure hardship（苦難に耐える）",
+        "enroll（動詞）登録・入学する：enroll in a course"]},
+    {q:"The company plans to ____ a new product line next spring.",c:["launch","lend","lean","leak"],a:0,cat:"語彙",
+     e:"launch「（新製品を）発売する・立ち上げる」。",
+     d:["launch（動詞）発売する：launch a product →正解",
+        "lend（動詞）貸す：lend money",
+        "lean（動詞）もたれる・傾く：lean on ～",
+        "leak（動詞）漏れる：The roof leaks.（屋根が雨漏りする）"]},
+    {q:"Please ____ the form and return it by Friday.",c:["complete","compete","compose","compare"],a:0,cat:"語彙",
+     e:"complete「（書類に）記入する・完成させる」。",
+     d:["complete（動詞）記入する・完成させる：complete the form →正解",
+        "compete（動詞）競争する：compete with ～",
+        "compose（動詞）作る・構成する：compose music（作曲する）",
+        "compare（動詞）比較する：compare A with B"]},
+    {q:"The warranty does not ____ accidental damage.",c:["cover","carry","collect","connect"],a:0,cat:"語彙",
+     e:"cover「（保証が）対象に含む・カバーする」。",
+     d:["cover（動詞）対象とする：The warranty covers ～「保証が～を対象とする」→正解",
+        "carry（動詞）運ぶ・取り扱う：carry products（商品を扱う）",
+        "collect（動詞）集める：collect data",
+        "connect（動詞）つなぐ：connect to ～"]},
+    {q:"We must ____ the deadline to keep the client satisfied.",c:["meet","make","match","mark"],a:0,cat:"語彙",
+     e:"meet the deadline「締め切りを守る」。",
+     d:["meet（動詞）満たす・守る：meet the deadline →正解",
+        "make（動詞）作る：make a decision など。deadline とは meet が定型",
+        "match（動詞）一致させる：match A with B",
+        "mark（動詞）印をつける：mark a date"]},
+    {q:"The new manager hopes to ____ trust among the staff.",c:["build","bind","bend","bid"],a:0,cat:"語彙",
+     e:"build trust「信頼を築く」。",
+     d:["build（動詞）築く：build trust →正解",
+        "bind（動詞）縛る・束ねる：bind documents",
+        "bend（動詞）曲げる：bend a wire（針金を曲げる）",
+        "bid（動詞）入札する：bid for a contract"]},
+    {q:"The store will ____ a discount to loyal customers.",c:["offer","order","owe","own"],a:0,cat:"語彙",
+     e:"offer「（割引を）提供する」。",
+     d:["offer（動詞）提供する：offer a discount →正解",
+        "order（動詞）注文する・命じる：order supplies",
+        "owe（動詞）借りがある：owe money to ～",
+        "own（動詞）所有する：own a house"]},
+    {q:"The committee will ____ the proposal at the next meeting.",c:["consider","consist","construct","consume"],a:0,cat:"語彙",
+     e:"consider「（提案を）検討する」。",
+     d:["consider（動詞）検討する：consider a proposal →正解",
+        "consist（動詞）成る：consist of ～（～から成る）",
+        "construct（動詞）建設する：construct a building",
+        "consume（動詞）消費する：consume energy"]},
+    {q:"Sales figures ____ a steady increase over the past year.",c:["indicate","include","invent","invest"],a:0,cat:"語彙",
+     e:"indicate「（数字が増加を）示す」。",
+     d:["indicate（動詞）示す：figures indicate an increase →正解",
+        "include（動詞）含む：include tax",
+        "invent（動詞）発明する：invent a device",
+        "invest（動詞）投資する：invest in ～"]}
+  ]}
+]}
+];
+
+
+/* =========================================================
+   単語・熟語データ（英語→意味の4択。選択肢は同レベルから自動生成）
+   {w:英語, m:意味}
+   ========================================================= */
+const WORDS = {
+l400:[
+{w:"accept",m:"〜を受け入れる"},{w:"account",m:"口座、説明"},{w:"add",m:"〜を加える"},{w:"advice",m:"助言"},{w:"afford",m:"〜する余裕がある"},{w:"agree",m:"同意する"},
+{w:"allow",m:"〜を許す"},{w:"amount",m:"量、総額"},{w:"answer",m:"答える、答え"},{w:"apply",m:"申し込む、応用する"},{w:"appointment",m:"（面会の）約束、予約"},{w:"area",m:"地域、面積"},
+{w:"arrive",m:"到着する"},{w:"available",m:"利用できる、入手できる"},{w:"avoid",m:"〜を避ける"},{w:"baggage",m:"手荷物"},{w:"benefit",m:"利益、手当"},{w:"bill",m:"請求書、紙幣"},
+{w:"book",m:"〜を予約する"},{w:"borrow",m:"〜を借りる"},{w:"branch",m:"支店、枝"},{w:"break",m:"休憩、〜を壊す"},{w:"brief",m:"簡潔な"},{w:"budget",m:"予算"},
+{w:"busy",m:"忙しい"},{w:"buy",m:"〜を買う"},{w:"cancel",m:"〜を取り消す"},{w:"careful",m:"注意深い"},{w:"carry",m:"〜を運ぶ"},{w:"cash",m:"現金"},
+{w:"cause",m:"原因、〜を引き起こす"},{w:"charge",m:"料金、〜を請求する"},{w:"cheap",m:"安い"},{w:"choose",m:"〜を選ぶ"},{w:"clean",m:"清潔な、〜を掃除する"},{w:"clear",m:"明確な"},
+{w:"client",m:"顧客"},{w:"close",m:"〜を閉じる、近い"},{w:"collect",m:"〜を集める"},{w:"company",m:"会社"},{w:"compare",m:"〜を比較する"},{w:"complain",m:"不満を言う"},
+{w:"complete",m:"〜を完成させる、完全な"},{w:"confirm",m:"〜を確認する"},{w:"connect",m:"〜をつなぐ"},{w:"contact",m:"〜に連絡する、連絡先"},{w:"contain",m:"〜を含む"},{w:"continue",m:"続ける"},
+{w:"contract",m:"契約"},{w:"cost",m:"費用、〜の費用がかかる"},{w:"count",m:"〜を数える"},{w:"cover",m:"〜を覆う、扱う"},{w:"customer",m:"顧客"},{w:"deal",m:"取引、扱う"},
+{w:"decide",m:"〜を決める"},{w:"deliver",m:"〜を配達する"},{w:"department",m:"部署、売り場"},{w:"depend",m:"頼る、次第である"},{w:"describe",m:"〜を描写する"},{w:"design",m:"〜を設計する、デザイン"},
+{w:"develop",m:"〜を開発する"},{w:"discount",m:"割引"},{w:"discuss",m:"〜を話し合う"},{w:"drive",m:"〜を運転する"},{w:"early",m:"早い、早く"},{w:"earn",m:"〜を稼ぐ"},
+{w:"easy",m:"簡単な"},{w:"employee",m:"従業員"},{w:"empty",m:"空の"},{w:"enough",m:"十分な"},{w:"enter",m:"〜に入る"},{w:"equipment",m:"機器、設備"},
+{w:"exchange",m:"〜を交換する"},{w:"expensive",m:"高価な"},{w:"experience",m:"経験"},{w:"explain",m:"〜を説明する"},{w:"factory",m:"工場"},{w:"fee",m:"料金"},
+{w:"fill",m:"〜を満たす"},{w:"finish",m:"〜を終える"},{w:"fix",m:"〜を修理する、固定する"},{w:"flight",m:"便、飛行"},{w:"follow",m:"〜について行く、従う"},{w:"foreign",m:"外国の"},
+{w:"free",m:"無料の、自由な"},{w:"goods",m:"商品"},{w:"guest",m:"客"},{w:"hire",m:"〜を雇う"},{w:"hold",m:"〜を持つ、開催する"},{w:"improve",m:"〜を改善する"},
+{w:"include",m:"〜を含む"},{w:"increase",m:"増える、〜を増やす"},{w:"industry",m:"産業"},{w:"inform",m:"〜に知らせる"},{w:"invite",m:"〜を招待する"},{w:"item",m:"品目、項目"},
+{w:"join",m:"〜に参加する"},{w:"keep",m:"〜を保つ"},{w:"knowledge",m:"知識"},{w:"large",m:"大きい"},{w:"late",m:"遅い、遅れた"},{w:"lead",m:"〜を導く"},
+{w:"learn",m:"〜を学ぶ"},{w:"leave",m:"〜を去る、置いていく"},{w:"lend",m:"〜を貸す"},{w:"local",m:"地元の"},{w:"locate",m:"〜の位置を定める"},{w:"machine",m:"機械"},
+{w:"mail",m:"郵便、〜を郵送する"},{w:"manage",m:"〜を管理する、何とかやる"},{w:"manager",m:"管理者、部長"},{w:"market",m:"市場"},{w:"meeting",m:"会議"},{w:"member",m:"会員、一員"},
+{w:"mention",m:"〜に言及する"},{w:"modern",m:"現代の"},{w:"move",m:"動く、引っ越す"},{w:"narrow",m:"狭い"},{w:"need",m:"〜を必要とする"},{w:"notice",m:"〜に気づく、通知"},
+{w:"offer",m:"〜を申し出る、提供する"},{w:"office",m:"事務所"},{w:"order",m:"〜を注文する、命じる"},{w:"owner",m:"所有者"},{w:"package",m:"小包、パッケージ"},{w:"pay",m:"〜を支払う"},
+{w:"period",m:"期間"},{w:"permit",m:"〜を許可する"},{w:"plan",m:"計画、〜を計画する"},{w:"popular",m:"人気のある"},{w:"prepare",m:"〜を準備する"},{w:"price",m:"価格"},
+{w:"product",m:"製品"},{w:"profit",m:"利益"},{w:"provide",m:"〜を提供する"},{w:"purchase",m:"〜を購入する、購入"},{w:"quality",m:"品質"},{w:"quantity",m:"量"},
+{w:"quick",m:"速い"},{w:"raise",m:"〜を上げる、育てる"},{w:"reach",m:"〜に到達する、連絡する"},{w:"receive",m:"〜を受け取る"},{w:"recommend",m:"〜を勧める"},{w:"reduce",m:"〜を減らす"},
+{w:"refund",m:"払い戻し"},{w:"region",m:"地域"},{w:"remind",m:"〜に思い出させる"},{w:"rent",m:"〜を賃借りする、家賃"},{w:"repair",m:"〜を修理する"},{w:"replace",m:"〜を取り替える"},
+{w:"reply",m:"返事する"},{w:"report",m:"報告、〜を報告する"},{w:"request",m:"要求、〜を要求する"},{w:"require",m:"〜を必要とする"},{w:"reserve",m:"〜を予約する"},{w:"return",m:"戻る、〜を返す"},
+{w:"rise",m:"上がる、上昇"},{w:"salary",m:"給料"},{w:"sample",m:"見本"},{w:"save",m:"〜を節約する、救う"},{w:"schedule",m:"予定、〜を予定する"},{w:"sell",m:"〜を売る"},
+{w:"send",m:"〜を送る"},{w:"service",m:"サービス"},{w:"share",m:"〜を共有する、株"},{w:"ship",m:"〜を発送する、船"},{w:"sign",m:"署名する、看板"},{w:"simple",m:"簡単な"},
+{w:"skill",m:"技能"},{w:"spend",m:"〜を費やす"},{w:"staff",m:"職員"},{w:"store",m:"店、〜を蓄える"},{w:"suggest",m:"〜を提案する"},{w:"supply",m:"〜を供給する、供給"},
+{w:"support",m:"〜を支援する"},{w:"task",m:"仕事、課題"},{w:"tax",m:"税金"},{w:"total",m:"合計、全体の"},{w:"travel",m:"旅行する"},{w:"trip",m:"旅行"},
+{w:"useful",m:"役に立つ"},{w:"value",m:"価値"},{w:"visit",m:"〜を訪れる"},{w:"wage",m:"賃金"},{w:"wide",m:"広い"},{w:"worth",m:"〜の価値がある"}
+],
+l500:[
+{w:"accomplish",m:"〜を成し遂げる"},{w:"accurate",m:"正確な"},{w:"acquire",m:"〜を獲得する"},{w:"adequate",m:"十分な、適切な"},{w:"adjust",m:"〜を調整する"},{w:"administration",m:"管理、運営"},
+{w:"agenda",m:"議題"},{w:"allowance",m:"手当、許容量"},{w:"analyze",m:"〜を分析する"},{w:"announce",m:"〜を発表する"},{w:"annual",m:"年次の、毎年の"},{w:"anticipate",m:"〜を予期する"},
+{w:"applicant",m:"応募者"},{w:"appoint",m:"〜を任命する"},{w:"appreciate",m:"〜を感謝する、評価する"},{w:"appropriate",m:"適切な"},{w:"approve",m:"〜を承認する"},{w:"arrange",m:"〜を手配する、整える"},
+{w:"assemble",m:"〜を組み立てる、集める"},{w:"assess",m:"〜を評価する"},{w:"asset",m:"資産"},{w:"assign",m:"〜を割り当てる"},{w:"assist",m:"〜を手伝う"},{w:"associate",m:"同僚、関連づける"},
+{w:"assume",m:"〜を想定する"},{w:"assure",m:"〜を保証する"},{w:"attach",m:"〜を添付する"},{w:"attempt",m:"〜を試みる、試み"},{w:"attend",m:"〜に出席する"},{w:"attitude",m:"態度"},
+{w:"attract",m:"〜を引きつける"},{w:"audience",m:"聴衆、観客"},{w:"authority",m:"権限、当局"},{w:"average",m:"平均、平均の"},{w:"aware",m:"気づいている"},{w:"balance",m:"残高、均衡"},
+{w:"behavior",m:"行動"},{w:"beneficial",m:"有益な"},{w:"board",m:"役員会、板"},{w:"brochure",m:"パンフレット"},{w:"calculate",m:"〜を計算する"},{w:"candidate",m:"候補者"},
+{w:"capacity",m:"容量、能力"},{w:"certificate",m:"証明書"},{w:"challenge",m:"課題、〜に挑む"},{w:"circumstance",m:"状況、事情"},{w:"claim",m:"〜を主張する、請求"},{w:"colleague",m:"同僚"},
+{w:"commercial",m:"商業の、コマーシャル"},{w:"commission",m:"手数料、委員会"},{w:"commit",m:"〜を約束する、専念する"},{w:"committee",m:"委員会"},{w:"compete",m:"競争する"},{w:"complex",m:"複雑な、複合施設"},
+{w:"comply",m:"従う"},{w:"component",m:"構成要素、部品"},{w:"concern",m:"心配、関心"},{w:"conduct",m:"〜を行う"},{w:"conference",m:"会議"},{w:"confident",m:"自信がある"},
+{w:"consider",m:"〜を検討する"},{w:"consist",m:"〜から成る"},{w:"consult",m:"〜に相談する"},{w:"consume",m:"〜を消費する"},{w:"contribute",m:"貢献する、寄付する"},{w:"convenient",m:"便利な"},
+{w:"convince",m:"〜を納得させる"},{w:"cooperate",m:"協力する"},{w:"corporate",m:"法人の、企業の"},{w:"criticize",m:"〜を批判する"},{w:"currency",m:"通貨"},{w:"current",m:"現在の、流れ"},
+{w:"deadline",m:"締め切り"},{w:"debt",m:"借金"},{w:"decline",m:"断る、減少する"},{w:"decrease",m:"減少する"},{w:"dedicate",m:"〜を捧げる"},{w:"definite",m:"明確な"},
+{w:"delay",m:"〜を遅らせる、遅延"},{w:"delegate",m:"〜を委任する、代表者"},{w:"demand",m:"需要、〜を要求する"},{w:"demonstrate",m:"〜を実演する、示す"},{w:"deny",m:"〜を否定する"},{w:"depart",m:"出発する"},
+{w:"deposit",m:"預金、手付金"},{w:"determine",m:"〜を決定する"},{w:"device",m:"装置"},{w:"distribute",m:"〜を分配する"},{w:"document",m:"書類"},{w:"domestic",m:"国内の、家庭の"},
+{w:"donate",m:"〜を寄付する"},{w:"draft",m:"草稿、下書き"},{w:"due",m:"締め切りの、予定の"},{w:"efficient",m:"効率的な"},{w:"eliminate",m:"〜を排除する"},{w:"emphasize",m:"〜を強調する"},
+{w:"enable",m:"〜を可能にする"},{w:"encourage",m:"〜を励ます、促す"},{w:"enhance",m:"〜を高める"},{w:"ensure",m:"〜を確実にする"},{w:"entire",m:"全体の"},{w:"entitle",m:"〜に権利を与える"},
+{w:"environment",m:"環境"},{w:"essential",m:"必須の"},{w:"establish",m:"〜を設立する"},{w:"estimate",m:"〜を見積もる、見積もり"},{w:"evaluate",m:"〜を評価する"},{w:"eventually",m:"最終的に"},
+{w:"evidence",m:"証拠"},{w:"examine",m:"〜を調べる"},{w:"exceed",m:"〜を超える"},{w:"executive",m:"重役、幹部"},{w:"exhibit",m:"〜を展示する、展示"},{w:"expand",m:"〜を拡大する"},
+{w:"expense",m:"経費"},{w:"expertise",m:"専門知識"},{w:"expire",m:"期限が切れる"},{w:"explore",m:"〜を探検する、調べる"},{w:"export",m:"〜を輸出する"},{w:"extend",m:"〜を延長する"},
+{w:"facility",m:"施設"},{w:"feature",m:"特徴、〜を特集する"},{w:"figure",m:"数字、人物"},{w:"finance",m:"財政、〜に融資する"},{w:"flexible",m:"柔軟な"},{w:"forecast",m:"予報、予測"},
+{w:"frequent",m:"頻繁な"},{w:"function",m:"機能、機能する"},{w:"fund",m:"資金"},{w:"gather",m:"〜を集める、集まる"},{w:"generate",m:"〜を生み出す"},{w:"guarantee",m:"〜を保証する、保証"},
+{w:"handle",m:"〜を扱う"},{w:"headquarters",m:"本社"},{w:"identify",m:"〜を特定する"},{w:"implement",m:"〜を実行する"},{w:"imply",m:"〜をほのめかす"},{w:"import",m:"〜を輸入する"},
+{w:"income",m:"収入"},{w:"indicate",m:"〜を示す"},{w:"influence",m:"影響、〜に影響する"},{w:"inquiry",m:"問い合わせ"},{w:"inspect",m:"〜を検査する"},{w:"install",m:"〜を設置する"},
+{w:"instruct",m:"〜に指示する"},{w:"insurance",m:"保険"},{w:"intend",m:"〜を意図する"},{w:"invest",m:"〜を投資する"},{w:"involve",m:"〜を含む、関与させる"},{w:"issue",m:"問題、〜を発行する"},
+{w:"labor",m:"労働"},{w:"launch",m:"〜を開始する、発売"},{w:"maintain",m:"〜を維持する"},{w:"manufacture",m:"〜を製造する"},{w:"material",m:"材料、資料"},{w:"measure",m:"〜を測る、対策"},
+{w:"negotiate",m:"〜を交渉する"},{w:"obtain",m:"〜を得る"},{w:"occupy",m:"〜を占める"},{w:"operate",m:"〜を操作する、運営する"},{w:"opportunity",m:"機会"},{w:"participate",m:"参加する"},
+{w:"particular",m:"特定の"},{w:"perform",m:"〜を行う、演じる"},{w:"permanent",m:"永続的な"},{w:"policy",m:"方針、政策"},{w:"postpone",m:"〜を延期する"},{w:"potential",m:"潜在的な、可能性"},
+{w:"prefer",m:"〜を好む"},{w:"prevent",m:"〜を防ぐ"},{w:"previous",m:"以前の"},{w:"procedure",m:"手順"},{w:"process",m:"過程、〜を処理する"},{w:"promote",m:"〜を促進する、昇進させる"},
+{w:"propose",m:"〜を提案する"},{w:"publish",m:"〜を出版する"},{w:"recent",m:"最近の"},{w:"recognize",m:"〜を認識する"},{w:"recruit",m:"〜を採用する"},{w:"refer",m:"〜を参照する、言及する"},
+{w:"reflect",m:"〜を反映する"},{w:"register",m:"〜を登録する"},{w:"regulation",m:"規則"},{w:"reject",m:"〜を拒否する"},{w:"release",m:"〜を発表する、解放する"},{w:"relevant",m:"関連のある"},
+{w:"rely",m:"頼る"},{w:"remove",m:"〜を取り除く"},{w:"represent",m:"〜を代表する、表す"},{w:"reputation",m:"評判"},{w:"respond",m:"反応する、答える"},{w:"responsible",m:"責任がある"},
+{w:"restore",m:"〜を回復する"},{w:"retail",m:"小売"},{w:"reveal",m:"〜を明らかにする"},{w:"revenue",m:"収益"},{w:"review",m:"〜を見直す、批評"},{w:"revise",m:"〜を修正する"},
+{w:"satisfy",m:"〜を満足させる"},{w:"secure",m:"〜を確保する、安全な"},{w:"select",m:"〜を選ぶ"},{w:"significant",m:"重要な"},{w:"similar",m:"似ている"},{w:"solution",m:"解決策"},
+{w:"specific",m:"特定の"},{w:"standard",m:"基準、標準の"},{w:"strategy",m:"戦略"},{w:"submit",m:"〜を提出する"},{w:"substitute",m:"〜を代用する、代理"},{w:"sufficient",m:"十分な"},
+{w:"survey",m:"調査"},{w:"temporary",m:"一時的な"},{w:"tend",m:"〜の傾向がある"},{w:"transfer",m:"〜を移す、転勤"},{w:"transport",m:"〜を輸送する"},{w:"typical",m:"典型的な"},
+{w:"update",m:"〜を更新する"},{w:"urgent",m:"緊急の"},{w:"various",m:"さまざまな"},{w:"vendor",m:"販売業者"},{w:"venue",m:"会場"},{w:"warranty",m:"保証（書）"}
+],
+l600:[
+{w:"abundant",m:"豊富な"},{w:"accommodate",m:"〜を収容する、適応させる"},{w:"accumulate",m:"〜を蓄積する"},{w:"acknowledge",m:"〜を認める"},{w:"advocate",m:"〜を擁護する、支持者"},{w:"aggregate",m:"総計、集める"},
+{w:"allocate",m:"〜を割り当てる"},{w:"ambiguous",m:"曖昧な"},{w:"amend",m:"〜を修正する"},{w:"anonymous",m:"匿名の"},{w:"apparent",m:"明白な、見かけの"},{w:"appraisal",m:"評価、査定"},
+{w:"ascertain",m:"〜を確かめる"},{w:"aspire",m:"切望する"},{w:"assert",m:"〜を主張する"},{w:"attain",m:"〜を達成する"},{w:"attribute",m:"〜を…に帰する、特性"},{w:"audit",m:"会計監査、〜を監査する"},
+{w:"authentic",m:"本物の"},{w:"autonomy",m:"自治、自律"},{w:"beneficiary",m:"受益者"},{w:"bureaucracy",m:"官僚制"},{w:"candid",m:"率直な"},{w:"capitalize",m:"〜を活用する、資本化する"},
+{w:"cease",m:"〜をやめる、終わる"},{w:"coherent",m:"首尾一貫した"},{w:"coincide",m:"同時に起こる、一致する"},{w:"collaborate",m:"共同で行う"},{w:"commence",m:"〜を開始する"},{w:"commodity",m:"商品、日用品"},
+{w:"compensate",m:"〜を補償する"},{w:"compile",m:"〜を編集する、まとめる"},{w:"comprehensive",m:"包括的な"},{w:"comprise",m:"〜から成る"},{w:"conceive",m:"〜を思いつく、考える"},{w:"concession",m:"譲歩、特権"},
+{w:"confidential",m:"機密の"},{w:"conform",m:"従う、一致する"},{w:"consecutive",m:"連続した"},{w:"consensus",m:"総意、合意"},{w:"consequence",m:"結果"},{w:"conserve",m:"〜を節約する、保護する"},
+{w:"considerable",m:"かなりの"},{w:"consolidate",m:"〜を統合する、強化する"},{w:"constitute",m:"〜を構成する"},{w:"contemplate",m:"〜を熟考する"},{w:"contingency",m:"不測の事態"},{w:"controversial",m:"物議をかもす"},
+{w:"convey",m:"〜を伝える、運ぶ"},{w:"correspond",m:"一致する、文通する"},{w:"credible",m:"信頼できる"},{w:"criterion",m:"基準"},{w:"crucial",m:"極めて重要な"},{w:"cumulative",m:"累積的な"},
+{w:"curtail",m:"〜を縮小する"},{w:"deduct",m:"〜を差し引く"},{w:"deficiency",m:"不足、欠陥"},{w:"deliberate",m:"故意の、慎重な"},{w:"depict",m:"〜を描写する"},{w:"deploy",m:"〜を配置する、展開する"},
+{w:"deprive",m:"〜から奪う"},{w:"designate",m:"〜を指定する、任命する"},{w:"deteriorate",m:"悪化する"},{w:"devise",m:"〜を考案する"},{w:"diminish",m:"〜を減らす、減少する"},{w:"discrepancy",m:"不一致、食い違い"},
+{w:"disclose",m:"〜を公開する"},{w:"discretion",m:"裁量、思慮"},{w:"disseminate",m:"〜を広める"},{w:"distinct",m:"明確に異なる"},{w:"diverse",m:"多様な"},{w:"dividend",m:"配当金"},
+{w:"dominant",m:"支配的な、優勢な"},{w:"durable",m:"耐久性のある"},{w:"elaborate",m:"入念な、〜を詳しく述べる"},{w:"eligible",m:"資格のある"},{w:"embark",m:"乗り出す、着手する"},{w:"eminent",m:"著名な"},
+{w:"endorse",m:"〜を支持する、裏書きする"},{w:"endeavor",m:"努力、〜しようと努める"},{w:"enforce",m:"〜を施行する"},{w:"enterprise",m:"企業、事業"},{w:"equivalent",m:"同等の、相当物"},{w:"eradicate",m:"〜を根絶する"},
+{w:"escalate",m:"段階的に拡大する"},{w:"exempt",m:"〜を免除する、免除された"},{w:"exert",m:"〜を行使する、注ぐ"},{w:"exhaustive",m:"徹底的な"},{w:"expedite",m:"〜を促進する、早める"},{w:"expenditure",m:"支出"},
+{w:"explicit",m:"明確な、明示的な"},{w:"exploit",m:"〜を活用する、搾取する"},{w:"extensive",m:"広範囲な"},{w:"feasible",m:"実行可能な"},{w:"fiscal",m:"財政の、会計の"},{w:"fluctuate",m:"変動する"},
+{w:"formulate",m:"〜を策定する"},{w:"foster",m:"〜を育成する、促進する"},{w:"fundamental",m:"基本的な"},{w:"hinder",m:"〜を妨げる"},{w:"implication",m:"影響、含意"},{w:"incentive",m:"動機、奨励金"},
+{w:"incur",m:"〜を被る、負う"},{w:"indispensable",m:"不可欠な"},{w:"inevitable",m:"避けられない"},{w:"initiate",m:"〜を始める"},{w:"innovative",m:"革新的な"},{w:"integrate",m:"〜を統合する"},
+{w:"integrity",m:"誠実さ、完全性"},{w:"intricate",m:"複雑な、入り組んだ"},{w:"jeopardize",m:"〜を危険にさらす"},{w:"legislation",m:"法律、立法"},{w:"leverage",m:"影響力、〜を活用する"},{w:"liability",m:"責任、負債"},
+{w:"liaison",m:"連携、橋渡し"},{w:"mandatory",m:"義務的な"},{w:"mediate",m:"〜を仲介する"},{w:"meticulous",m:"細心の"},{w:"mitigate",m:"〜を緩和する"},{w:"momentum",m:"勢い、はずみ"},
+{w:"negligible",m:"無視できるほどの"},{w:"nominate",m:"〜を指名する"},{w:"notable",m:"注目すべき"},{w:"obsolete",m:"時代遅れの"},{w:"optimal",m:"最適な"},{w:"outsource",m:"〜を外注する"},
+{w:"oversee",m:"〜を監督する"},{w:"paramount",m:"最も重要な"},{w:"penalize",m:"〜に罰を科す"},{w:"perceive",m:"〜を知覚する、理解する"},{w:"persistent",m:"粘り強い、持続的な"},{w:"plausible",m:"もっともらしい"},
+{w:"preliminary",m:"予備の"},{w:"prerequisite",m:"前提条件"},{w:"prevalent",m:"普及している"},{w:"proficient",m:"熟達した"},{w:"prominent",m:"著名な、目立つ"},{w:"prudent",m:"慎重な、賢明な"},
+{w:"ratify",m:"〜を批准する"},{w:"reciprocal",m:"相互の"},{w:"reconcile",m:"〜を調和させる、和解させる"},{w:"redundant",m:"余分な、冗長な"},{w:"reimburse",m:"〜を払い戻す"},{w:"reinforce",m:"〜を強化する"},
+{w:"reluctant",m:"気が進まない"},{w:"remarkable",m:"注目に値する"},{w:"remittance",m:"送金"},{w:"render",m:"〜を…にする、提供する"},{w:"reputable",m:"評判の良い"},{w:"resilient",m:"回復力のある"},
+{w:"retain",m:"〜を保持する"},{w:"retrieve",m:"〜を回収する、取り戻す"},{w:"rigorous",m:"厳格な"},{w:"scrutiny",m:"精査"},{w:"solicit",m:"〜を懇願する、求める"},{w:"sophisticated",m:"洗練された、高度な"},
+{w:"stagnant",m:"停滞した"},{w:"streamline",m:"〜を合理化する"},{w:"subsequent",m:"その後の"},{w:"subsidiary",m:"子会社、補助の"},{w:"substantial",m:"かなりの"},{w:"surplus",m:"余剰"},
+{w:"sustain",m:"〜を維持する、支える"},{w:"tangible",m:"有形の、明白な"},{w:"tentative",m:"暫定的な"},{w:"terminate",m:"〜を終了させる"},{w:"threshold",m:"敷居、限界点"},{w:"transparent",m:"透明な、明白な"},
+{w:"turnover",m:"離職率、総売上高"},{w:"ultimate",m:"究極の、最終の"},{w:"unanimous",m:"全会一致の"},{w:"undergo",m:"〜を経験する、受ける"},{w:"unprecedented",m:"前例のない"},{w:"versatile",m:"多用途の、多才な"},
+{w:"viable",m:"実行可能な"},{w:"vigorous",m:"精力的な"},{w:"withstand",m:"〜に耐える"},{w:"yield",m:"〜を生む、屈する"}
+]
+};
+
+const IDIOMS = {
+l400:[
+{w:"a lot of",m:"たくさんの"},{w:"according to",m:"〜によれば"},{w:"ahead of",m:"〜より前に"},{w:"as well as",m:"〜と同様に"},{w:"at least",m:"少なくとも"},
+{w:"be able to",m:"〜できる"},{w:"be going to",m:"〜するつもりだ"},{w:"be over",m:"終わっている"},{w:"because of",m:"〜のために"},{w:"break down",m:"故障する"},
+{w:"bring up",m:"〜を育てる、持ち出す"},{w:"by the way",m:"ところで"},{w:"call back",m:"折り返し電話する"},{w:"carry out",m:"〜を実行する"},{w:"check in",m:"チェックインする"},
+{w:"check out",m:"精算して出る、調べる"},{w:"come back",m:"戻る"},{w:"come from",m:"〜出身である"},{w:"deal with",m:"〜に対処する"},{w:"depend on",m:"〜次第である"},
+{w:"fill in",m:"〜に記入する"},{w:"fill out",m:"〜に記入する"},{w:"find out",m:"〜を見つけ出す"},{w:"focus on",m:"〜に集中する"},{w:"get off",m:"降りる"},
+{w:"get on",m:"乗る"},{w:"get up",m:"起きる"},{w:"give up",m:"〜をあきらめる"},{w:"go on",m:"続ける"},{w:"in advance",m:"前もって"},
+{w:"in charge of",m:"〜を担当して"},{w:"in front of",m:"〜の前に"},{w:"in order to",m:"〜するために"},{w:"instead of",m:"〜の代わりに"},{w:"look for",m:"〜を探す"},
+{w:"look forward to",m:"〜を楽しみに待つ"},{w:"make sure",m:"〜を確認する"},{w:"on time",m:"時間通りに"},{w:"pick up",m:"〜を拾う、車で迎える"},{w:"plenty of",m:"たくさんの"},
+{w:"put off",m:"〜を延期する"},{w:"right away",m:"今すぐに"},{w:"set up",m:"〜を設置する、設立する"},{w:"sign up",m:"登録する、申し込む"},{w:"take care of",m:"〜の世話をする、対処する"},
+{w:"take off",m:"離陸する、脱ぐ"},{w:"thanks to",m:"〜のおかげで"},{w:"turn off",m:"〜を消す"},{w:"turn on",m:"〜をつける"},{w:"used to",m:"よく〜したものだ"}
+],
+l500:[
+{w:"a variety of",m:"さまざまな"},{w:"account for",m:"〜を説明する、占める"},{w:"adapt to",m:"〜に適応する"},{w:"add up to",m:"合計〜になる"},{w:"agree with",m:"〜に同意する"},
+{w:"apply for",m:"〜に応募する"},{w:"as a result",m:"結果として"},{w:"as long as",m:"〜する限り"},{w:"as soon as",m:"〜するとすぐに"},{w:"at the latest",m:"遅くとも"},
+{w:"be aware of",m:"〜に気づいている"},{w:"be based on",m:"〜に基づいている"},{w:"be responsible for",m:"〜に責任がある"},{w:"be supposed to",m:"〜することになっている"},{w:"be willing to",m:"進んで〜する"},
+{w:"benefit from",m:"〜から利益を得る"},{w:"bring about",m:"〜を引き起こす"},{w:"call off",m:"〜を中止する"},{w:"carry on",m:"〜を続ける"},{w:"come up with",m:"〜を思いつく"},
+{w:"comply with",m:"〜に従う"},{w:"concentrate on",m:"〜に集中する"},{w:"consist of",m:"〜から成る"},{w:"contribute to",m:"〜に貢献する"},{w:"cope with",m:"〜に対処する"},
+{w:"cut down on",m:"〜を減らす"},{w:"due to",m:"〜のために"},{w:"figure out",m:"〜を理解する、解決する"},{w:"get along with",m:"〜とうまくやる"},{w:"get rid of",m:"〜を取り除く"},
+{w:"hand in",m:"〜を提出する"},{w:"hand out",m:"〜を配る"},{w:"in addition to",m:"〜に加えて"},{w:"in spite of",m:"〜にもかかわらず"},{w:"in terms of",m:"〜の観点から"},
+{w:"keep up with",m:"〜に遅れずについていく"},{w:"look into",m:"〜を調査する"},{w:"make up for",m:"〜を埋め合わせる"},{w:"no longer",m:"もはや〜ない"},{w:"on behalf of",m:"〜を代表して"},
+{w:"participate in",m:"〜に参加する"},{w:"point out",m:"〜を指摘する"},{w:"prior to",m:"〜に先立って"},{w:"provide A with B",m:"AにBを供給する"},{w:"refer to",m:"〜を参照する、指す"},
+{w:"result in",m:"〜という結果になる"},{w:"rule out",m:"〜を除外する"},{w:"take advantage of",m:"〜を利用する"},{w:"take part in",m:"〜に参加する"},{w:"turn out",m:"〜だと判明する"}
+],
+l600:[
+{w:"abide by",m:"〜を順守する"},{w:"adhere to",m:"〜を順守する、固執する"},{w:"at one's disposal",m:"〜が自由に使える"},{w:"at stake",m:"危機に瀕して"},{w:"be entitled to",m:"〜の権利がある"},
+{w:"be subject to",m:"〜の対象となる、〜を受けやすい"},{w:"bear in mind",m:"〜を心に留める"},{w:"boil down to",m:"結局〜ということになる"},{w:"by no means",m:"決して〜ない"},{w:"capitalize on",m:"〜を活用する"},
+{w:"carry weight",m:"重要である、影響力がある"},{w:"cater to",m:"〜の要望に応える"},{w:"come into effect",m:"効力を生じる"},{w:"conform to",m:"〜に従う、一致する"},{w:"draw up",m:"〜を作成する"},
+{w:"fall behind",m:"〜に遅れる"},{w:"fall short of",m:"〜に達しない"},{w:"follow up",m:"〜を追跡調査する"},{w:"gear up for",m:"〜に備える"},{w:"give rise to",m:"〜を引き起こす"},
+{w:"go through",m:"〜を経験する、通過する"},{w:"hold accountable",m:"〜に責任を負わせる"},{w:"in accordance with",m:"〜に従って"},{w:"in compliance with",m:"〜に従って"},{w:"in lieu of",m:"〜の代わりに"},
+{w:"in light of",m:"〜を考慮して"},{w:"in the wake of",m:"〜の結果として、〜に続いて"},{w:"keep abreast of",m:"〜に遅れずついていく"},{w:"keep track of",m:"〜を把握しておく"},{w:"lay off",m:"〜を一時解雇する"},
+{w:"live up to",m:"〜に応える、沿う"},{w:"make headway",m:"進展する"},{w:"on the verge of",m:"〜の寸前で"},{w:"opt for",m:"〜を選ぶ"},{w:"pertain to",m:"〜に関係する"},
+{w:"phase out",m:"〜を段階的に廃止する"},{w:"put forward",m:"〜を提案する"},{w:"refrain from",m:"〜を控える"},{w:"resort to",m:"〜に頼る"},{w:"roll out",m:"〜を展開する、発売する"},
+{w:"run out of",m:"〜を使い果たす"},{w:"stand for",m:"〜を表す、支持する"},{w:"step down",m:"辞任する"},{w:"take into account",m:"〜を考慮に入れる"},{w:"take over",m:"〜を引き継ぐ"},
+{w:"take the initiative",m:"主導権を握る、率先する"},{w:"weigh in on",m:"〜について意見を述べる"},{w:"with regard to",m:"〜に関して"},{w:"work out",m:"〜を解決する、うまくいく"},{w:"wrap up",m:"〜を仕上げる、終える"}
+]
+};
+
+
+/* ===================== アプリ本体 ===================== */
+const $ = s => document.querySelector(s);
+const LETTERS = ["A","B","C","D"];
+let state = null;
+let timerInt = null;
+
+/* localStorage */
+function bestKey(id){ return "toeic_p5_best_"+id; }
+function getBest(id){ const v=localStorage.getItem(bestKey(id)); return v===null?null:parseInt(v,10); }
+function setBest(id,score){ const b=getBest(id); if(b===null||score>b) localStorage.setItem(bestKey(id),score); }
+const HIST_KEY="toeic_p5_history";
+function getHistory(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)||"[]"); }catch(e){ return []; } }
+function saveHistory(h){ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }
+function fmtDate(ms){ const d=new Date(ms), p=n=>String(n).padStart(2,"0"); return `${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; }
+function fmtSecs(s){ return `${Math.floor(s/60)}分${s%60}秒`; }
+
+function show(sec){ ["home","quiz","records","result","vocabMenu"].forEach(s=>$("#"+s).classList.toggle("hidden", s!==sec)); window.scrollTo(0,0); }
+
+/* ホーム */
+const GCOLORS=["#2f6db5","#1f9d7a","#e08a1e","#7b5ea7","#d65a7a"]; // ジャンル別の色
+function renderHome(){
+  const list=$("#setList"); list.innerHTML="";
+  GENRES.forEach((gen,gi)=>{
+    const col=GCOLORS[gi%GCOLORS.length];
+    const gh=document.createElement("div"); gh.className="genre-h";
+    gh.style.borderLeft="6px solid "+col; gh.style.paddingLeft="12px";
+    gh.innerHTML=`<span class="gname" style="color:${col}">${escapeHtml(gen.g)}</span><span class="gsub">${escapeHtml(gen.sub)}</span>`;
+    list.appendChild(gh);
+    gen.sets.forEach((set,si)=>{
+      const id=gi+"-"+si, best=getBest(id), title=gen.g+" "+(si+1)+"/"+gen.sets.length;
+      const b=document.createElement("button"); b.className="set-btn";
+      b.style.borderLeft="5px solid "+col;
+      b.innerHTML=`<span class="set-num" style="background:${col}1f; color:${col}">${si+1}</span>
+        <span class="set-meta"><span class="set-title">セット${si+1}</span>
+        <span class="set-sub">全${set.items.length}問</span></span>
+        <span class="badge ${best===null?'none':''}">${best===null?'未挑戦':'最高 '+best+'/'+set.items.length}</span>`;
+      b.onclick=()=>startSetQuiz(set.items, title, id);
+      list.appendChild(b);
+    });
+  });
+}
+function startSetQuiz(items,title,id){ startQuiz(items.slice(), title, ()=>startSetQuiz(items,title,id), id); }
+function startRandomQuiz(){ startQuiz(randomSet(), "ランダム10問", startRandomQuiz, null); }
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function randomSet(){ return shuffle(RANDOM_POOL.slice()).slice(0,10); }
+
+/* 単語・熟語 */
+function renderVocabMenu(){
+  const list=$("#vmList"); list.innerHTML="";
+  const groups=[
+    {label:"英単語", sub:"英単語の意味を4択で答える", type:"word", data:WORDS, color:"#2f7a34"},
+    {label:"英熟語", sub:"イディオムの意味を4択で答える", type:"idiom", data:IDIOMS, color:"#b06a2c"}
+  ];
+  const levels=["400","500","600"];
+  groups.forEach(g=>{
+    const col=g.color;
+    const gh=document.createElement("div"); gh.className="genre-h";
+    gh.style.borderLeft="6px solid "+col; gh.style.paddingLeft="12px";
+    gh.innerHTML=`<span class="gname" style="color:${col}">${g.label}</span><span class="gsub">${g.sub}</span>`;
+    list.appendChild(gh);
+    levels.forEach(lv=>{
+      const pool=g.data["l"+lv]||[];
+      const b=document.createElement("button"); b.className="set-btn";
+      b.style.borderLeft="5px solid "+col;
+      b.innerHTML=`<span class="set-num" style="background:${col}1f; color:${col}; font-size:.92rem;">${lv}</span>
+        <span class="set-meta"><span class="set-title">${lv}点レベル</span>
+        <span class="set-sub">全${pool.length}${g.type==='word'?'語':'熟語'}から出題</span></span>
+        <span class="badge none">▶ 開始</span>`;
+      b.onclick=()=>startVocab(lv, g.type);
+      list.appendChild(b);
+    });
+  });
+}
+function makeVocabItem(entry, pool, cat){
+  const others=shuffle(pool.filter(x=>x.m!==entry.m));
+  const ds=[]; const seen=new Set([entry.m]);
+  for(const o of others){ if(ds.length>=3) break; if(!seen.has(o.m)){ ds.push(o); seen.add(o.m); } }
+  const all=shuffle([entry, ...ds]);          // 各選択肢の出題元（英語＋意味）を保持
+  const choices=all.map(x=>x.m);
+  const d=all.map(x=>x.w);                     // d[i] = 選択肢iの意味に対応する英単語
+  return {q:entry.w, c:choices, a:all.indexOf(entry), cat, e:`${entry.w} ＝ ${entry.m}`, voc:true, d};
+}
+function startVocab(level, type){
+  const data=(type==='word'?WORDS:IDIOMS)["l"+level];
+  const cat=(type==='word'?'単語':'熟語')+'・'+level;
+  const N=Math.min(type==='word'?20:15, data.length);
+  const picked=shuffle(data.slice()).slice(0,N);
+  const items=picked.map(e=>makeVocabItem(e,data,cat));
+  const title=(type==='word'?'英単語':'英熟語')+' '+level+'点レベル';
+  startQuiz(items, title, ()=>startVocab(level,type), null);
+}
+
+/* クイズ */
+function startQuiz(items, title, retryFn, setId){
+  state={ items, idx:0, answers:new Array(items.length).fill(null), correct:0, startMs:Date.now(), title, retryFn, setId };
+  $("#quizTitle").textContent=title; show("quiz"); startTimer(); renderQuestion();
+}
+function startTimer(){
+  clearInterval(timerInt);
+  timerInt=setInterval(()=>{ const s=Math.floor((Date.now()-state.startMs)/1000);
+    $("#timer").textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); },500);
+}
+
+function choiceDetailHtml(it){
+  if(!it.d) return "";
+  const head = it.voc ? "各選択肢の英語（あわせて覚えよう）" : "選択肢の意味・使い方";
+  let s=`<div class="cdetail"><div class="cdh">${head}</div>`;
+  it.c.forEach((w,i)=>{
+    const isans=(i===it.a);
+    if(it.voc){
+      // 単語問題：英単語を主役にして「英語 ＝ 意味」で表示
+      s+=`<div class="cdrow ${isans?'isans':''}"><span class="cdlab">${LETTERS[i]}</span>
+        <div><span class="cdword" style="font-size:1.08rem">${escapeHtml(it.d[i])}</span>${isans?'<span class="okmark">✓正解</span>':''}
+        <span class="cdtext">＝ ${escapeHtml(w)}</span></div></div>`;
+    } else {
+      s+=`<div class="cdrow ${isans?'isans':''}"><span class="cdlab">${LETTERS[i]}</span>
+        <div><span class="cdword">${escapeHtml(w)}</span>${isans?'<span class="okmark">✓正解</span>':''}
+        <span class="cdtext">${escapeHtml(it.d[i])}</span></div></div>`;
+    }
+  });
+  return s+'</div>';
+}
+
+function renderQuestion(){
+  const it=state.items[state.idx];
+  $("#qCount").textContent=`第 ${state.idx+1} 問 / ${state.items.length}`;
+  $("#progBar").style.width=((state.idx)/state.items.length*100)+"%";
+  $("#qChip").textContent=it.cat;
+  if(it.voc){
+    $("#qText").innerHTML=`<div style="text-align:center; padding:6px 0;">
+      <span style="font-size:1.7rem; font-weight:800; letter-spacing:.5px;">${escapeHtml(it.q)}</span>
+      <div style="font-size:.78rem; color:#5b6b7b; margin-top:4px; font-weight:400;">↓ 意味を選ぼう</div></div>`;
+  } else {
+    $("#qText").innerHTML=escapeHtml(it.q).replace("____",'<span class="blank">____</span>');
+  }
+  const box=$("#choices"); box.innerHTML="";
+  it.c.forEach((txt,i)=>{
+    const btn=document.createElement("button"); btn.className="choice";
+    btn.innerHTML=`<span class="lab">${LETTERS[i]}</span><span>${escapeHtml(txt)}</span>`;
+    btn.onclick=()=>pick(i,btn); box.appendChild(btn);
+  });
+  const ex=$("#explain"); ex.className="explain"; ex.innerHTML="";
+  $("#nextBtn").className="next-btn";
+  $("#nextBtn").textContent=(state.idx===state.items.length-1)?"結果を見る →":"次へ →";
+}
+
+function pick(i,btn){
+  if(state.answers[state.idx]!==null) return;
+  const it=state.items[state.idx];
+  state.answers[state.idx]=i;
+  const correct=(i===it.a); if(correct) state.correct++;
+  [...$("#choices").children].forEach((b,bi)=>{
+    b.disabled=true;
+    if(bi===it.a) b.classList.add("correct");
+    else if(bi===i) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  const ex=$("#explain");
+  ex.innerHTML=`<div class="verdict ${correct?'ok':'ng'}">${correct?'⭕ 正解！':'❌ 不正解'}</div>
+    <div class="ans-line">正解：<b>${LETTERS[it.a]}. ${escapeHtml(it.c[it.a])}</b></div>
+    <div class="point">${escapeHtml(it.e)}</div>${choiceDetailHtml(it)}`;
+  ex.classList.add("show");
+  $("#nextBtn").classList.add("show");
+  $("#nextBtn").scrollIntoView({behavior:"smooth",block:"end"});
+}
+
+$("#nextBtn").onclick=()=>{
+  if(state.answers[state.idx]===null) return;
+  if(state.idx<state.items.length-1){ state.idx++; renderQuestion(); window.scrollTo({top:0,behavior:"smooth"}); }
+  else finish();
+};
+
+function recordAttempt(secs){
+  const cats={}, wrong=[];
+  state.items.forEach((it,i)=>{
+    const sel=state.answers[i], ok=(sel===it.a);
+    if(!cats[it.cat]) cats[it.cat]={a:0,c:0};
+    cats[it.cat].a++; if(ok) cats[it.cat].c++;
+    if(!ok) wrong.push({q:it.q, sel:sel===null?'—':LETTERS[sel], ans:LETTERS[it.a], ac:it.c[it.a], e:it.e, cat:it.cat});
+  });
+  const h=getHistory();
+  h.push({t:Date.now(), set:state.title, score:state.correct, total:state.items.length, secs, cats, wrong});
+  if(h.length>300) h.splice(0,h.length-300);
+  saveHistory(h);
+}
+
+function finish(){
+  clearInterval(timerInt);
+  const total=state.items.length, score=state.correct;
+  if(state.setId) setBest(state.setId,score);
+  const secs=Math.floor((Date.now()-state.startMs)/1000);
+  recordAttempt(secs);
+  $("#scoreNum").textContent=score; $("#scoreDen").textContent=total;
+  const pct=score/total;
+  $("#scoreMsg").textContent = pct===1?"満点！完璧です 🎉" : pct>=0.8?"good! あと一歩で満点" : pct>=0.5?"その調子。復習で固めよう" : "復習タイム。解説をじっくり読もう";
+  $("#scoreTime").textContent=`所要時間 ${fmtSecs(secs)}`;
+  const wrong=state.items.map((it,i)=>({it,sel:state.answers[i]})).filter(o=>o.sel!==o.it.a);
+  const area=$("#reviewArea"); area.innerHTML="";
+  if(wrong.length){
+    const h=document.createElement("div"); h.className="review-h"; h.textContent=`📝 間違えた ${wrong.length} 問の復習`; area.appendChild(h);
+    const card=document.createElement("div"); card.className="card"; card.style.paddingTop="4px";
+    wrong.forEach(({it,sel})=>{
+      const d=document.createElement("div"); d.className="review-item";
+      d.innerHTML=`<div class="rq">${escapeHtml(it.q).replace("____",'<span class="blank" style="color:#2f6db5;font-weight:800">____</span>')}</div>
+        <div class="ra">あなた：${sel===null?'—':LETTERS[sel]} ／ 正解：<b>${LETTERS[it.a]}. ${escapeHtml(it.c[it.a])}</b><br>${escapeHtml(it.e)}</div>
+        ${choiceDetailHtml(it)}`;
+      card.appendChild(d);
+    });
+    area.appendChild(card);
+  }
+  show("result");
+}
+
+/* 記録 */
+function catColor(pct){ return pct>=80?'#1f9d57':pct>=60?'#2f6db5':pct>=40?'#e0a416':'#d8483f'; }
+function renderRecords(){
+  const hist=getHistory(), body=$("#recBody");
+  if(!hist.length){ body.innerHTML=`<div class="card"><div class="empty">まだ記録がありません。<br>セットに挑戦すると、ここに日付・点数・弱点が残ります。</div></div>`; $("#recActions").style.display="none"; return; }
+  $("#recActions").style.display="flex";
+  let totQ=0,totC=0,totSecs=0; const agg={};
+  hist.forEach(a=>{ totQ+=a.total; totC+=a.score; totSecs+=a.secs||0; for(const k in a.cats){ if(!agg[k])agg[k]={a:0,c:0}; agg[k].a+=a.cats[k].a; agg[k].c+=a.cats[k].c; } });
+  const avgPct=Math.round(totC/totQ*100), totMin=Math.round(totSecs/60);
+  let html=`<div class="card"><div class="stat-row">
+    <div class="stat"><div class="v">${hist.length}</div><div class="l">学習回数</div></div>
+    <div class="stat"><div class="v">${avgPct}%</div><div class="l">平均正答率</div></div>
+    <div class="stat"><div class="v">${totMin}<span style="font-size:.9rem">分</span></div><div class="l">総学習時間</div></div></div>`;
+  const cats=Object.keys(agg).map(k=>({k,pct:Math.round(agg[k].c/agg[k].a*100),n:agg[k].a,c:agg[k].c})).sort((x,y)=>x.pct-y.pct);
+  html+=`<div class="cat-h">カテゴリ別 正答率（弱点が上）</div>`;
+  cats.forEach(c=>{ html+=`<div class="cat-bar"><div class="ctop"><span>${escapeHtml(c.k)}</span><b style="color:${catColor(c.pct)}">${c.pct}% <span style="color:#5b6b7b;font-weight:400">(${c.c}/${c.n})</span></b></div><div class="track"><i style="width:${c.pct}%; background:${catColor(c.pct)}"></i></div></div>`; });
+  html+=`</div><div class="hist-h">これまでの記録（新しい順）</div>`;
+  [...hist].reverse().forEach(a=>{
+    const pct=Math.round(a.score/a.total*100);
+    let detail=`<div class="hist-detail">所要 ${fmtSecs(a.secs||0)}`;
+    if(a.wrong && a.wrong.length){
+      detail+=`<div style="margin-top:8px;font-weight:700">間違えた ${a.wrong.length} 問</div>`;
+      a.wrong.forEach(w=>{ detail+=`<div class="wq">・${escapeHtml(w.q)}<div class="ra">あなた：${w.sel} ／ 正解：<b>${w.ans}. ${escapeHtml(w.ac)}</b>（${escapeHtml(w.cat)}）<br>${escapeHtml(w.e)}</div></div>`; });
+    } else { detail+=`<div style="margin-top:6px;color:#1f9d57;font-weight:700">全問正解！</div>`; }
+    detail+=`</div>`;
+    html+=`<details class="hist"><summary><span class="hist-date">${fmtDate(a.t)}</span><span class="hist-title">${escapeHtml(a.set)}</span><span class="hist-score" style="color:${catColor(pct)}">${a.score}/${a.total}</span></summary>${detail}</details>`;
+  });
+  body.innerHTML=html;
+}
+function buildRecordText(){
+  const hist=getHistory(); if(!hist.length) return "（記録なし）";
+  let totQ=0,totC=0; const agg={};
+  hist.forEach(a=>{ totQ+=a.total; totC+=a.score; for(const k in a.cats){ if(!agg[k])agg[k]={a:0,c:0}; agg[k].a+=a.cats[k].a; agg[k].c+=a.cats[k].c; } });
+  let t=`■TOEIC Part5 学習記録\n学習回数:${hist.length}回 ／ 平均正答率:${Math.round(totC/totQ*100)}%\n\n[カテゴリ別 正答率（弱点順）]\n`;
+  Object.keys(agg).map(k=>({k,pct:Math.round(agg[k].c/agg[k].a*100),n:agg[k].a,c:agg[k].c})).sort((x,y)=>x.pct-y.pct).forEach(c=>{ t+=`・${c.k}: ${c.pct}% (${c.c}/${c.n})\n`; });
+  t+=`\n[履歴（新しい順）]\n`;
+  [...hist].reverse().forEach(a=>{ t+=`${fmtDate(a.t)}  ${a.set}  ${a.score}/${a.total}  ${fmtSecs(a.secs||0)}\n`; });
+  return t;
+}
+function copyRecords(){
+  const txt=buildRecordText();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(()=>alert("記録をコピーしました。\nLINEやメールに貼り付けて先生に送れます。"), ()=>window.prompt("下記を長押しでコピーしてください：", txt));
+  } else { window.prompt("下記を長押しでコピーしてください：", txt); }
+}
+
+/* ボタン */
+$("#retryBtn").onclick=()=>{ if(state&&state.retryFn) state.retryFn(); };
+$("#homeBtn").onclick=()=>{ clearInterval(timerInt); renderHome(); show("home"); };
+$("#quitBtn").onclick=()=>{ if(confirm("ホームに戻りますか？（進捗は保存されません）")){ clearInterval(timerInt); renderHome(); show("home"); } };
+$("#randomBtn").onclick=startRandomQuiz;
+$("#vocabBtn").onclick=()=>{ renderVocabMenu(); show("vocabMenu"); };
+$("#vmBack").onclick=()=>{ renderHome(); show("home"); };
+$("#recordsBtn").onclick=()=>{ renderRecords(); show("records"); };
+$("#recBack").onclick=()=>{ renderHome(); show("home"); };
+$("#recCopy").onclick=copyRecords;
+$("#recClear").onclick=()=>{ if(confirm("すべての学習記録を消去しますか？この操作は取り消せません。")){ localStorage.removeItem(HIST_KEY); renderRecords(); } };
+
+function escapeHtml(s){ return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+renderHome(); show("home");
+</script>
+</body>
+</html>
