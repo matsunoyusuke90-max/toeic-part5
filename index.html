@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#2f6db5">
-<title>TOEIC Part 5 トレーニング｜1日10分</title>
+<title>TOEIC Part 5・6・7 トレーニング</title>
 <style>
   :root{
     --ink:#1d2733; --sub:#5b6b7b; --line:#dde4ee; --accent:#2f6db5; --accent-d:#245a99;
@@ -134,31 +134,83 @@
   .empty{color:var(--sub); text-align:center; padding:30px 10px;}
 
   footer{text-align:center; color:var(--sub); font-size:.78rem; margin-top:26px;}
+
+  /* ── tabs ── */
+  .tabs{position:sticky; top:0; z-index:6; display:flex; gap:6px; background:var(--bg); padding:6px 0 10px; margin-bottom:2px;}
+  .tabs button{flex:1; min-width:0; white-space:nowrap; border:1px solid var(--line); background:var(--card); color:var(--sub); border-radius:11px; padding:9px 4px; font:inherit; font-weight:700; font-size:.86rem; cursor:pointer; transition:background .12s,color .12s;}
+  .tabs button.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .tabs button:active{transform:scale(.97);}
+
+  /* ── reading passage ── */
+  .passage{display:none; background:#fbfcfe; border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:12px; padding:14px 16px; margin-bottom:14px; font-size:1rem; line-height:1.95; max-height:46vh; overflow:auto;}
+  .passage.show{display:block;}
+  .passage .pdoc + .pdoc{margin-top:14px; padding-top:12px; border-top:1px dashed var(--line);}
+  .passage h4{margin:0 0 6px; font-size:.78rem; color:var(--accent-d); letter-spacing:.04em; font-weight:800;}
+  .passage .pnum{color:var(--sub); font-weight:800;}
+  .passage .pblank{color:var(--accent); font-weight:800; background:#e3eefb; border-radius:5px; padding:1px 8px;}
+  .passage .gloss{margin-top:11px; padding-top:9px; border-top:1px dashed var(--line); font-size:.83rem; color:var(--sub); line-height:1.8;}
+  .q-text.q-reading{font-size:1.08rem; font-weight:700; line-height:1.7;}
+
+  .explain .qtrans{margin:8px 0 10px; padding:10px 12px; background:#eef5ff; border:1px solid #d6e6fb; border-radius:10px;}
+  .explain .qtrans-h{font-size:.82rem; font-weight:800; color:var(--accent-d); margin-bottom:3px;}
+  .explain .qtrans-b{font-size:.98rem; color:var(--ink); line-height:1.9;}
   .hidden{display:none !important;}
 </style>
 </head>
 <body>
 <div class="app">
 
+  <div class="topbar" id="mainbar"><h1>TOEIC <span class="small">Part 5・6・7 トレーニング</span></h1></div>
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="p5">Part 5</button>
+    <button class="tab-btn" data-tab="p6">Part 6</button>
+    <button class="tab-btn" data-tab="p7">Part 7</button>
+    <button class="tab-btn" data-tab="vocab">単語熟語</button>
+    <button class="tab-btn" data-tab="rec">記録</button>
+  </nav>
+
   <section id="home">
-    <div class="topbar"><h1>TOEIC <span class="small">Part 5 トレーニング</span></h1></div>
     <div class="hero">
-      <h2>1日10分・10問</h2>
-      <p>短文穴埋め（Part 5）を毎日1セット。各ジャンル3セット・全150問＋詳しい解説つき。</p>
+      <h2>Part 5 ｜ 短文穴埋め</h2>
+      <p>1文の空所に入る語を4択で。各ジャンル3セット・全150問＋詳しい解説つき。</p>
     </div>
     <div class="set-list" id="setList"></div>
     <button class="random-btn" id="randomBtn">🔀 ランダム10問（応用・別問題）</button>
-    <button class="random-btn" id="vocabBtn" style="background:#2f7a34; margin-top:10px;">📚 単語・熟語トレーニング</button>
-    <button class="random-btn" id="recordsBtn" style="background:#e7edf6; color:#245a99; margin-top:10px;">📊 学習の記録を見る</button>
     <button class="random-btn" id="downloadBtn" style="background:#eef1f5; color:#5b6b7b; margin-top:10px; font-size:.95rem;">📥 このアプリを保存（オフラインでも使う）</button>
-    <footer>文法150問＋ランダム20問／単語・熟語つき／記録はこの端末に保存されます</footer>
+    <footer>記録はこの端末に保存されます。Part 5/6/7・単語熟語は上のタブで切替。</footer>
+  </section>
+
+  <section id="part6" class="hidden">
+    <div class="hero" style="background:linear-gradient(135deg,#1f9d7a,#46c0a0);">
+      <h2>Part 6 ｜ 長文穴埋め</h2>
+      <p>メール・通知などの本文中の空所を4択で。各セット 本文1つ・4問（文挿入問題つき）。</p>
+    </div>
+    <div class="set-list" id="p6List"></div>
+    <footer>本文を読みながら、各空所に最適な語句・文を選びます。</footer>
+  </section>
+
+  <section id="part7" class="hidden">
+    <div class="hero" style="background:linear-gradient(135deg,#7b5ea7,#a589c9);">
+      <h2>Part 7 ｜ 読解</h2>
+      <p>メール・広告・通知などを読んで設問に答える。本文＋設問・詳しい解説つき。</p>
+    </div>
+    <div class="set-list" id="p7List"></div>
+    <footer>本文は上部のスクロール枠に表示されます。読み返しながら解けます。</footer>
   </section>
 
   <section id="vocabMenu" class="hidden">
-    <div class="topbar"><button class="btn-back" id="vmBack">← ホーム</button><h1>単語・熟語</h1></div>
-    <div class="hero"><h2>単語・熟語トレーニング</h2><p>英単語・熟語の意味を4択で答える1問1答。レベル別に出題します。</p></div>
+    <div class="hero" style="background:linear-gradient(135deg,#2f7a34,#5aa860);"><h2>単語・熟語</h2><p>英単語・熟語の意味を4択で答える1問1答。レベル別に出題します。</p></div>
     <div id="vmList" class="set-list"></div>
     <footer>レベルを選ぶと、その語彙からランダムに出題されます。何度でも挑戦できます。</footer>
+  </section>
+
+  <section id="records" class="hidden">
+    <div class="hero" style="background:linear-gradient(135deg,#5b6b7b,#8595a6);"><h2>学習の記録</h2><p>日付・点数・カテゴリ別の弱点がこの端末に残ります。</p></div>
+    <div id="recBody"></div>
+    <div class="result-actions" id="recActions">
+      <button class="ra-home" id="recCopy">📋 記録をコピー</button>
+      <button class="ra-home" id="recClear" style="background:#fdeceb; color:#d8483f;">記録を消去</button>
+    </div>
   </section>
 
   <section id="quiz" class="hidden">
@@ -167,20 +219,12 @@
     <div class="progress"><i id="progBar"></i></div>
     <div class="card">
       <span class="chip" id="qChip"></span>
+      <div class="passage" id="qPassage"></div>
       <div class="q-text" id="qText"></div>
       <div class="choices" id="choices"></div>
       <div class="explain" id="explain"></div>
     </div>
     <button class="next-btn" id="nextBtn">次へ →</button>
-  </section>
-
-  <section id="records" class="hidden">
-    <div class="topbar"><button class="btn-back" id="recBack">← ホーム</button><h1>学習の記録</h1></div>
-    <div id="recBody"></div>
-    <div class="result-actions" id="recActions">
-      <button class="ra-home" id="recCopy">📋 記録をコピー</button>
-      <button class="ra-home" id="recClear" style="background:#fdeceb; color:#d8483f;">記録を消去</button>
-    </div>
   </section>
 
   <section id="result" class="hidden">
@@ -1428,8 +1472,775 @@ l600:[
 };
 
 
+/* =========================================================
+   Part 6 データ（長文穴埋め）
+   passage 内の [[1]]〜[[4]] が空所。blanks[k] が空所(k+1)の問題。
+   各 blank: {c:[4選択肢], a:正解index, cat:分類, e:要点, d:[各選択肢解説×4]}
+   ========================================================= */
+const PART6 = [
+{ type:"Eメール", title:"プリンターの保守", gloss:"unavailable=使用できない／technician=技術者／in the meantime=その間／reliable=信頼できる／inconvenience=不便",
+  passage:`To: All Staff\nFrom: Facilities Management\nSubject: Printer Maintenance\n\nPlease be aware that the main printer on the third floor will be unavailable this Thursday. A technician will [[1]] the machine in the morning, and the work should be finished by noon. [[2]], please use the printers on the second or fourth floor.\n\nWe apologize for any inconvenience. [[3]] The new parts should make the printer much faster and more [[4]].\n\nThank you for your cooperation.`,
+  blanks:[
+   {c:["service","services","serviced","servicing"],a:0,cat:"Part6:動詞の形",
+    e:"助動詞 will の後ろは動詞の原形。service（点検する）の原形が入る。",
+    d:["service（動詞・原形）点検・整備する：will + 原形。例) service a car（車を整備する）→正解",
+       "services（3人称単数現在）：助動詞 will の後には置けない",
+       "serviced（過去・過去分詞）：will の後では使えない",
+       "servicing（動名詞・現在分詞）：will の後に単独では置けない"]},
+   {c:["In the meantime","However","For example","As a result"],a:0,cat:"Part6:つなぎ言葉",
+    e:"「点検中の間は別の階を使って」という流れ。In the meantime「その間は」が自然。",
+    d:["In the meantime（その間に・それまでは）：別階を使う指示につながる →正解",
+       "However（しかし）：逆接。前後が対立していないので不自然",
+       "For example（例えば）：具体例を挙げる場面ではない",
+       "As a result（その結果）：因果関係を示すが、ここは時間的なつなぎ"]},
+   {c:["We are upgrading it to a newer model.","The cafeteria will be closed on Friday.","Please submit your report by Monday.","Parking is available behind the building."],a:0,cat:"Part6:文挿入",
+    e:"直後に「新しい部品で速く・信頼性が高くなる」とあるので、買い替え・更新の話が前に来る。",
+    d:["We are upgrading it to a newer model.（新しい機種に更新します）：直後の new parts / faster と一致 →正解",
+       "The cafeteria will be closed on Friday.（食堂が金曜休み）：プリンターの話と無関係",
+       "Please submit your report by Monday.（報告書を月曜までに）：文脈と無関係",
+       "Parking is available behind the building.（駐車場は建物裏）：文脈と無関係"]},
+   {c:["reliable","reliably","reliability","rely"],a:0,cat:"Part6:品詞",
+    e:"faster and more ___：形容詞 faster と並ぶので形容詞 reliable。",
+    d:["reliable（形容詞）信頼できる：faster と並列の形容詞 →正解",
+       "reliably（副詞）確実に：例) work reliably（確実に動く）。並列に合わない",
+       "reliability（名詞）信頼性：例) improve reliability。形容詞が必要な位置",
+       "rely（動詞）頼る：例) rely on ～。ここには入らない"]}
+  ]},
+{ type:"店頭のお知らせ", title:"改装のご案内", gloss:"renovation=改装／remain=〜のままである／selection=品ぞろえ／appreciate=感謝する／patience=辛抱",
+  passage:`Notice to Customers\n\nGreenfield Grocery will be closed for renovations from May 3 to May 10. During this period, our online store will remain [[1]], and home delivery will continue as usual. We are expanding the store to offer a [[2]] selection of organic products.\n\n[[3]] We appreciate your patience [[4]] the renovation is completed.\n\nThe Greenfield Team`,
+  blanks:[
+   {c:["open","opens","opened","openly"],a:0,cat:"Part6:品詞",
+    e:"remain + 形容詞「〜のままである」。remain open「営業を続ける」。",
+    d:["open（形容詞）開いている：remain open「開いたまま」→正解",
+       "opens（動詞・3単現）：remain の後に動詞は置けない",
+       "opened（過去分詞）：remain opened は不自然（状態は open）",
+       "openly（副詞）公然と：remain の補語に副詞は来ない"]},
+   {c:["wide","wider","widely","width"],a:1,cat:"Part6:比較・品詞",
+    e:"店舗を拡張して品ぞろえを「より広く」する文脈。比較級 wider が自然。",
+    d:["wide（形容詞・原級）広い：a wide selection も可だが、拡張の文脈では比較級が自然",
+       "wider（比較級）より広い：expanding（拡張）と呼応 →正解",
+       "widely（副詞）広く：名詞 selection を修飾できない",
+       "width（名詞）幅：a ___ selection の位置に名詞は不可"]},
+   {c:["The renovated store will also feature a new bakery.","All employees must attend a safety meeting.","The bus stop has been moved to Oak Street.","Refunds are not available on sale items."],a:0,cat:"Part6:文挿入",
+    e:"改装で品ぞろえを増やす話の流れ。新設備（ベーカリー）の追加が自然。",
+    d:["The renovated store will also feature a new bakery.（改装後はベーカリーも新設）：拡張・品ぞろえの流れに一致 →正解",
+       "All employees must attend a safety meeting.（全社員が会議に出席）：客向け告知に合わない",
+       "The bus stop has been moved to Oak Street.（バス停移動）：無関係",
+       "Refunds are not available on sale items.（セール品は返金不可）：文脈と無関係"]},
+   {c:["until","during","while","since"],a:0,cat:"Part6:つなぎ言葉",
+    e:"後ろが文(the renovation is completed)。「完了するまで」の until。",
+    d:["until（接続詞）〜するまで：後ろは文。完了までの継続 →正解",
+       "during（前置詞）〜の間：後ろは名詞のみ。文は置けない",
+       "while（接続詞）〜する間：意味が「完了するまで」と合わない",
+       "since（接続詞）〜以来：完了点ではなく起点を表す"]}
+  ]},
+{ type:"社内メモ", title:"新しい報告システム", gloss:"submit=提出する／allow=可能にする／efficiently=効率的に／mandatory=必須の／alternative=代替の",
+  passage:`MEMO\nTo: Sales Department\nFrom: Human Resources\nRe: New Reporting System\n\nStarting next month, all sales reports must be submitted [[1]] the new online system. The system allows managers to review data more [[2]] than before. Training sessions will be held next week.\n\n[[3]] Employees who cannot attend should contact their supervisor to arrange an [[4]] session.`,
+  blanks:[
+   {c:["through","among","between","despite"],a:0,cat:"Part6:前置詞",
+    e:"「新システムを通じて提出する」。手段の through。",
+    d:["through（前置詞）〜を通じて：submit through the system →正解",
+       "among（前置詞）〜の間で：3つ以上の中で。手段を表せない",
+       "between（前置詞）〜の間で：2者の間。手段ではない",
+       "despite（前置詞）〜にもかかわらず：意味が合わない"]},
+   {c:["efficient","efficiently","efficiency","efficiencies"],a:1,cat:"Part6:品詞",
+    e:"動詞 review を修飾する副詞。more efficiently「より効率的に」。",
+    d:["efficient（形容詞）効率的な：動詞 review は修飾できない",
+       "efficiently（副詞）効率的に：review を修飾。more efficiently →正解",
+       "efficiency（名詞）効率：副詞が必要な位置",
+       "efficiencies（名詞・複数）：同上、不可"]},
+   {c:["Attendance is strongly encouraged.","The cafeteria menu will change.","Sales increased last quarter.","The parking lot will be repainted."],a:0,cat:"Part6:文挿入",
+    e:"前が研修の案内、後ろが「出られない人は…」。出席を促す文が間に入る。",
+    d:["Attendance is strongly encouraged.（出席を強く推奨）：直後の『出られない人は…』に自然につながる →正解",
+       "The cafeteria menu will change.（食堂のメニュー変更）：無関係",
+       "Sales increased last quarter.（前期は売上増）：研修案内と無関係",
+       "The parking lot will be repainted.（駐車場を再塗装）：無関係"]},
+   {c:["alternative","alternatively","alternate","alternation"],a:0,cat:"Part6:品詞・語彙",
+    e:"an ___ session：名詞 session を修飾する形容詞。alternative「代替の」。",
+    d:["alternative（形容詞）代替の：an alternative session「振替の回」→正解",
+       "alternatively（副詞）その代わりに：名詞は修飾できない",
+       "alternate（動詞/形容詞）交互の：意味が「振替」と少しずれる",
+       "alternation（名詞）交替：an の後の修飾語にならない"]}
+  ]},
+{ type:"広告", title:"語学学校の夜間コース", gloss:"improve=上達させる／despite=〜にもかかわらず／individual=個別の／promotion=販促・特典／valuable=貴重な",
+  passage:`Brightway Language School\n\nAre you looking to improve your English [[1]] a busy schedule? Our evening courses are designed for working professionals. Classes are small, so each student receives [[2]] attention from the instructor.\n\n[[3]] Students who enroll before June 1 will receive a 20% discount on tuition. Don't miss this [[4]] opportunity to advance your career.`,
+  blanks:[
+   {c:["despite","although","because","while"],a:0,cat:"Part6:前置詞・接続詞",
+    e:"後ろが名詞句(a busy schedule)。前置詞 despite「〜にもかかわらず」。",
+    d:["despite（前置詞）〜にもかかわらず：後ろは名詞。despite a busy schedule →正解",
+       "although（接続詞）〜だが：後ろは文。名詞句は取れない",
+       "because（接続詞）〜なので：後ろは文。意味も合わない",
+       "while（接続詞）〜する間：後ろは文。名詞句は不可"]},
+   {c:["individual","individually","individuality","individuals"],a:0,cat:"Part6:品詞",
+    e:"名詞 attention を修飾する形容詞 individual「個別の」。",
+    d:["individual（形容詞）個別の：individual attention「個別の指導」→正解",
+       "individually（副詞）個別に：名詞 attention を修飾できない",
+       "individuality（名詞）個性：意味が合わない",
+       "individuals（名詞・複数）個人：修飾語の位置に名詞は不可"]},
+   {c:["We are currently offering a special promotion.","The school was founded in 1990.","Textbooks are sold separately.","Our building has three floors."],a:0,cat:"Part6:文挿入",
+    e:"直後に「6月1日までの申込で20%割引」とあるので、特典・キャンペーンの導入文。",
+    d:["We are currently offering a special promotion.（現在特別キャンペーン中）：直後の割引案内につながる →正解",
+       "The school was founded in 1990.（1990年創立）：割引の前置きにならない",
+       "Textbooks are sold separately.（教科書は別売り）：流れに合わない",
+       "Our building has three floors.（3階建て）：無関係"]},
+   {c:["value","valuable","valuably","valued"],a:1,cat:"Part6:品詞",
+    e:"this ___ opportunity：名詞 opportunity を修飾する形容詞 valuable「貴重な」。",
+    d:["value（名詞・動詞）価値／評価する：opportunity を修飾できない",
+       "valuable（形容詞）貴重な：a valuable opportunity「貴重な機会」→正解",
+       "valuably（副詞）有益に：名詞は修飾できない",
+       "valued（過去分詞）大切にされた：意味が「貴重な機会」とずれる"]}
+  ]},
+{ type:"お知らせ", title:"図書館の開館時間延長", gloss:"extend=延長する／patron=利用者／effective=（規則などが）有効な／renew=（貸出を）更新する／feedback=意見",
+  passage:`Notice to All Library Patrons\n\nWe are pleased to announce that the Central Library will [[1]] its opening hours starting next month. Beginning on July 1, the library will stay open until 10 p.m. on weekdays. [[2]] This change is the result of many requests from students and local residents.\n\n[[3]] the new schedule, the weekend hours will remain the same. Visitors can still borrow and renew books online at any time. We hope the longer hours will give everyone more time to study and read [[4]].\n\nThank you for your continued support. Please share any feedback with the front desk.`,
+  blanks:[
+   {c:["extend","extends","extended","extending"],a:0,cat:"Part6:動詞の形",
+    e:"助動詞 will の後ろは動詞の原形。extend（延長する）の原形が入る。",
+    d:["extend（動詞・原形）延長する：will + 原形。例) extend the deadline（締切を延ばす）→正解",
+       "extends（3人称単数現在）：助動詞 will の後には置けない",
+       "extended（過去・過去分詞）：will の後では使えない",
+       "extending（動名詞・現在分詞）：will の後に単独では置けない"]},
+   {c:["The library will now close one hour later than before.","The parking lot will be repaved next week.","All printers are located on the first floor.","Membership cards expire after two years."],a:0,cat:"Part6:文挿入",
+    e:"前文で平日22時まで開くと述べた直後なので、閉館時間が遅くなる内容が自然。",
+    d:["The library will now close one hour later than before.（以前より1時間遅く閉館します）：前文の22時まで開館と一致 →正解",
+       "The parking lot will be repaved next week.（駐車場を来週舗装します）：開館時間の話と無関係",
+       "All printers are located on the first floor.（プリンターは1階にあります）：文脈と無関係",
+       "Membership cards expire after two years.（会員証は2年で期限切れ）：文脈と無関係"]},
+   {c:["Despite","Unlike","Throughout","Toward"],a:1,cat:"Part6:前置詞",
+    e:"「平日は延長するが、週末は同じ」という対比。Unlike「～とは違って」が自然。",
+    d:["Despite（～にもかかわらず）：譲歩だが、ここは平日と週末の対比なので不自然",
+       "Unlike（～とは違って）：平日の延長と週末据え置きの対比に合う →正解",
+       "Throughout（～の間ずっと）：時間や場所の継続を表し、対比に合わない",
+       "Toward（～の方へ）：方向や時刻を表し、文意に合わない"]},
+   {c:["comfort","comfortable","comfortably","comforting"],a:2,cat:"Part6:品詞",
+    e:"動詞 read を修飾するので副詞 comfortably「快適に」が入る。",
+    d:["comfort（名詞・動詞）快適さ・慰める：動詞を修飾できない",
+       "comfortable（形容詞）快適な：名詞を修飾する語で、ここでは合わない",
+       "comfortably（副詞）快適に：動詞 read を修飾する →正解",
+       "comforting（現在分詞・形容詞）慰めとなる：意味も品詞も合わない"]}
+  ]},
+{ type:"Eメール", title:"注文確認・配送のお知らせ", gloss:"confirm=確認する／shipment=発送品／estimate=見積もる／track=追跡する／warehouse=倉庫",
+  passage:`To: Daniel Foster\nFrom: Orders Team, Maple Goods\nSubject: Your Order Confirmation\n\nThank you for your purchase. We are writing to [[1]] that your order has been received and is now being prepared in our warehouse.\n\nYour package will be shipped within two business days. The estimated delivery date is June 20. [[2]] You will be able to track your shipment at any time using this number.\n\nPlease note that delivery times may [[3]] depending on your location. If you have any questions about your order, our support team is [[4]] to help you.\n\nWe appreciate your business and hope you enjoy your purchase.`,
+  blanks:[
+   {c:["confirm","confirmed","confirming","confirmation"],a:0,cat:"Part6:動詞の形",
+    e:"to の後ろは動詞の原形（不定詞）。confirm（確認する）の原形が入る。",
+    d:["confirm（動詞・原形）確認する：to + 原形の不定詞。例) writing to confirm（確認のため連絡する）→正解",
+       "confirmed（過去・過去分詞）：to の後には置けない",
+       "confirming（動名詞・現在分詞）：to 不定詞の後には合わない",
+       "confirmation（名詞）確認：to の後に動詞が必要な位置"]},
+   {c:["Once your item ships, we will send you a tracking number.","Our store will be closed for the holiday.","The product comes with a one-year warranty.","Please update your billing address online."],a:0,cat:"Part6:文挿入",
+    e:"直後に「この番号で追跡できる」とあるので、追跡番号を送るという内容が前に来る。",
+    d:["Once your item ships, we will send you a tracking number.（発送後に追跡番号をお送りします）：直後の this number / track と一致 →正解",
+       "Our store will be closed for the holiday.（休日のため閉店します）：配送の話と無関係",
+       "The product comes with a one-year warranty.（1年保証付きです）：追跡番号の流れと合わない",
+       "Please update your billing address online.（請求先住所を更新してください）：文脈と無関係"]},
+   {c:["vary","various","variety","variously"],a:0,cat:"Part6:品詞",
+    e:"助動詞 may の後ろは動詞の原形。vary（異なる）が入る。",
+    d:["vary（動詞・原形）異なる・変わる：may + 原形。例) prices may vary（価格は変動することがある）→正解",
+       "various（形容詞）さまざまな：助動詞 may の後には置けない",
+       "variety（名詞）多様性：動詞が必要な位置に合わない",
+       "variously（副詞）さまざまに：may の後に単独では置けない"]},
+   {c:["availability","available","availably","avail"],a:1,cat:"Part6:品詞",
+    e:"be動詞 is の後ろの補語として形容詞 available「対応可能な」が自然。",
+    d:["availability（名詞）利用可能性：is の補語に形容詞が必要な位置",
+       "available（形容詞）対応可能な・利用できる：is available to help（喜んで手伝う）→正解",
+       "availably（副詞）：be動詞の補語には形容詞が必要",
+       "avail（動詞）役立つ：ここには動詞は入らない"]}
+  ]},
+{ type:"プレスリリース", title:"新型スマートウォッチの発表", gloss:"unveil=発表する／feature=～を特徴とする／durable=丈夫な／retailer=小売店／advanced=高度な",
+  passage:`FOR IMMEDIATE RELEASE\n\nNova Tech today announced the launch of its newest smartwatch, the Nova Pulse. The company [[1]] the device at a press event in San Francisco this morning.\n\nThe Nova Pulse features a brighter screen and a battery that lasts up to seven days. [[2]] It also includes advanced health sensors that track sleep and heart rate.\n\nThe watch is [[3]] than earlier models, making it ideal for sports and outdoor use. Customers can buy the Nova Pulse online or through selected retailers [[4]] August 5.\n\nFor more information, please visit the company website.`,
+  blanks:[
+   {c:["unveil","unveils","unveiled","unveiling"],a:2,cat:"Part6:動詞の形",
+    e:"this morning という過去の時点を示す語があるので過去形 unveiled が入る。",
+    d:["unveil（動詞・原形）発表する：過去の出来事には合わない",
+       "unveils（3人称単数現在）：this morning の過去の文脈に合わない",
+       "unveiled（過去形）発表した：this morning の過去の出来事を表す →正解",
+       "unveiling（動名詞・現在分詞）：単独で述語動詞にはならない"]},
+   {c:["This is much longer than most watches on the market.","The factory will hire fifty new workers.","Tickets for the concert are now on sale.","The office will relocate to a new building."],a:0,cat:"Part6:文挿入",
+    e:"前文で7日持つバッテリーに触れたので、市場の多くより長いという補足が自然。",
+    d:["This is much longer than most watches on the market.（市場の多くの時計よりずっと長持ちします）：前文のバッテリー寿命と一致 →正解",
+       "The factory will hire fifty new workers.（工場が50人雇用します）：製品紹介と無関係",
+       "Tickets for the concert are now on sale.（コンサートのチケット発売中）：文脈と無関係",
+       "The office will relocate to a new building.（オフィスが移転します）：文脈と無関係"]},
+   {c:["durable","more durable","most durable","durably"],a:1,cat:"Part6:比較",
+    e:"than があるので比較級。durable は more をつけて more durable「より丈夫」となる。",
+    d:["durable（原級）丈夫な：than と一緒には使えない",
+       "more durable（比較級）より丈夫な：than earlier models と呼応する →正解",
+       "most durable（最上級）最も丈夫な：than とは一緒に使わない",
+       "durably（副詞）丈夫に：than の前の補語には形容詞が必要"]},
+   {c:["starting","to start","start","started"],a:0,cat:"Part6:前置詞",
+    e:"日付の前で「～から」を表す starting「（～から）始まって」が自然。",
+    d:["starting（～から・を皮切りに）：starting August 5（8月5日から）→正解",
+       "to start（不定詞）：日付の前で開始時点を示す用法に合わない",
+       "start（原形）：ここでは動詞が入る位置ではない",
+       "started（過去形）：未来の発売日を表す文脈に合わない"]}
+  ]},
+{ type:"求人", title:"社内のチームリーダー募集", gloss:"position=職・ポスト／candidate=候補者／oversee=監督する／qualified=資格のある／apply=応募する",
+  passage:`Internal Job Posting: Team Leader, Customer Service\n\nOur company is currently looking for a Team Leader in the Customer Service Department. We encourage current employees who are [[1]] in this position to apply.\n\nThe successful candidate will oversee a team of eight staff members and report directly to the department manager. [[2]] Strong communication skills and at least three years of experience are required.\n\nThis is a great opportunity for those who want to grow [[3]] the company. Interested employees should submit their application to the HR office [[4]] June 30.\n\nWe look forward to receiving your application.`,
+  blanks:[
+   {c:["interest","interesting","interested","interestingly"],a:2,cat:"Part6:品詞",
+    e:"「興味を持っている」は感情を表す過去分詞 interested。be interested in の形。",
+    d:["interest（名詞・動詞）興味・興味を持たせる：be動詞の補語の形容詞が必要",
+       "interesting（現在分詞・形容詞）興味深い：物事が主語のときに使う。人には合わない",
+       "interested（過去分詞・形容詞）興味を持った：employees who are interested in（関心のある社員）→正解",
+       "interestingly（副詞）興味深いことに：be動詞の補語にはならない"]},
+   {c:["The main duties include training and scheduling.","The cafeteria menu changes every week.","Parking permits are issued by security.","The annual picnic will be held in spring."],a:0,cat:"Part6:文挿入",
+    e:"前文で8人のチームを監督すると述べたので、主な業務内容を補う文が自然。",
+    d:["The main duties include training and scheduling.（主な業務は研修とシフト管理を含みます）：監督業務の説明として一致 →正解",
+       "The cafeteria menu changes every week.（食堂のメニューが毎週変わる）：職務と無関係",
+       "Parking permits are issued by security.（駐車許可証は警備が発行）：文脈と無関係",
+       "The annual picnic will be held in spring.（毎年のピクニックは春に開催）：文脈と無関係"]},
+   {c:["within","among","between","beside"],a:0,cat:"Part6:前置詞",
+    e:"「社内で成長する」という意味。within the company「社内で」が自然。",
+    d:["within（～の内部で）：grow within the company（社内で成長する）→正解",
+       "among（～の間で・3つ以上）：集団の中を表すが、ここでは組織内部の意味に合わない",
+       "between（～の間で・2つ）：2者間を表し、文意に合わない",
+       "beside（～のそばに）：位置を表し、成長の文脈に合わない"]},
+   {c:["no later than","as long as","in case of","instead of"],a:0,cat:"Part6:語彙",
+    e:"締切の日付の前なので「～までに（遅くとも）」を表す no later than が自然。",
+    d:["no later than（遅くとも～までに）：no later than June 30（6月30日までに）→正解",
+       "as long as（～する限り）：条件を表し、締切の日付には合わない",
+       "in case of（～の場合に備えて）：日付の前には合わない",
+       "instead of（～の代わりに）：文意に合わない"]}
+  ]},
+{ type:"社内メモ", title:"在宅勤務ポリシーの変更", gloss:"revise=改訂する／remote=遠隔の／productivity=生産性／arrangement=取り決め／approval=承認",
+  passage:`MEMO\nTo: All Department Staff\nFrom: Human Resources\nSubject: Updated Remote Work Policy\n\nWe would like to inform you that our remote work policy has been [[1]]. Starting next month, employees may work from home up to three days per week.\n\nThis change is based on feedback showing that flexible schedules improve productivity. [[2]] Employees who wish to work remotely must first get approval from their manager.\n\nPlease make sure your home setup is [[3]] for video meetings and daily tasks. If you have questions about the new arrangement, [[4]] contact the HR team.\n\nThank you for your understanding and cooperation.`,
+  blanks:[
+   {c:["revise","revises","revised","revising"],a:2,cat:"Part6:動詞の形",
+    e:"has been の後ろは過去分詞（受動態の現在完了）。revised が入る。",
+    d:["revise（動詞・原形）改訂する：has been の後には置けない",
+       "revises（3人称単数現在）：has been の後には合わない",
+       "revised（過去分詞）改訂された：has been revised（改訂された）の受動態 →正解",
+       "revising（現在分詞・動名詞）：has been の後で受動の意味にはならない"]},
+   {c:["However, this policy applies only to office staff.","The new coffee machine is now installed.","Our sales rose by ten percent last year.","The library will extend its hours next week."],a:0,cat:"Part6:文挿入",
+    e:"直後に「在宅希望者は上司の承認が必要」と続くので、適用範囲や条件を述べる文が自然。",
+    d:["However, this policy applies only to office staff.（ただし本方針は事務職のみに適用）：適用対象を絞り承認の話につながる →正解",
+       "The new coffee machine is now installed.（新しいコーヒーマシン設置）：方針と無関係",
+       "Our sales rose by ten percent last year.（昨年売上が10%増）：文脈と無関係",
+       "The library will extend its hours next week.（図書館が時間延長）：文脈と無関係"]},
+   {c:["suit","suited","suitable","suitably"],a:2,cat:"Part6:品詞",
+    e:"be動詞 is の補語なので形容詞 suitable「適した」が入る。",
+    d:["suit（動詞・名詞）適する・スーツ：is の補語の形容詞が必要な位置",
+       "suited（過去分詞）：be suited to/for の形でなら可だが、ここは補語に形容詞が自然",
+       "suitable（形容詞）適した：is suitable for（～に適している）→正解",
+       "suitably（副詞）適切に：be動詞の補語にはならない"]},
+   {c:["please","pleased","pleasing","pleasure"],a:0,cat:"Part6:語彙",
+    e:"命令文で依頼を表す please「どうぞ～してください」が文頭に入る。",
+    d:["please（副詞・どうぞ）：please contact（ご連絡ください）の依頼表現 →正解",
+       "pleased（形容詞）喜んで：be pleased の形で使い、命令文の文頭には合わない",
+       "pleasing（形容詞）喜ばせる：意味も位置も合わない",
+       "pleasure（名詞）喜び：動詞 contact の前には合わない"]}
+  ]},
+{ type:"広告", title:"新規開店レストラン", gloss:"grand opening=開店記念／authentic=本格的な／reservation=予約／atmosphere=雰囲気／complimentary=無料の",
+  passage:`Taste of Tuscany - Now Open!\n\nWe are excited to announce the grand opening of Taste of Tuscany, a new Italian restaurant located in the heart of downtown. Our experienced chefs prepare [[1]] dishes using only the freshest local ingredients. [[2]], we offer a warm and friendly atmosphere perfect for family dinners or special occasions.\n\nTo celebrate our opening, every guest will receive a complimentary dessert during our first week. [[3]] We strongly recommend that you make a [[4]] in advance, as seating is limited.\n\nVisit us today and discover why everyone is talking about Taste of Tuscany!`,
+  blanks:[
+   {c:["authentic","authentically","authenticity","authenticate"],a:0,cat:"Part6:品詞",
+    e:"名詞 dishes を修飾する位置なので形容詞 authentic が入る。",
+    d:["authentic（形容詞）本格的な：名詞 dishes を修飾する →正解",
+       "authentically（副詞）本格的に：名詞は修飾できない",
+       "authenticity（名詞）信頼性・本物であること：dishes の前には置けない",
+       "authenticate（動詞）認証する：ここには動詞は入らない"]},
+   {c:["In addition","Otherwise","Nevertheless","In contrast"],a:0,cat:"Part6:つなぎ言葉",
+    e:"料理の良さに加えて雰囲気の良さも述べる流れ。In addition「さらに」が自然。",
+    d:["In addition（さらに・加えて）：良い点を追加する流れに合う →正解",
+       "Otherwise（さもなければ）：条件の話ではないので不自然",
+       "Nevertheless（それにもかかわらず）：逆接で文脈に合わない",
+       "In contrast（対照的に）：対比する内容ではない"]},
+   {c:["The bus schedule has been changed recently.","The library will extend its opening hours.","We are also planning to expand our menu next month.","All employees must attend the safety training."],a:2,cat:"Part6:文挿入",
+    e:"開店記念やレストランの今後に関する話の流れ。メニュー拡大の予定が自然につながる。",
+    d:["The bus schedule has been changed recently.（バスの時刻表が変更）：文脈と無関係",
+       "The library will extend its opening hours.（図書館が開館時間延長）：レストランと無関係",
+       "We are also planning to expand our menu next month.（来月メニューを拡大予定）：レストランの話題と一致 →正解",
+       "All employees must attend the safety training.（全社員が安全研修に参加）：文脈と無関係"]},
+   {c:["reserve","reservation","reserved","reservations"],a:1,cat:"Part6:品詞",
+    e:"make a ___：冠詞 a の後ろは単数名詞。make a reservation「予約をする」。",
+    d:["reserve（動詞）予約する：make a の後に動詞は置けない",
+       "reservation（名詞・単数）予約：make a reservation で「予約する」 →正解",
+       "reserved（過去・過去分詞）：a の直後には合わない",
+       "reservations（名詞・複数）：冠詞 a の後ろは単数形が必要"]}
+  ]},
+{ type:"ニュースレター", title:"会社月次お知らせ", gloss:"quarter=四半期／achievement=成果／contribute=貢献する／upcoming=今度の／feedback=意見",
+  passage:`Monthly Company Newsletter - June Edition\n\nDear Team,\n\nThank you for your hard work during the past month. Thanks to everyone's effort, our sales [[1]] significantly compared to last quarter. This achievement would not have been possible [[2]] your dedication.\n\nWe would also like to welcome three new members who joined the marketing department last week. [[3]] Please take a moment to introduce yourselves when you see them.\n\nFinally, our annual company picnic will be held on July 20th. We hope you can all attend this [[4]] event. As always, we welcome your feedback and ideas.\n\nBest regards,\nManagement Team`,
+  blanks:[
+   {c:["increase","increases","increased","increasing"],a:2,cat:"Part6:動詞の形",
+    e:"「先月と比べて売上が伸びた」という過去の事実。過去形 increased が入る。",
+    d:["increase（原形）：主語 sales に対し時制が合わない",
+       "increases（3人称単数現在）：過去の成果を述べる文脈に合わない",
+       "increased（過去形）増加した：last quarter との比較で過去の事実 →正解",
+       "increasing（現在分詞・動名詞）：単独では述語動詞にならない"]},
+   {c:["without","despite","during","among"],a:0,cat:"Part6:前置詞",
+    e:"「あなた方の献身なしには成し得なかった」という意味。without「～なしには」が入る。",
+    d:["without（～なしには）：would not have been possible without で「～なしには不可能だった」 →正解",
+       "despite（～にもかかわらず）：意味が逆になり不自然",
+       "during（～の間）：時間を表すのでここでは合わない",
+       "among（～の中で）：複数の中での位置を表し文脈に合わない"]},
+   {c:["The parking lot will be repaved next week.","They bring valuable experience from various industries.","Our office will relocate to a new city.","The printer on the first floor is out of order."],a:1,cat:"Part6:文挿入",
+    e:"直前で新メンバーを歓迎し、直後で自己紹介を促す流れ。新メンバーの紹介文が自然。",
+    d:["The parking lot will be repaved next week.（駐車場が来週舗装される）：文脈と無関係",
+       "They bring valuable experience from various industries.（彼らは様々な業界の貴重な経験を持つ）：新メンバーの説明として一致 →正解",
+       "Our office will relocate to a new city.（オフィスが別の都市へ移転）：文脈と無関係",
+       "The printer on the first floor is out of order.（1階のプリンターが故障）：文脈と無関係"]},
+   {c:["enjoyable","enjoyably","enjoy","enjoyment"],a:0,cat:"Part6:品詞",
+    e:"this ___ event：名詞 event を修飾するので形容詞 enjoyable が入る。",
+    d:["enjoyable（形容詞）楽しい：名詞 event を修飾する →正解",
+       "enjoyably（副詞）楽しく：名詞は修飾できない",
+       "enjoy（動詞）楽しむ：名詞の前には置けない",
+       "enjoyment（名詞）楽しみ：event の前に名詞は重ねられない"]}
+  ]},
+{ type:"お知らせ", title:"製品保証の案内", gloss:"warranty=保証／defect=欠陥／purchase=購入／register=登録する／replacement=交換品",
+  passage:`Important Information About Your Product Warranty\n\nThank you for purchasing one of our products. Every item we sell comes with a one-year warranty that [[1]] any defect in materials or workmanship. If your product stops working properly within this period, we will repair or replace it at no cost.\n\nTo activate your warranty, please register your purchase online within thirty days. [[2]], the warranty may not be valid. [[3]] In that case, you will need to provide proof of purchase, such as a receipt.\n\nIf you have any questions, our customer service team is always [[4]] to help you.\n\nWe appreciate your trust in our brand.`,
+  blanks:[
+   {c:["covers","cover","covering","to cover"],a:0,cat:"Part6:動詞の形",
+    e:"関係代名詞 that の先行詞は単数の warranty。3人称単数現在 covers が入る。",
+    d:["covers（3人称単数現在）対象とする：先行詞 warranty に一致する述語動詞 →正解",
+       "cover（原形）：主語が単数なので一致しない",
+       "covering（現在分詞）：that の後の述語動詞にはならない",
+       "to cover（不定詞）：関係詞節の述語動詞には合わない"]},
+   {c:["Therefore","Otherwise","For instance","Meanwhile"],a:1,cat:"Part6:つなぎ言葉",
+    e:"「登録しないと保証が無効になる」という条件の帰結。Otherwise「さもなければ」。",
+    d:["Therefore（したがって）：因果の結論で、ここの条件には合わない",
+       "Otherwise（さもなければ）：登録しない場合の結果につながる →正解",
+       "For instance（例えば）：具体例を挙げる場面ではない",
+       "Meanwhile（その間に）：時間的なつなぎで文脈に合わない"]},
+   {c:["Our store will hold a sale this weekend.","The new model will be released in autumn.","Some repairs may still be possible after the warranty ends.","Employees are required to wear uniforms."],a:2,cat:"Part6:文挿入",
+    e:"保証や修理・購入証明の話の流れ。保証期間後の修理に触れる文が自然につながる。",
+    d:["Our store will hold a sale this weekend.（今週末セール開催）：保証の説明と無関係",
+       "The new model will be released in autumn.（新型は秋に発売）：文脈と無関係",
+       "Some repairs may still be possible after the warranty ends.（保証終了後も一部修理は可能）：保証・修理の話題と一致 →正解",
+       "Employees are required to wear uniforms.（社員は制服着用）：文脈と無関係"]},
+   {c:["available","availably","availability","avail"],a:0,cat:"Part6:品詞",
+    e:"be動詞 is の後ろの補語で「対応できる」。形容詞 available が入る。",
+    d:["available（形容詞）対応できる・利用できる：is の補語になる →正解",
+       "availably（副詞）：be動詞の補語には形容詞が必要",
+       "availability（名詞）利用可能性：補語の位置には意味的に合わない",
+       "avail（動詞）役立つ：ここには動詞は入らない"]}
+  ]},
+{ type:"案内", title:"社員研修の実施案内", gloss:"mandatory=必須の／session=回・講座／enhance=高める／register=登録する／certificate=修了証",
+  passage:`Notice: Employee Training Program\n\nWe are pleased to announce a new training program designed to [[1]] your professional skills. The program will be held over three days next month and is mandatory for all full-time staff.\n\nEach session will focus on a different topic, [[2]] communication, teamwork, and time management. Experienced trainers will lead the sessions and answer your questions. [[3]]\n\nTo join, please register through the company website by June 25th. Spaces are [[4]], so we encourage you to sign up early. Those who complete the program will receive a certificate.\n\nWe look forward to seeing you there.`,
+  blanks:[
+   {c:["enhance","enhances","enhanced","enhancement"],a:0,cat:"Part6:動詞の形",
+    e:"designed to の後ろは動詞の原形。to不定詞の enhance が入る。",
+    d:["enhance（原形）高める：designed to + 原形「～するために設計された」 →正解",
+       "enhances（3人称単数現在）：to の後には原形が必要",
+       "enhanced（過去・過去分詞）：to の後では使えない",
+       "enhancement（名詞）向上：to の後ろに名詞は置けない"]},
+   {c:["included","includes","including","inclusion"],a:2,cat:"Part6:語彙",
+    e:"具体例を列挙する前に置く前置詞的用法。including「～を含めて」が入る。",
+    d:["included（過去分詞）：単独で例を導く位置には合わない",
+       "includes（3人称単数現在）：ここでは述語動詞は不要",
+       "including（～を含めて）：話題の例を列挙する前置詞用法 →正解",
+       "inclusion（名詞）包含：例を列挙する位置に名詞は合わない"]},
+   {c:["Visitors must sign in at the front desk.","The cafeteria menu will change next season.","The annual report is now available online.","There will also be time for group discussions and practice."],a:3,cat:"Part6:文挿入",
+    e:"研修の進め方を説明する流れ。グループ討議や練習の時間に触れる文が自然。",
+    d:["Visitors must sign in at the front desk.（来訪者は受付で記帳）：文脈と無関係",
+       "The cafeteria menu will change next season.（食堂のメニューが来季変更）：研修と無関係",
+       "The annual report is now available online.（年次報告書がオンラインで閲覧可）：文脈と無関係",
+       "There will also be time for group discussions and practice.（グループ討議や練習の時間もある）：研修内容の説明と一致 →正解"]},
+   {c:["limited","limit","limitation","limitedly"],a:0,cat:"Part6:品詞",
+    e:"are の後ろの補語で「限られている」。形容詞 limited が入る。",
+    d:["limited（形容詞）限られた：be動詞 are の補語になる →正解",
+       "limit（動詞・名詞）制限：補語として意味が通らない",
+       "limitation（名詞）制限・制約：spaces are の補語には合わない",
+       "limitedly（副詞）：be動詞の補語には形容詞が必要"]}
+  ]},
+{ type:"ウェブページ", title:"オンラインサービスFAQ", gloss:"subscription=定期購読／cancel=解約する／access=利用する／anytime=いつでも／refund=払い戻し",
+  passage:`Frequently Asked Questions\n\nWelcome to our help page. Below you will find answers to the questions our customers ask most [[1]].\n\nHow do I change my plan? You can upgrade or downgrade your subscription at any time from your account settings. The new plan will take effect [[2]] your next billing date.\n\nCan I cancel my subscription? Yes. You may cancel whenever you wish, and you will still have access until the end of the current period. [[3]]\n\nWhat if I forget my password? Simply click the Forgot Password link on the login page. [[4]] you enter your email, we will send you a reset link right away.`,
+  blanks:[
+   {c:["frequently","frequent","frequency","frequents"],a:0,cat:"Part6:品詞",
+    e:"動詞 ask を修飾するので副詞 frequently「頻繁に」が入る。",
+    d:["frequently（副詞）頻繁に：動詞 ask を修飾する →正解",
+       "frequent（形容詞）頻繁な：動詞は修飾できない",
+       "frequency（名詞）頻度：ask の修飾語にはならない",
+       "frequents（動詞）よく訪れる：ここには別の動詞は入らない"]},
+   {c:["in","at","on","of"],a:2,cat:"Part6:前置詞",
+    e:"特定の日付を表すので前置詞 on。take effect on your next billing date。",
+    d:["in（～に）：月や年など広い期間に使い、特定日には合わない",
+       "at（～に）：時刻や地点に使い、日付には合わない",
+       "on（～に）：特定の日付・日には on を使う →正解",
+       "of（～の）：日付を導く前置詞としては不自然"]},
+   {c:["Our office is closed on national holidays.","No further charges will be made after that.","The product comes in three different colors.","Please bring your ID to the meeting."],a:1,cat:"Part6:文挿入",
+    e:"解約に関する質問への回答。解約後に追加請求がないと補足する文が自然。",
+    d:["Our office is closed on national holidays.（祝日は休業）：解約の話と無関係",
+       "No further charges will be made after that.（その後は追加請求されない）：解約の説明と一致 →正解",
+       "The product comes in three different colors.（製品は3色展開）：文脈と無関係",
+       "Please bring your ID to the meeting.（会議にIDを持参）：文脈と無関係"]},
+   {c:["Once","During","Despite","Unless"],a:0,cat:"Part6:つなぎ言葉",
+    e:"「メールを入力するとすぐにリンクを送る」という流れ。接続詞 Once「いったん～すると」。",
+    d:["Once（いったん～すると）：メール入力後すぐ送信する流れに合う →正解",
+       "During（～の間）：前置詞で後ろに節は取れない",
+       "Despite（～にもかかわらず）：前置詞で節を導けず意味も逆",
+       "Unless（～しない限り）：条件が逆になり不自然"]}
+  ]}
+];
+
+/* =========================================================
+   Part 7 データ（読解）
+   passages:[{label, text}] 本文（複数可）。qs[]: 各設問。
+   各 q: {q:設問文, c:[4選択肢], a:正解index, cat:分類, e:要点, d:[各選択肢解説×4]}
+   ========================================================= */
+const PART7 = [
+{ type:"Eメール", title:"在庫切れの連絡", level:"やさしめ",
+  gloss:"out of stock=在庫切れ／shipment=入荷／preference=ご希望／at no extra cost=追加料金なしで／hold=保留する",
+  passages:[{label:"Eメール", text:`To: Daniel Reyes\nFrom: Customer Service, TechZone\nDate: March 14\nSubject: Your Order #4521\n\nDear Mr. Reyes,\nThank you for your recent order. Unfortunately, the wireless headphones you ordered are currently out of stock. We expect a new shipment within two weeks.\nYou have two options: you may wait for the item, or you may choose a different model of equal value at no extra cost. Please reply to this email to let us know your preference.\nIf we do not hear from you by March 21, we will hold your order until the headphones are available.\nWe apologize for the inconvenience.\nSincerely,\nTechZone Customer Service`}],
+  qs:[
+   {q:"Why was the email sent?（メールの目的は？）",c:["To confirm a delivery date","To tell a customer that an item is unavailable","To offer a refund for a returned product","To advertise a new product"],a:1,cat:"Part7:目的",
+    e:"冒頭で「注文した品が在庫切れ(out of stock)」と伝えている。目的は在庫切れの連絡。",
+    d:["配送日の確認：日付の確定ではなく在庫切れの連絡",
+       "品が入手できないと顧客に伝える：out of stock の連絡 →正解",
+       "返品の返金提案：返金の話は出ていない",
+       "新商品の宣伝：宣伝ではない"]},
+   {q:"What will happen if Mr. Reyes does not reply by March 21?（3/21までに返信しないと？）",c:["His order will be canceled.","He will get a full refund.","His order will be held until the item is in stock.","A different model will be shipped automatically."],a:2,cat:"Part7:詳細",
+    e:"最終文 If we do not hear from you by March 21, we will hold your order until ... に一致。",
+    d:["注文取消：取り消すとは書かれていない",
+       "全額返金：返金の記載なし",
+       "入荷まで注文を保留：本文の hold your order until ... と一致 →正解",
+       "別モデルを自動発送：返信があって初めて選べる。自動ではない"]}
+  ]},
+{ type:"広告", title:"コワーキングスペース", level:"標準",
+  gloss:"flexible=柔軟な／membership=会員(制)／reserved desk=専用デスク／mention=〜に言及する／sign up=申し込む",
+  passages:[{label:"広告", text:`GreenLeaf Co-Working Space — Now Open Downtown!\n\nLooking for a productive place to work? GreenLeaf offers flexible memberships for freelancers and small teams.\n\n• Day Pass: $20 — access from 8 A.M. to 8 P.M.\n• Monthly Plan: $180 — 24-hour access and a reserved desk\n• Team Room: $500/month — private room for up to six people\n\nAll members enjoy free high-speed internet, unlimited coffee, and access to meeting rooms. Mention this advertisement when you sign up to receive your first week free.\nVisit www.greenleafspace.com or call 555-0192 for a tour.`}],
+  qs:[
+   {q:"What is being advertised?（何の広告か？）",c:["A coffee shop","A shared workspace","A hotel","An internet provider"],a:1,cat:"Part7:主旨",
+    e:"Co-Working Space（共有の仕事場）の会員プランを宣伝している。",
+    d:["カフェ：コーヒーは特典の一つにすぎない",
+       "共有ワークスペース：co-working space の会員制 →正解",
+       "ホテル：宿泊施設ではない",
+       "インターネット業者：高速ネットは特典の一部"]},
+   {q:"What is included with every membership?（全会員に共通の特典は？）",c:["A private office","Free parking","High-speed internet","A personal assistant"],a:2,cat:"Part7:詳細",
+    e:"All members enjoy free high-speed internet ... と明記。",
+    d:["個室：Team Room だけの特典",
+       "無料駐車場：記載なし",
+       "高速インターネット：All members enjoy free high-speed internet →正解",
+       "個人秘書：記載なし"]},
+   {q:"How can a customer get the first week free?（最初の1週間を無料にするには？）",c:["By signing up online only","By mentioning the advertisement","By paying for a full year","By bringing a friend"],a:1,cat:"Part7:詳細",
+    e:"Mention this advertisement when you sign up to receive your first week free. に一致。",
+    d:["オンライン限定の申込：そのような条件はない",
+       "この広告に言及する：Mention this advertisement ... →正解",
+       "1年分前払い：記載なし",
+       "友人を連れてくる：記載なし"]}
+  ]},
+{ type:"お知らせ", title:"エレベーター点検", level:"標準",
+  gloss:"undergo=（点検などを）受ける／scheduled=予定された／maintenance=保守点検／inspection=点検／plan ahead=前もって計画する／extension=内線",
+  passages:[{label:"掲示", text:`Notice: Building Elevator Maintenance\n\nPlease note that Elevator B will undergo scheduled maintenance on Saturday, April 8, from 7 A.M. to 1 P.M. During this time, residents are asked to use Elevator A or the stairs.\nThe maintenance is part of our regular safety inspection. We recommend planning ahead if you need to move large items on that day.\nFor questions, please contact the building manager at extension 210.`}],
+  qs:[
+   {q:"When will Elevator B be unavailable?（B号機が使えないのは？）",c:["All day Saturday","Saturday morning until early afternoon","Sunday morning","Friday evening"],a:1,cat:"Part7:詳細",
+    e:"from 7 A.M. to 1 P.M.（午前7時〜午後1時）＝土曜の午前から昼過ぎ。",
+    d:["土曜終日：終日ではなく午後1時まで",
+       "土曜の午前〜昼過ぎ：7 A.M.〜1 P.M. に一致 →正解",
+       "日曜の朝：曜日が違う",
+       "金曜の夜：日時が違う"]},
+   {q:"What are residents advised to do?（住民への助言は？）",c:["Avoid moving large items in the morning","Leave the building during maintenance","Pay an extra fee","Contact the fire department"],a:0,cat:"Part7:推測",
+    e:"We recommend planning ahead if you need to move large items on that day. から、午前の点検中は大きな荷物の移動を避けるのが賢明。",
+    d:["午前中は大きな荷物の移動を避ける：planning ahead の助言に沿う →正解",
+       "点検中は建物から出る：そうは書かれていない",
+       "追加料金を払う：料金の話はない",
+       "消防に連絡する：質問は建物管理者へ"]}
+  ]},
+{ type:"Eメール（2通）", title:"会議室の予約", level:"やや難（ダブルパッセージ）",
+  gloss:"accommodate=収容する／buffet=ビュッフェ式の食事／inquiry=問い合わせ／room rental=部屋の使用料／deposit=手付金・内金／beforehand=事前に",
+  passages:[
+   {label:"Eメール①（問い合わせ）", text:`To: events@harborhotel.com\nFrom: l.nakamura@brightcorp.com\nDate: September 2\nSubject: Conference Booking\n\nHello,\nOur company is planning a one-day conference for about 40 people on October 15. We would need a meeting room with a projector and space for a buffet lunch.\nCould you tell me whether your hotel can accommodate this group, and what the cost would be? We would also appreciate information about parking for our guests.\nBest regards,\nLisa Nakamura, Bright Corp`},
+   {label:"Eメール②（返信）", text:`To: l.nakamura@brightcorp.com\nFrom: events@harborhotel.com\nDate: September 3\nSubject: RE: Conference Booking\n\nDear Ms. Nakamura,\nThank you for your inquiry. Our Garden Hall can comfortably seat 50 guests and includes a projector at no additional charge. The room rental for one day is $800, and a buffet lunch is $25 per person. Free parking is available for all event guests in our underground garage.\nTo confirm your reservation, please send a 20% deposit by September 30. Please let me know if you would like to visit beforehand.\nSincerely,\nMark Olsen, Harbor Hotel Events Team`}],
+  qs:[
+   {q:"What does Ms. Nakamura ask about?（中村さんは何を尋ねているか）",c:["Discounts for large groups","Whether the hotel can host her group","Rooms for overnight stays","Catering for a wedding"],a:1,cat:"Part7:詳細(①)",
+    e:"①の Could you tell me whether your hotel can accommodate this group ... が中心の問い合わせ。",
+    d:["大人数割引：割引は尋ねていない",
+       "自社の集まりを開けるか：can accommodate this group に一致 →正解",
+       "宿泊用の部屋：会議室の話で宿泊ではない",
+       "結婚式のケータリング：会議のための問い合わせ"]},
+   {q:"What is included at no extra charge?（追加料金なしで含まれるものは？）",c:["Lunch","A projector","Decorations","Transportation"],a:1,cat:"Part7:詳細(②)",
+    e:"②に includes a projector at no additional charge とある。昼食は1人$25で別料金。",
+    d:["昼食：buffet lunch is $25 per person で別料金",
+       "プロジェクター：at no additional charge と明記 →正解",
+       "装飾：記載なし",
+       "送迎：記載なし"]},
+   {q:"Will the Garden Hall be large enough for the conference?（会議に十分な広さか）",c:["No, it is too small.","Yes, it can seat more than 40 people.","It fits only 30 people.","The size is not mentioned."],a:1,cat:"Part7:クロス参照",
+    e:"①は約40人、②は Garden Hall が50人収容。2通を照合すると十分。",
+    d:["狭すぎる：50人収容なので足りる",
+       "40人より多く座れる：①40人 vs ②50人収容 →正解",
+       "30人しか入らない：50人収容と矛盾",
+       "広さの記載なし：②に seat 50 guests とある"]},
+   {q:"What must Ms. Nakamura do to confirm the reservation?（予約確定に必要なことは？）",c:["Pay the full amount immediately","Visit the hotel in person","Send a 20% deposit by September 30","Sign a one-year contract"],a:2,cat:"Part7:詳細(②)",
+    e:"②に To confirm your reservation, please send a 20% deposit by September 30 とある。",
+    d:["全額即時払い：必要なのは20%の内金",
+       "実際に訪問：訪問は任意（if you would like）",
+       "9/30までに20%の内金：本文に一致 →正解",
+       "1年契約：そのような記載はない"]}
+  ]},
+{ type:"求人広告", title:"カフェスタッフ募集", level:"やさしめ",
+  gloss:"hiring=採用中／shift=シフト／flexible=融通の利く／experience=経験／apply=応募する／in person=直接来店して",
+  passages:[{label:"求人広告", text:`Now Hiring: Cafe Staff at Maple Corner Cafe\n\nMaple Corner Cafe, located in the heart of downtown, is looking for friendly and reliable part-time staff to join our team. We are a busy coffee shop that serves fresh coffee, sandwiches, and homemade desserts.\n\nResponsibilities:\n- Taking customer orders and serving drinks and food\n- Operating the cash register\n- Keeping the cafe clean and tidy\n\nRequirements:\n- A positive attitude and good communication skills\n- Ability to work on weekends\n- Previous experience is welcome but not required, as full training will be provided\n\nWe offer flexible shifts, a friendly working environment, and free drinks during your shift. The starting wage is 15 dollars per hour.\n\nTo apply, please bring your resume to the cafe in person between 2 p.m. and 4 p.m. on weekdays, or send it by email to jobs@maplecorner.com.`}],
+  qs:[
+   {q:"What is required for the position?（この仕事に必要なものは？）",c:["A college degree","Previous cafe experience","The ability to work on weekends","Knowledge of a second language"],a:2,cat:"Part7:詳細",
+    e:"Requirements に Ability to work on weekends とある。経験は welcome but not required。",
+    d:["大卒の学位：学位の記載はない",
+       "カフェでの経験：歓迎だが必須ではない",
+       "週末に働けること：Ability to work on weekends と一致 →正解",
+       "第二言語の知識：言語の要件はない"]},
+   {q:"What is NOT mentioned as a benefit?（特典として述べられていないものは？）",c:["Flexible shifts","Free drinks during the shift","A friendly working environment","Paid vacation days"],a:3,cat:"Part7:NOT問題",
+    e:"flexible shifts・free drinks・friendly environment は本文にあるが、有給休暇の記載はない。",
+    d:["融通の利くシフト：flexible shifts とある",
+       "勤務中の無料ドリンク：free drinks during your shift とある",
+       "親しみやすい職場環境：friendly working environment とある",
+       "有給休暇：記載がない →正解"]},
+   {q:"How can someone apply in person?（直接応募するには？）",c:["By calling the cafe anytime","By bringing a resume on weekday afternoons","By filling out an online form","By visiting on weekends"],a:1,cat:"Part7:詳細",
+    e:"bring your resume to the cafe in person between 2 p.m. and 4 p.m. on weekdays に一致。",
+    d:["いつでも電話する：電話応募の記載はない",
+       "平日午後に履歴書を持参：weekdays の 2-4 p.m. と一致 →正解",
+       "オンラインフォーム記入：直接応募の方法ではない",
+       "週末に訪問：応募は平日午後と指定されている"]}
+  ]},
+{ type:"記事", title:"地域の春フェスティバル", level:"標準",
+  gloss:"annual=毎年恒例の／feature=呼び物にする／vendor=出店者／proceeds=収益／admission=入場(料)／encourage=勧める",
+  passages:[{label:"記事", text:`Riverside Spring Festival Returns This May\n\nThe town of Greenfield will host its annual Riverside Spring Festival on May 18 and 19 at Greenfield Riverside Park. Now in its tenth year, the festival has become one of the most popular events in the region, attracting more than 20,000 visitors last year.\n\nThis year, the festival will feature live music on two stages, a farmers market, and over 50 food vendors offering dishes from around the world. A special area for children will include games, face painting, and a small petting zoo.\n\nAdmission is free, but visitors are encouraged to bring cash for food and crafts, as not all vendors accept cards. Parking near the park is limited, so organizers recommend using public transportation or the free shuttle bus from Greenfield Station.\n\nProceeds from a charity raffle will go toward local school programs. For a full schedule, visit the town website.`}],
+  qs:[
+   {q:"What is suggested about the festival?（フェスについて示唆されることは？）",c:["It is being held for the first time","It has grown popular over the years","It charges a high admission fee","It is held indoors"],a:1,cat:"Part7:推測",
+    e:"tenth year で last year 20,000人以上が来場とあり、長年で人気が高まったと推測できる。",
+    d:["初開催である：10回目で初回ではない",
+       "長年で人気が高まった：tenth year と来場者数から推測できる →正解",
+       "高い入場料を取る：admission is free とある",
+       "屋内開催である：Riverside Park での屋外イベント"]},
+   {q:"Why are visitors advised to bring cash?（現金持参を勧める理由は？）",c:["Admission must be paid in cash","Some vendors do not accept cards","Parking fees are cash only","The shuttle bus requires a fee"],a:1,cat:"Part7:詳細",
+    e:"bring cash ... as not all vendors accept cards に一致。",
+    d:["入場料を現金で払う必要：入場は無料",
+       "一部の出店者がカード不可：not all vendors accept cards と一致 →正解",
+       "駐車料金が現金のみ：駐車料金の記載はない",
+       "シャトルバスが有料：free shuttle bus とある"]},
+   {q:"What will the charity raffle proceeds support?（チャリティ抽選の収益は何を支援する？）",c:["The town website","Local school programs","Festival parking","New music stages"],a:1,cat:"Part7:詳細",
+    e:"Proceeds from a charity raffle will go toward local school programs に一致。",
+    d:["町のウェブサイト：日程閲覧用で支援先ではない",
+       "地元の学校プログラム：本文と一致 →正解",
+       "フェスの駐車場：支援先ではない",
+       "新しい音楽ステージ：支援先ではない"]}
+  ]},
+{ type:"お知らせ", title:"オフィス移転のお知らせ", level:"標準",
+  gloss:"relocate=移転する／premises=建物・敷地／effective=発効して／belongings=私物／as usual=通常通り／in advance=前もって",
+  passages:[{label:"お知らせ", text:`NOTICE TO ALL STAFF\n\nSubject: Office Relocation\n\nWe are pleased to announce that our company will be relocating to new premises starting Monday, July 1. Our new office is located at 88 Harbor Avenue, just a five-minute walk from Central Station. The new building offers more meeting rooms, a larger break area, and improved parking facilities.\n\nThe move will take place over the weekend of June 28 and 29. During this time, the current office will be closed, and staff are not required to come in. Please pack your personal belongings into the labeled boxes provided by Friday, June 27. Do not pack company laptops, as the IT team will handle all electronic equipment separately.\n\nNormal business hours will resume at the new location on July 1. If you have any questions about the move, please contact the facilities team in advance.\n\nThank you for your cooperation during this transition.`}],
+  qs:[
+   {q:"What is the purpose of this notice?（この通知の目的は？）",c:["To announce a company holiday","To inform staff about an office move","To introduce a new manager","To explain a new parking fee"],a:1,cat:"Part7:目的",
+    e:"冒頭で会社が新拠点へ relocating すると announce している。",
+    d:["会社の休日告知：休日の話ではない",
+       "オフィス移転の周知：relocating to new premises と一致 →正解",
+       "新任マネージャー紹介：人事の話はない",
+       "新駐車料金の説明：料金の話ではない"]},
+   {q:"What should staff do by June 27?（6/27までに社員がすべきことは？）",c:["Pack their personal belongings","Move company laptops","Visit the new office","Contact Central Station"],a:0,cat:"Part7:詳細",
+    e:"pack your personal belongings into the labeled boxes ... by Friday, June 27 に一致。",
+    d:["私物を箱に詰める：by June 27 の指示と一致 →正解",
+       "会社のノートPCを運ぶ：laptops は IT が扱うので詰めない",
+       "新オフィスを訪問：そのような指示はない",
+       "セントラル駅に連絡：連絡先は施設チーム"]},
+   {q:"What is indicated about the company laptops?（会社のノートPCについて分かることは？）",c:["They will be replaced with new ones","They must be left at home","The IT team will move them","Staff must pack them in boxes"],a:2,cat:"Part7:推測",
+    e:"Do not pack company laptops, as the IT team will handle all electronic equipment separately から、IT が運ぶと分かる。",
+    d:["新品に交換される：交換の記載はない",
+       "自宅に置く：自宅の指示はない",
+       "ITチームが移動させる：IT team will handle ... と一致 →正解",
+       "社員が箱に詰める：Do not pack と明記されている"]}
+  ]},
+{ type:"テキストメッセージのやり取り", title:"会議資料についてのチャット", level:"やさしめ",
+  gloss:"presentation=プレゼン／handout=配布資料／projector=プロジェクター／run by=立ち寄って取りに行く／sort out=解決する／a lifesaver=とても助かる存在",
+  passages:[{label:"テキストメッセージ", text:`Mia Chen (9:02 a.m.): Hi Tom, are the handouts for the 10 a.m. presentation ready?\nTom Baker (9:04 a.m.): Almost. I printed 20 copies, but the printer ran out of paper for the last 5.\nMia Chen (9:05 a.m.): No problem. We only have 18 people coming, so 20 should be enough.\nTom Baker (9:06 a.m.): Great. One more thing, is the projector in Room B working? It was broken last week.\nMia Chen (9:07 a.m.): The IT team fixed it yesterday, so we are fine. Can you bring the handouts to the room by 9:45?\nTom Baker (9:08 a.m.): Sure. I will run by my desk to grab them and head straight there.\nMia Chen (9:09 a.m.): Perfect. You are a lifesaver. See you soon.`}],
+  qs:[
+   {q:"Why is Tom not worried about the missing copies?（足りないコピーをトムが心配しない理由は？）",c:["The presentation was canceled","Fewer people are attending than copies printed","He will print them later","Mia will bring more copies"],a:1,cat:"Part7:推測",
+    e:"20部印刷でき、参加者は18人なので 20 should be enough。コピー数で足りる。",
+    d:["プレゼンが中止：中止の話はない",
+       "印刷部数より参加者が少ない：20部に対し18人で足りる →正解",
+       "後で印刷する：後で印刷するとは言っていない",
+       "ミアが追加で持参：そのような発言はない"]},
+   {q:"At 9:07 a.m., what does Mia mean when she writes we are fine?（9:07の we are fine の意味は？）",c:["The handouts are finished","The projector is now usable","The meeting time has changed","The room is too small"],a:1,cat:"Part7:意図",
+    e:"プロジェクターの故障の話に対し、IT が昨日修理したので we are fine と返している。",
+    d:["配布資料が完成：その文脈ではない",
+       "プロジェクターが使える状態：修理済みを受けた発言 →正解",
+       "会議時間の変更：時間変更の話はない",
+       "部屋が狭すぎる：部屋の広さの話はない"]},
+   {q:"What will Tom do next?（トムが次にすることは？）",c:["Fix the projector himself","Get the handouts from his desk","Call the IT team","Cancel the meeting"],a:1,cat:"Part7:詳細",
+    e:"I will run by my desk to grab them から、自席で配布資料を取って向かうと分かる。",
+    d:["自分でプロジェクター修理：ITが既に修理済み",
+       "自席で配布資料を取る：run by my desk to grab them と一致 →正解",
+       "ITチームに電話：電話するとは言っていない",
+       "会議を中止：中止の話はない"]}
+  ]},
+{ type:"案内状", title:"マーケティングワークショップ招待", level:"やや難",
+  gloss:"cordially=心を込めて／register=登録する／complimentary=無料の／seating=座席／on a first-come basis=先着順で／refreshments=軽食／RSVP=出欠の返信",
+  passages:[{label:"案内状", text:`You are cordially invited to attend our Digital Marketing Workshop, hosted by BrightPath Consulting on Thursday, September 12, from 1 p.m. to 5 p.m. at the Lakeside Conference Center.\n\nThis hands-on workshop is designed for small business owners and marketing professionals who want to strengthen their online presence. Topics will include social media strategy, email campaigns, and analyzing customer data. Our lead speaker, Ms. Laura Kim, has over fifteen years of experience in the field.\n\nAttendance is complimentary, but registration is required as seating is limited to 40 participants and will be offered on a first-come basis. Light refreshments will be served during the afternoon break.\n\nTo secure your spot, please register through our website by September 5. A confirmation email with parking details will be sent once your registration is complete. We look forward to seeing you there.`}],
+  qs:[
+   {q:"Who is this workshop mainly intended for?（このワークショップの主な対象は？）",c:["University students","Small business owners and marketers","Software engineers","Conference center staff"],a:1,cat:"Part7:詳細",
+    e:"designed for small business owners and marketing professionals に一致。",
+    d:["大学生：対象として挙げられていない",
+       "小規模事業主とマーケター：本文の対象と一致 →正解",
+       "ソフトウェア技術者：対象ではない",
+       "会議場のスタッフ：会場側で対象ではない"]},
+   {q:"What is implied about the seating?（座席について示唆されることは？）",c:["It is assigned in advance","People may not get a spot if they register late","Tickets cost extra for good seats","Standing room is available"],a:1,cat:"Part7:推測",
+    e:"seating is limited to 40 ... on a first-come basis から、遅い登録だと席を取れない可能性が示唆される。",
+    d:["事前に座席指定：指定の記載はない",
+       "登録が遅いと席を取れない可能性：定員40・先着順から示唆 →正解",
+       "良い席は追加料金：参加は complimentary で料金なし",
+       "立ち見が可能：立ち見の記載はない"]},
+   {q:"What will participants receive after registering?（登録後に参加者が受け取るものは？）",c:["A full refund","A confirmation email with parking details","A printed certificate","A free parking pass for a month"],a:1,cat:"Part7:詳細",
+    e:"A confirmation email with parking details will be sent once your registration is complete に一致。",
+    d:["全額返金：無料イベントで返金の概念はない",
+       "駐車場情報付きの確認メール：本文と一致 →正解",
+       "印刷された修了証：修了証の記載はない",
+       "1か月分の無料駐車券：そのような記載はない"]}
+  ]},
+{ type:"求人広告＋応募メール", title:"マーケティング職の募集", level:"やや難（ダブルパッセージ）",
+  gloss:"job opening=求人／candidate=候補者／qualification=資格・要件／cover letter=添え状／fluent=流暢な／attach=添付する／position=職・ポジション／degree=学位",
+  passages:[
+   {label:"求人広告①", text:`Greenfield Media – Marketing Coordinator Wanted\n\nGreenfield Media is looking for a full-time Marketing Coordinator to join our downtown office. The successful candidate will plan social media campaigns and support our events team.\n\nRequirements:\n- A university degree in marketing or a related field\n- At least two years of experience in advertising\n- Strong writing skills; fluent English\n\nWe offer a competitive salary and flexible working hours. To apply, please send your resume and a cover letter to jobs@greenfieldmedia.com by April 30. Interviews will be held during the first week of May.`},
+   {label:"応募メール②", text:`To: jobs@greenfieldmedia.com\nFrom: daniel.kim@webmail.com\nDate: April 22\nSubject: Application for Marketing Coordinator\n\nDear Hiring Manager,\nI am writing to apply for the Marketing Coordinator position. I hold a degree in marketing and have worked in advertising for three years, where I managed several social media campaigns.\nI have attached my resume and cover letter as requested. I am available for an interview at any time in May.\nThank you for considering my application.\nBest regards,\nDaniel Kim`}],
+  qs:[
+   {q:"What is the purpose of the advertisement?（広告の目的は何か）",c:["To announce a new product","To find a new employee","To promote a media event","To offer a training course"],a:1,cat:"Part7:目的(①)",
+    e:"①は Marketing Coordinator Wanted の求人広告で、人材募集が目的。",
+    d:["新製品の発表：製品の話ではない",
+       "新しい従業員を探す：Marketing Coordinator Wanted に一致 →正解",
+       "メディアイベントの宣伝：イベント宣伝ではなく募集",
+       "研修講座の提供：講座の案内ではない"]},
+   {q:"Does Mr. Kim meet the experience requirement?（キムさんは経験の要件を満たすか）",c:["No, he has no experience.","Yes, he exceeds the minimum.","He has exactly one year.","Experience is not required."],a:1,cat:"Part7:クロス参照",
+    e:"①は at least two years の経験が必要、②でキムさんは three years。照合すると要件を上回る。",
+    d:["経験なし：3年の経験がある",
+       "最低条件を上回る：①2年以上 vs ②3年 →正解",
+       "ちょうど1年：3年と矛盾",
+       "経験は不要：①で2年以上必須とある"]},
+   {q:"What did Mr. Kim include with his email?（キムさんはメールに何を添えたか）",c:["A reference letter only","A resume and a cover letter","A portfolio of designs","A list of references"],a:1,cat:"Part7:詳細(②)",
+    e:"②に I have attached my resume and cover letter as requested とある。",
+    d:["推薦状のみ：推薦状の話はない",
+       "履歴書と添え状：attached my resume and cover letter に一致 →正解",
+       "デザインの作品集：作品集の言及なし",
+       "照会先のリスト：照会先リストではない"]},
+   {q:"When will interviews take place?（面接はいつ行われるか）",c:["In late April","During the first week of May","On April 30","In June"],a:1,cat:"Part7:詳細(①)",
+    e:"①に Interviews will be held during the first week of May とある。",
+    d:["4月下旬：応募締切が4月30日で面接は5月",
+       "5月の第1週：first week of May に一致 →正解",
+       "4月30日：これは応募締切日",
+       "6月：6月の記載はない"]}
+  ]},
+{ type:"イベント告知＋問い合わせメール", title:"ビジネスセミナーの案内", level:"やや難（ダブルパッセージ）",
+  gloss:"workshop=講習会／register=登録する／attendee=参加者／fee=料金／refreshments=軽食／on-site=現地での／in advance=前もって／limited=限られた",
+  passages:[
+   {label:"イベント告知①", text:`Annual Small Business Workshop\n\nJoin us for our Annual Small Business Workshop on June 20 at the City Convention Center. This year's theme is Digital Marketing for Beginners.\n\nThe workshop runs from 9 a.m. to 4 p.m. and includes lunch and refreshments. The registration fee is $60 per person, but early-bird registration before June 1 is only $45.\n\nSeats are limited to 100 attendees, so please register early at www.sbworkshop.org. On-site registration will not be available.`},
+   {label:"問い合わせメール②", text:`To: info@sbworkshop.org\nFrom: rachel.t@startmail.com\nDate: May 28\nSubject: Registration Question\n\nHello,\nI would like to attend the Small Business Workshop on June 20. I plan to register today, May 28, so I believe I can still get the lower price.\nAlso, could you tell me whether the workshop materials are provided, or should I bring my own laptop? Finally, is there parking available at the Convention Center?\nThank you,\nRachel Tan`}],
+  qs:[
+   {q:"How much will Ms. Tan most likely pay?（タンさんはおそらくいくら払うか）",c:["$45","$60","$100","It is free."],a:0,cat:"Part7:クロス参照",
+    e:"①は6月1日前の早期登録が45ドル。②でタンさんは5月28日に登録予定なので早期料金が適用される。",
+    d:["45ドル：①6月1日前は45ドル、②5月28日登録 →正解",
+       "60ドル：これは通常料金で早期割引前",
+       "100ドル：定員数で料金ではない",
+       "無料：有料のイベントである"]},
+   {q:"What does Ms. Tan ask about?（タンさんは何について尋ねているか）",c:["The lunch menu","Materials and parking","Refund policy","The speaker's name"],a:1,cat:"Part7:詳細(②)",
+    e:"②で資料が提供されるか、駐車場があるかを尋ねている。",
+    d:["昼食のメニュー：メニューは尋ねていない",
+       "資料と駐車場：materials と parking を尋ねている →正解",
+       "返金規定：返金の話はない",
+       "講演者の名前：名前は尋ねていない"]},
+   {q:"What is true about on-site registration?（当日登録について正しいものは）",c:["It costs extra.","It is not offered.","It opens at 9 a.m.","It is only for groups."],a:1,cat:"Part7:詳細(①)",
+    e:"①に On-site registration will not be available とある。",
+    d:["追加料金がかかる：当日登録は行われない",
+       "提供されない：will not be available に一致 →正解",
+       "9時に開始：これは講習会の開始時刻",
+       "団体のみ：団体限定の記載はない"]}
+  ]},
+{ type:"請求書＋苦情メール", title:"オフィス用品の注文", level:"やや難（ダブルパッセージ）",
+  gloss:"invoice=請求書／order=注文／item=品目／quantity=数量／charge=請求する／refund=返金／damaged=破損した／apologize=謝罪する",
+  passages:[
+   {label:"請求書①", text:`OfficePlus Supplies – Invoice #2045\n\nCustomer: Bright Tower Law Firm\nOrder Date: March 5\nDelivery Date: March 9\n\nItems:\n- Printer paper (10 boxes) ... $120\n- Black ink cartridges (5 units) ... $150\n- Desk lamps (4 units) ... $200\n\nSubtotal: $470\nDelivery: Free\nTotal: $470\n\nPayment is due within 30 days. Thank you for your order.`},
+   {label:"苦情メール②", text:`To: support@officeplus.com\nFrom: office@brighttower.com\nDate: March 10\nSubject: Problem with Order #2045\n\nHello,\nWe received our order yesterday, but two of the four desk lamps arrived damaged and do not turn on. The printer paper and ink cartridges were all fine.\nWe would like a replacement for the two broken lamps as soon as possible. Could you also confirm whether we will be charged again for the replacements?\nThank you,\nThomas Reed, Bright Tower Law Firm`}],
+  qs:[
+   {q:"How many desk lamps did the customer order?（顧客は卓上ランプを何個注文したか）",c:["Two","Three","Four","Five"],a:2,cat:"Part7:詳細(①)",
+    e:"①の請求書に Desk lamps (4 units) とある。",
+    d:["2個：2個は破損した個数",
+       "3個：注文数と一致しない",
+       "4個：4 units に一致 →正解",
+       "5個：これはインクの数量"]},
+   {q:"What problem does Mr. Reed report?（リードさんはどんな問題を報告しているか）",c:["The paper was missing.","Two lamps are damaged.","The order was late.","He was overcharged."],a:1,cat:"Part7:詳細(②)",
+    e:"②に two of the four desk lamps arrived damaged and do not turn on とある。",
+    d:["紙が不足：紙は問題なかった",
+       "ランプ2個が破損：two ... lamps arrived damaged に一致 →正解",
+       "注文が遅れた：遅延の話はない",
+       "過剰請求された：請求の誤りではなく破損"]},
+   {q:"Which items arrived without problems?（問題なく届いた品目はどれか）",c:["The lamps","The paper and ink cartridges","All items","None of them"],a:1,cat:"Part7:クロス参照",
+    e:"①の品目のうち、②で paper と ink cartridges は問題なし、ランプのみ破損とある。2文書を照合して判断。",
+    d:["ランプ：ランプは破損していた",
+       "紙とインクカートリッジ：①の品目で②が fine とした2品 →正解",
+       "すべての品目：ランプは破損していた",
+       "どれもない：紙とインクは無事だった"]},
+   {q:"What does Mr. Reed want to know?（リードさんは何を知りたいか）",c:["The store's hours","If he will be charged again","The delivery driver's name","How to return the paper"],a:1,cat:"Part7:推測(②)",
+    e:"②の Could you also confirm whether we will be charged again for the replacements? から再請求の有無を知りたい。",
+    d:["店の営業時間：営業時間は尋ねていない",
+       "再び請求されるか：charged again for the replacements に一致 →正解",
+       "配達員の名前：名前の言及なし",
+       "紙の返品方法：紙は問題なく返品の話ではない"]}
+  ]},
+{ type:"予約確認＋変更依頼メール", title:"出張のホテル予約", level:"やや難（ダブルパッセージ）",
+  gloss:"reservation=予約／confirmation=確認／check-in=チェックイン／nightly rate=1泊料金／amend=変更する／availability=空き状況／extend=延長する／complimentary=無料の",
+  passages:[
+   {label:"予約確認①", text:`Lakeside Inn – Reservation Confirmation\n\nGuest: Ms. Karen Lopez\nConfirmation Number: LK-7781\nCheck-in: May 12\nCheck-out: May 14\nRoom Type: Standard Single\nNightly Rate: $90\nNights: 2\nTotal: $180\n\nCheck-in time is 3 p.m. Complimentary breakfast is served from 7 to 9 a.m. Please contact us at least 48 hours in advance for any changes.`},
+   {label:"変更依頼メール②", text:`To: reservations@lakesideinn.com\nFrom: k.lopez@traveler.com\nDate: May 8\nSubject: Change to Reservation LK-7781\n\nHello,\nI have a reservation under confirmation number LK-7781. My business trip has been extended, so I would like to stay one extra night and check out on May 15 instead of May 14.\nCould you confirm whether the same room is available for the additional night and what the new total will be? Thank you for your help.\nBest regards,\nKaren Lopez`}],
+  qs:[
+   {q:"How many nights did Ms. Lopez originally book?（ロペスさんは当初何泊予約したか）",c:["One night","Two nights","Three nights","Four nights"],a:1,cat:"Part7:詳細(①)",
+    e:"①の確認書に Nights: 2、Check-in May 12、Check-out May 14 とある。",
+    d:["1泊：2泊の予約である",
+       "2泊：Nights: 2 に一致 →正解",
+       "3泊：延長後でも合計3泊で当初ではない",
+       "4泊：そのような記載はない"]},
+   {q:"What does Ms. Lopez request in her email?（ロペスさんはメールで何を依頼しているか）",c:["A cheaper room","To stay one extra night","A late breakfast","To cancel her stay"],a:1,cat:"Part7:詳細(②)",
+    e:"②に I would like to stay one extra night and check out on May 15 とある。",
+    d:["より安い部屋：料金変更の依頼ではない",
+       "もう1泊する：stay one extra night に一致 →正解",
+       "遅い朝食：朝食時間の変更ではない",
+       "滞在をキャンセル：キャンセルではなく延長"]},
+   {q:"If approved, what will Ms. Lopez's new total likely be?（承認されたら新しい合計はおそらくいくらか）",c:["$180","$90","$270","$360"],a:2,cat:"Part7:クロス参照",
+    e:"①は1泊90ドルで当初合計180ドル。②で1泊延長なので90ドル追加され、合計270ドルになる。",
+    d:["180ドル：これは当初の2泊分",
+       "90ドル：これは1泊分のみ",
+       "270ドル：①90ドル×3泊（延長後）→正解",
+       "360ドル：4泊分で延長は1泊のみ"]},
+   {q:"By when should changes be requested?（変更はいつまでに依頼すべきか）",c:["At check-in","At least 48 hours in advance","Within 30 days","Anytime"],a:1,cat:"Part7:詳細(①)",
+    e:"①に Please contact us at least 48 hours in advance for any changes とある。",
+    d:["チェックイン時：当日ではなく事前連絡が必要",
+       "少なくとも48時間前：48 hours in advance に一致 →正解",
+       "30日以内：そのような記載はない",
+       "いつでも：48時間前という条件がある"]}
+  ]},
+{ type:"広告＋メール＋スケジュール", title:"料理教室の受講", level:"難（トリプルパッセージ）",
+  gloss:"culinary=料理の／session=回・講座／enroll=申し込む／beginner=初心者／schedule=予定表／slot=時間枠／cuisine=料理／reschedule=予定を変更する",
+  passages:[
+   {label:"広告①", text:`Bella Cucina Cooking School – Spring Classes\n\nLearn to cook like a pro! We offer evening classes for all levels.\n\n- Italian Basics (Beginner)\n- Sushi Making (Intermediate)\n- French Pastry (Advanced)\n\nEach course has four weekly sessions. The fee is $160 per course, including all ingredients. Classes are held in the evening on weekdays. To enroll, email us at info@bellacucina.com.`},
+   {label:"申込メール②", text:`To: info@bellacucina.com\nFrom: emma.ward@mymail.com\nDate: March 3\nSubject: Enrollment\n\nHello,\nI am a complete beginner and would like to enroll in the course that suits my level. Could you confirm which evening it meets and the start date? I work until 6 p.m., so a class starting at 7 p.m. would be ideal.\nThank you,\nEmma Ward`},
+   {label:"週間スケジュール③", text:`Bella Cucina – Weekly Class Schedule\n\nMonday 7 p.m. – Italian Basics (starts March 9)\nTuesday 6 p.m. – French Pastry\nWednesday 7 p.m. – Sushi Making\nThursday 6 p.m. – French Pastry (repeat)\n\nAll courses run for four weeks. Please arrive ten minutes early for your first session.`}],
+  qs:[
+   {q:"Which course is right for Ms. Ward?（ワードさんに合う講座はどれか）",c:["French Pastry","Sushi Making","Italian Basics","None of them"],a:2,cat:"Part7:クロス参照",
+    e:"②でワードさんは complete beginner。①で初心者向けは Italian Basics (Beginner) なので、これが適切。",
+    d:["フレンチペストリー：これは上級者向け",
+       "寿司作り：これは中級者向け",
+       "イタリア料理の基礎：①で Beginner 向けと一致 →正解",
+       "どれも合わない：初心者向け講座が存在する"]},
+   {q:"Does the course meet at a convenient time for Ms. Ward?（講座はワードさんに都合のよい時間か）",c:["No, it starts at 6 p.m.","Yes, it starts at 7 p.m.","It starts in the morning.","The time is unknown."],a:1,cat:"Part7:クロス参照",
+    e:"②で7時開始が理想。③で Italian Basics は Monday 7 p.m. 開始なので都合がよい。",
+    d:["6時開始でだめ：イタリア料理の基礎は7時開始",
+       "7時開始で良い：③の Monday 7 p.m. と②の希望が一致 →正解",
+       "朝に開始：夜のクラスである",
+       "時間不明：③に7時と明記されている"]},
+   {q:"When does Ms. Ward's course start?（ワードさんの講座はいつ始まるか）",c:["March 3","March 9","March 7","April 9"],a:1,cat:"Part7:詳細(③)",
+    e:"③に Italian Basics (starts March 9) とある。これがワードさんの受ける講座。",
+    d:["3月3日：これはメールの送信日",
+       "3月9日：starts March 9 に一致 →正解",
+       "3月7日：そのような日付はない",
+       "4月9日：4月の記載はない"]},
+   {q:"What is included in the course fee?（受講料には何が含まれるか）",c:["A cookbook","All ingredients","A uniform","Transportation"],a:1,cat:"Part7:詳細(①)",
+    e:"①に The fee is $160 per course, including all ingredients とある。",
+    d:["料理本：料理本の記載はない",
+       "すべての材料：including all ingredients に一致 →正解",
+       "制服：制服の言及なし",
+       "交通費：交通費は含まれない"]}
+  ]}
+];
+
 /* ===================== アプリ本体 ===================== */
 const $ = s => document.querySelector(s);
+
+/* ----- 問題文・本文の日本語訳（自動生成） ----- */
+const Q_JP = {"The marketing team worked ____ to meet the project deadline.":"マーケティングチームはプロジェクトの締め切りに間に合わせるため、勤勉に働いた。","All employees must submit their expense reports for ____ by Friday.":"全従業員は金曜日までに承認を得るため経費報告書を提出しなければならない。","The new software has significantly improved the ____ of our operations.":"新しいソフトウェアは、当社の業務の効率を大幅に向上させた。","Ms. Tanaka is ____ for managing the company's overseas accounts.":"タナカさんは、会社の海外口座の管理を担当している。","The conference room is ____ available between 2 and 4 P.M.":"その会議室は、現在午後2時から4時の間が利用可能です。","Our company offers a wide ____ of financial services.":"当社は幅広い種類の金融サービスを提供している。","The instructions were written so ____ that everyone understood them.":"その指示はとても分かりやすく書かれていたので、誰もが理解できた。","The manager praised the team for their ____ performance.":"マネージャーは、そのチームの素晴らしい成果を称賛した。","Please review the attached document ____ before the meeting.":"会議の前に、添付の書類を注意深く確認してください。","The factory increased its production ____ last quarter.":"その工場は前四半期、生産量を大幅に増やした。","The renovation will make the office more ____.":"改装によって、オフィスはより生産性の高いものになるだろう。","The technician explained the procedure ____.":"技術者はその手順を辛抱強く説明した。","The company's ____ to quality has earned customer trust.":"品質への取り組みが、その会社に顧客の信頼をもたらした。","The manager gave a ____ presentation to the board.":"マネージャーは取締役会で説得力のあるプレゼンテーションを行った。","Employees should keep their workspaces ____.":"従業員は自分の作業スペースを整理整頓しておくべきだ。","The training program was ____ designed for beginners.":"その研修プログラムは、初心者向けに特別に設計されていた。","The store guarantees the ____ of all its products.":"その店はすべての商品の本物であることを保証している。","Our team responded to the complaint ____.":"私たちのチームはその苦情に迅速に対応した。","The new policy had a ____ effect on morale.":"新しい方針は、士気に良い影響を与えた。","The instructions should be as ____ as possible.":"指示はできるだけ簡潔にすべきだ。","The report provides a ____ analysis of the market.":"その報告書は市場の詳細な分析を提供している。","She handled the negotiation ____.":"彼女はその交渉を巧みに進めた。","The factory operates with great ____.":"その工場は非常に高い精度で稼働している。","The candidate seemed highly ____ during the interview.":"その候補者は面接の間、非常に意欲的に見えた。","Customers appreciate the ____ of our staff.":"お客様は当社スタッフの親しみやすさを高く評価している。","The manager reviewed the figures ____ before the meeting.":"マネージャーは会議の前にその数値を徹底的に確認した。","The new design is both modern and ____.":"その新しいデザインは現代的であると同時に機能的でもある。","The supervisor praised the intern's ____.":"上司はそのインターンの信頼性を称賛した。","The software updates are released ____.":"そのソフトウェアの更新は定期的に配信される。","A ____ increase in sales was reported this quarter.":"今四半期、売上の大幅な増加が報告された。","The shipment will arrive ____ three business days.":"その荷物は3営業日以内に到着する予定だ。","____ the heavy rain, the outdoor event was postponed.":"大雨のため、その屋外イベントは延期された。","Employees may take a break ____ they have completed their assigned tasks.":"従業員は割り当てられた業務を完了したら、休憩を取ってよい。","The report must be submitted ____ the end of the month.":"その報告書は月末までに提出しなければならない。","____ the budget was limited, the team delivered excellent results.":"予算は限られていたが、チームは素晴らしい成果を上げた。","The store is open ____ 9 A.M. to 8 P.M. on weekdays.":"その店は平日、午前9時から午後8時まで営業している。","Mr. Lee will lead the project ____ the current manager retires.":"現在のマネージャーが退職した後、リーさんがそのプロジェクトを率いることになる。","The package was delivered ____ schedule despite the storm.":"嵐にもかかわらず、その荷物は予定通りに配達された。","Please call us ____ you need any assistance.":"何か手助けが必要なときは、お電話ください。","The new policy applies to all employees ____ their department.":"新しい方針は、部署に関係なく全従業員に適用される。","The meeting was rescheduled ____ a conflict in the manager's calendar.":"マネージャーの予定が重なったため、その会議は予定変更された。","____ you submit the form by noon, it will be processed today.":"正午までにこの用紙を提出していただければ、本日中に処理されます。","The samples will be shipped ____ the order is confirmed.":"注文が確定し次第、サンプルは発送されます。","The library stays open late ____ exam periods.":"試験期間中、その図書館は遅くまで開館している。","____ working overtime, the team could not meet the deadline.":"残業したにもかかわらず、チームは締め切りに間に合わなかった。","Please keep your receipt ____ you need to return the item.":"商品を返品する必要がある場合に備えて、レシートを保管しておいてください。","The product is popular ____ its high price.":"その製品は価格が高いにもかかわらず人気がある。","The flight was delayed ____ the storm passed.":"嵐が過ぎ去るまで、そのフライトは遅延した。","____ the report nor the invoice was attached to the email.":"報告書も請求書も、そのメールに添付されていなかった。","We can offer a discount ____ you order in bulk.":"まとめてご注文いただければ、割引を提供できます。","The store accepts returns ____ 30 days of purchase.":"その店は購入から30日以内であれば返品を受け付ける。","____ being new to the team, she quickly took the lead.":"チームに加わったばかりにもかかわらず、彼女はすぐに主導権を握った。","The presentation will begin ____ all participants have arrived.":"参加者全員が到着したら、そのプレゼンテーションは始まる。","Sign here ____ you agree to the terms.":"条件に同意される場合は、ここに署名してください。","The road will be closed ____ construction.":"工事のため、その道路は閉鎖される。","The team worked overtime ____ finish the project on time.":"チームはプロジェクトを期限内に終わらせるために残業した。","____ the manager approves it, the plan cannot proceed.":"マネージャーが承認しない限り、その計画は進められない。","Payment can be made ____ in cash or by card.":"支払いは現金またはカードのどちらかで行うことができる。","The warranty remains valid ____ the product is used properly.":"製品が適切に使用される限り、保証は有効のままだ。","He stayed late ____ everyone else had gone home.":"他のみんなが帰宅した後も、彼は遅くまで残っていた。","The committee ____ the proposal at yesterday's meeting.":"委員会は昨日の会議でその提案を承認した。","By the time you arrive, the presentation ____ already started.":"あなたが到着するころには、そのプレゼンテーションはすでに始まっているだろう。","Each of the applicants ____ required to submit a résumé.":"応募者はそれぞれ履歴書の提出を求められている。","The documents ____ to the client last week.":"その書類は先週、顧客に送られた。","Sales ____ steadily since the new product launch.":"新製品の発売以来、売上は着実に増加している。","The manager asked that the report ____ by Monday.":"マネージャーはその報告書を月曜日までに仕上げるよう求めた。","Neither the manager nor the employees ____ aware of the change.":"マネージャーも従業員も、その変更に気づいていなかった。","The new equipment ____ next week.":"新しい設備は来週設置される予定だ。","If the client ____ the contract, we will begin production.":"顧客がその契約に署名すれば、私たちは生産を開始する。","The team ____ working on the project for three months.":"チームは3か月間そのプロジェクトに取り組んでいる。","The CEO ____ the new branch next month.":"CEOは来月、新しい支店を開設する予定だ。","The results ____ by an independent auditor every year.":"その結果は毎年、独立した監査人によって審査される。","If I ____ you, I would accept the offer.":"もし私があなたなら、その申し出を受けるだろう。","The shipment ____ before the holidays if we order now.":"今注文すれば、その荷物は休暇前に到着するだろう。","The number of applicants ____ increasing every year.":"応募者数は毎年増加している。","She suggested that he ____ the report again.":"彼女は彼にその報告書をもう一度確認するよう提案した。","By next year, the company ____ its headquarters to Tokyo.":"来年までに、その会社は本社を東京に移転しているだろう。","Neither of the proposals ____ acceptable to the board.":"どちらの提案も取締役会には受け入れられない。","The reports ____ to all managers every Monday.":"その報告書は毎週月曜日に全マネージャーへ送られる。","The manager insisted that the meeting ____ postponed.":"マネージャーはその会議を延期するよう強く主張した。","The factory ____ in operation since 1995.":"その工場は1995年から稼働している。","All visitors ____ to sign in at the front desk.":"すべての訪問者は受付で署名するよう求められている。","If the weather ____ bad tomorrow, the event will be held indoors.":"もし明日天気が悪ければ、そのイベントは屋内で開催される。","The board ____ the budget at next week's meeting.":"取締役会は来週の会議でその予算を承認するだろう。","Every employee ____ a security badge to enter the building.":"すべての従業員は、建物に入るためにセキュリティバッジを必要とする。","The contract ____ by both parties last Friday.":"その契約は先週の金曜日に両者によって署名された。","The team ____ the project by the end of this week.":"そのチームは今週末までにプロジェクトを完了しているだろう。","The prices ____ since the new tax was introduced.":"新しい税が導入されて以来、価格は上昇している。","The manager recommended that the policy ____ revised.":"マネージャーは、その方針を見直すよう勧めた。","A list of attendees ____ posted on the website.":"出席者のリストがウェブサイトに掲載されている。","The employees completed the training by ____.":"従業員たちは自分たちだけでその研修を修了した。","The candidate ____ résumé impressed the panel was hired.":"履歴書が審査員に好印象を与えたその候補者が採用された。","This is the building ____ our headquarters are located.":"ここが、私たちの本社が位置している建物です。","The manager distributed the reports to ____ attended the meeting.":"マネージャーは、会議に出席した人全員に報告書を配布した。","The product, ____ was launched last year, has become very popular.":"昨年発売されたその製品は、非常に人気になった。","All staff members are expected to do ____ best.":"全スタッフは、自分の最善を尽くすことが期待されている。","The proposal that the board approved was ____.":"取締役会が承認した提案は、私のものだった。","We need someone ____ can speak both English and Japanese.":"私たちは、英語と日本語の両方を話せる人を必要としている。","The two departments share ____ resources to cut costs.":"その2つの部署は、コストを削減するために資源を共有している。","____ of the two proposals is more cost-effective?":"その2つの提案のうち、どちらがより費用対効果が高いですか。","The employees ____ attended the workshop received a certificate.":"そのワークショップに参加した従業員は、修了証を受け取った。","The company ____ products we use is based in Germany.":"私たちが使っている製品を作っているその会社は、ドイツに拠点を置いている。","The clients with ____ we met were very satisfied.":"私たちが会ったその顧客たちは、とても満足していた。","____ is responsible for this error must report to the manager.":"この誤りに責任がある者は誰でも、マネージャーに報告しなければならない。","The hotel ____ we stayed had excellent service.":"私たちが宿泊したそのホテルは、サービスが素晴らしかった。","Please return the equipment to ____ you borrowed it from.":"その機材は、借りた相手に返却してください。","The report ____ was submitted yesterday contains some errors.":"昨日提出されたその報告書には、いくつか誤りがある。","Neither of the candidates had ____ qualifications verified.":"どちらの候補者も、資格が確認されていなかった。","This is the reason ____ the project was delayed.":"これが、そのプロジェクトが遅れた理由です。","The two managers respect ____ other's opinions.":"その2人のマネージャーは、お互いの意見を尊重している。","The new intern, ____ started last week, is doing well.":"先週働き始めたばかりの新しいインターンは、うまくやっている。","We offer support to customers ____ orders are delayed.":"私たちは、注文が遅れている顧客にサポートを提供します。","The day ____ the store opened was very busy.":"その店が開店した日は、とても忙しかった。","The manager will hire ____ is most qualified.":"マネージャーは、最も適任な人を誰でも採用するつもりだ。","The documents, ____ were confidential, were locked away.":"機密扱いだったその書類は、鍵をかけて保管された。","Each of the departments submitted ____ own budget.":"各部署は、それぞれ独自の予算を提出した。","The colleague ____ I share an office is on vacation.":"私とオフィスを共有している同僚は、休暇中だ。","The award goes to ____ sells the most this month.":"今月もっとも多く売り上げた人に、その賞が贈られる。","Customers may exchange items ____ are defective.":"お客様は、欠陥のある商品を交換することができます。","____ of the two applicants was interviewed separately.":"2人の応募者は、それぞれ別々に面接を受けた。","The company plans to ____ its operations into Asian markets.":"その会社は、アジア市場へ事業を拡大する計画だ。","Please ____ to the attached file for more details.":"詳細については、添付ファイルをご参照ください。","The new manager has extensive ____ in the retail industry.":"新任のマネージャーは、小売業界で豊富な経験を持っている。","All visitors must ____ with the safety regulations.":"来場者は全員、安全規則を遵守しなければならない。","The discount is only ____ to members.":"その割引は会員のみが利用できる。","We would like to ____ you for your outstanding contribution.":"あなたの卓越した貢献に対して、表彰させていただきたいと思います。","The manager will ____ the new procedures at the meeting.":"マネージャーは会議で新しい手順を紹介する予定だ。","Customer satisfaction is our top ____.":"顧客満足が私たちの最優先事項です。","The contract will ____ at the end of the year.":"その契約は年末に期限切れとなる。","The company is ____ for its excellent customer service.":"その会社は優れた顧客サービスで知られている。","The manager decided to ____ the meeting until next week.":"マネージャーは会議を来週まで延期することにした。","We need to ____ our marketing strategy to attract more customers.":"より多くの顧客を引きつけるために、マーケティング戦略を見直す必要がある。","The company offers competitive ____ to attract skilled workers.":"その会社は、優秀な人材を引きつけるために魅力的な福利厚生を提供している。","All staff must ____ to the new dress code.":"全スタッフは新しい服装規定を守らなければならない。","The shipment was ____ due to bad weather.":"悪天候のため、その荷物の配送は遅れた。","Please ____ your receipt in case you need a refund.":"返金が必要な場合に備えて、レシートを保管しておいてください。","The new system will ____ productivity significantly.":"新しいシステムは生産性を大幅に高めるだろう。","The two companies decided to ____ their resources.":"2社は、それぞれの経営資源を統合することを決めた。","Customers can ____ their orders online.":"お客様はオンラインで注文を追跡できます。","The report ____ several areas for improvement.":"その報告書は、改善すべきいくつかの点を指摘している。","The manager will ____ the candidates next week.":"マネージャーは来週、候補者たちと面接を行う予定だ。","Our goal is to ____ customer satisfaction.":"私たちの目標は顧客満足を高めることです。","The company plans to ____ a new product line next spring.":"その会社は来春、新しい製品ラインを発売する計画だ。","Please ____ the form and return it by Friday.":"この用紙にご記入のうえ、金曜日までにご返送ください。","The warranty does not ____ accidental damage.":"その保証は偶発的な損傷を補償しない。","We must ____ the deadline to keep the client satisfied.":"顧客に満足してもらうため、私たちは納期を守らなければならない。","The new manager hopes to ____ trust among the staff.":"新任のマネージャーは、スタッフの間に信頼を築きたいと考えている。","The store will ____ a discount to loyal customers.":"その店は、得意客に割引を提供する予定だ。","The committee will ____ the proposal at the next meeting.":"委員会は次回の会議でその提案を検討する予定だ。","Sales figures ____ a steady increase over the past year.":"売上の数字は、この1年で着実な増加を示している。","The CEO emphasized the ____ of teamwork during her speech.":"CEOはスピーチの中で、チームワークの重要性を強調した。","Visitors are required to wear identification badges ____ they are in the building.":"来訪者は、館内にいる間、身分証明バッジを着用する必要がある。","The technician will ____ the equipment before the demonstration.":"技術者はデモの前に機器を点検する予定だ。","____ of the employees has access to the confidential files.":"その機密ファイルにアクセスできる従業員は1人もいない。","The merger resulted ____ a significant increase in revenue.":"その合併は、収益の大幅な増加という結果をもたらした。","The new model is far more efficient than the ____ one.":"新しいモデルは、以前のものよりもはるかに効率的だ。","Employees who work overtime will be compensated ____.":"残業した従業員には、それに応じた報酬が支払われる。","The proposal was rejected ____ its high cost.":"その提案は、コストの高さが理由で却下された。","The manager, along with her assistants, ____ attending the seminar.":"そのマネージャーは、アシスタントたちとともにセミナーに出席する予定だ。","We are looking forward to ____ from you soon.":"近いうちにご連絡いただけるのを楽しみにしております。","The store offers a refund to ____ is not satisfied with the product.":"その店は、製品に満足できなかった人には誰にでも返金を行う。","The construction project is expected to be completed ____ schedule.":"その建設プロジェクトは、予定より早く完了する見込みだ。","Mr. Yamada has been with the company ____ 2010.":"山田さんは2010年からこの会社に勤めている。","The instructions must be followed ____ to avoid accidents.":"事故を防ぐため、その指示は正確に守られなければならない。","The factory operates 24 hours a day ____ increase production.":"その工場は、生産を増やすために24時間稼働している。","The committee has not yet reached a ____ on the matter.":"委員会はその件についてまだ結論に達していない。","The seminar was so informative that many attendees stayed ____ the end.":"そのセミナーは非常に有益だったので、多くの参加者が最後まで残った。","Our company is committed to ____ high-quality products.":"当社は高品質な製品を提供することに尽力しています。","The report should be both accurate ____ concise.":"その報告書は、正確かつ簡潔であるべきだ。","The new policy will take ____ on the first of next month.":"新しい方針は来月の1日に発効する。"};
+const P6_JP = ["宛先: 従業員各位\n差出人: 施設管理部\n件名: プリンターの保守\n\n今週木曜日、3階のメインプリンターがご利用いただけなくなりますのでご注意ください。午前中に技術者が機器の点検・保守を行い、作業は正午までに完了する予定です。それまでの間は、2階または4階のプリンターをご利用ください。\n\nご不便をおかけして申し訳ございません。あわせて、より新しいモデルへとアップグレードいたします。新しい部品により、プリンターははるかに高速で、信頼性の高いものになるはずです。\n\nご協力に感謝いたします。","お客様へのお知らせ\n\nグリーンフィールド食料品店は、5月3日から5月10日まで改装のため休業いたします。この期間中も、オンラインストアは引き続きご利用いただけ、自宅への配送も通常どおり承ります。当店を拡張し、より幅広い品揃えのオーガニック製品をご提供できるようにいたします。\n\n改装後の店舗には、新しいベーカリーも併設されます。改装が完了するまで、皆さまのご辛抱に感謝申し上げます。\n\nグリーンフィールド・チーム","メモ\n宛先: 営業部\n差出人: 人事部\n件名: 新しい報告システム\n\n来月より、すべての営業報告は新しいオンラインシステムを通じて提出していただくことになります。このシステムにより、管理職は従来よりも効率的にデータを確認できるようになります。研修セッションは来週開催されます。\n\n出席を強くお勧めいたします。出席できない従業員は、上司に連絡し、代替のセッションを手配してください。","ブライトウェイ語学学校\n\n忙しいスケジュールの中でも英語力を伸ばしたいとお考えですか。当校の夜間コースは、働く社会人の方々のために設計されています。少人数制のため、各生徒は講師から個別の指導を受けられます。\n\n現在、特別キャンペーンを実施中です。6月1日までにお申し込みの方は、授業料が20%割引になります。キャリアを前進させるこの貴重な機会をお見逃しなく。","図書館をご利用の皆さまへのお知らせ\n\n来月より、中央図書館の開館時間を延長することをお知らせいたします。7月1日より、平日は午後10時まで開館いたします。これにより、図書館は従来よりも1時間遅く閉館することになります。この変更は、学生や地域住民の皆さまからの多くのご要望に応えたものです。\n\n新しいスケジュールとは異なり、週末の時間は従来どおりとなります。利用者の皆さまは、引き続きいつでもオンラインで本の貸出・延長をしていただけます。開館時間の延長により、皆さまがより快適に勉強や読書をするための時間が増えることを願っております。\n\n日頃のご支援に感謝申し上げます。ご意見がございましたら、受付までお寄せください。","宛先: ダニエル・フォスター様\n差出人: 注文チーム、メープル・グッズ\n件名: ご注文確認\n\nこの度はご購入いただきありがとうございます。お客様のご注文を承り、現在当社の倉庫にて準備を進めておりますことをご確認のためご連絡申し上げます。\n\nお荷物は2営業日以内に発送いたします。お届け予定日は6月20日です。商品が発送され次第、追跡番号をお送りいたします。この番号を使って、いつでも配送状況をご確認いただけます。\n\nお届けまでの時間は、お客様の所在地によって異なる場合がございますのでご了承ください。ご注文に関してご質問がございましたら、サポートチームがいつでもお手伝いいたします。\n\nご利用いただきありがとうございます。お買い上げの品をお楽しみいただけますと幸いです。","報道関係者各位\n\nノヴァ・テックは本日、最新のスマートウォッチ「ノヴァ・パルス」の発売を発表しました。同社は本日午前、サンフランシスコで開催された記者発表会でこのデバイスを公開しました。\n\nノヴァ・パルスは、より明るい画面と、最大7日間持続するバッテリーを特徴としています。これは市場に出回っているほとんどの腕時計よりもはるかに長持ちします。また、睡眠や心拍数を記録する高度なヘルスセンサーも搭載しています。\n\nこの腕時計は従来のモデルよりも耐久性が高く、スポーツやアウトドアでの使用に最適です。お客様は8月5日より、オンラインまたは一部の取扱店でノヴァ・パルスをご購入いただけます。\n\n詳細については、当社のウェブサイトをご覧ください。","社内求人: カスタマーサービス部 チームリーダー\n\n当社では現在、カスタマーサービス部のチームリーダーを募集しております。このポジションに興味のある現従業員の応募を歓迎します。\n\n採用された方は、8名のスタッフからなるチームを統括し、部門長に直接報告していただきます。主な業務には、研修とスケジュール管理が含まれます。高いコミュニケーション能力と最低3年の経験が必要です。\n\nこれは、社内でのキャリアアップを望む方にとって絶好の機会です。ご興味のある従業員は、6月30日までに人事部へ応募書類を提出してください。\n\n皆さまのご応募をお待ちしております。","メモ\n宛先: 全部署のスタッフ各位\n差出人: 人事部\n件名: 在宅勤務ポリシーの変更\n\n在宅勤務ポリシーが改定されましたのでお知らせいたします。来月より、従業員は週に最大3日まで在宅勤務が可能になります。\n\nこの変更は、柔軟なスケジュールが生産性を向上させるというフィードバックに基づくものです。ただし、このポリシーはオフィス勤務のスタッフにのみ適用されます。在宅勤務を希望する従業員は、まず上司の承認を得る必要があります。\n\nビデオ会議や日々の業務に適した自宅環境が整っていることをご確認ください。新しい取り決めについてご質問がございましたら、人事チームまでご連絡ください。\n\nご理解とご協力に感謝いたします。","テイスト・オブ・タスカニー ― 本日オープン！\n\nダウンタウンの中心に位置する新しいイタリアンレストラン、テイスト・オブ・タスカニーのグランドオープンをお知らせできることを大変うれしく思います。経験豊富なシェフたちが、地元産の最も新鮮な食材だけを使って本格的な料理をご用意します。さらに、家族での食事や特別な日にぴったりの、温かくアットホームな雰囲気をご提供します。\n\nオープンを記念して、最初の1週間はご来店のすべてのお客様にデザートを無料でサービスいたします。また、来月にはメニューの拡充も予定しております。お席に限りがございますので、事前のご予約を強くお勧めいたします。\n\nぜひ本日お越しいただき、なぜ誰もがテイスト・オブ・タスカニーの話をしているのか、その理由をお確かめください！","月刊社内ニュースレター ― 6月号\n\nチームの皆さまへ\n\n先月の懸命なお働きに感謝いたします。皆さまの努力のおかげで、当社の売上は前四半期と比べて大幅に増加しました。この成果は、皆さまの献身なくしては実現できなかったものです。\n\nまた、先週マーケティング部に加わった3名の新メンバーを歓迎したいと思います。彼らはさまざまな業界で培った貴重な経験を持ち込んでくれます。お会いした際には、ぜひ少しお時間を取って自己紹介をしてください。\n\n最後に、毎年恒例の社内ピクニックを7月20日に開催いたします。この楽しいイベントに皆さまがご参加いただけることを願っております。いつものように、皆さまのご意見やアイデアを歓迎いたします。\n\n敬具\n経営チーム","製品保証に関する重要なお知らせ\n\n当社製品をご購入いただきありがとうございます。当社が販売するすべての製品には、材料および製造上のあらゆる欠陥をカバーする1年間の保証が付いています。この期間内に製品が正常に動作しなくなった場合は、無償で修理または交換いたします。\n\n保証を有効にするには、ご購入後30日以内にオンラインでご登録ください。さもないと、保証が無効になる場合があります。その場合、レシートなどの購入証明をご提示いただく必要があります。なお、保証期間終了後でも、一部の修理は可能な場合がございます。\n\nご不明な点がございましたら、カスタマーサービスチームがいつでもお手伝いいたします。\n\n当社ブランドへのご信頼に感謝申し上げます。","お知らせ: 社員研修プログラム\n\nこの度、皆さまの専門スキルを高めるために設計された新しい研修プログラムを実施することをお知らせいたします。本プログラムは来月、3日間にわたって開催され、すべての正社員に参加が義務付けられています。\n\n各セッションでは、コミュニケーション、チームワーク、時間管理など、それぞれ異なるテーマを取り上げます。経験豊富なトレーナーがセッションを進行し、皆さまの質問にお答えします。また、グループでの討論や実践のための時間も設けられます。\n\n参加するには、6月25日までに会社のウェブサイトからご登録ください。定員に限りがございますので、お早めのお申し込みをお勧めいたします。プログラムを修了された方には、修了証が授与されます。\n\n皆さまのご参加をお待ちしております。","よくあるご質問\n\nヘルプページへようこそ。以下では、お客様から最もよく寄せられるご質問への回答をご覧いただけます。\n\nプランを変更するにはどうすればよいですか？ アカウント設定からいつでもサブスクリプションのアップグレードまたはダウングレードが可能です。新しいプランは次回の請求日に適用されます。\n\nサブスクリプションを解約できますか？ はい。いつでもご希望のときに解約でき、解約後も現在の期間が終了するまではご利用いただけます。それ以降は、追加の請求は一切発生しません。\n\nパスワードを忘れた場合は？ ログインページの「パスワードをお忘れですか」のリンクをクリックするだけです。メールアドレスを入力していただくと、すぐにリセット用のリンクをお送りします。"];
+const P7_JP = ["【Eメール】\n宛先：ダニエル・レイエス\n差出人：テックゾーン カスタマーサービス\n日付：3月14日\n件名：ご注文 #4521 について\n\nレイエス様\n先日はご注文いただき、ありがとうございます。あいにく、ご注文いただいたワイヤレスヘッドフォンは現在在庫切れとなっております。次回入荷は2週間以内を見込んでおります。\nお客様には2つの選択肢がございます。商品の入荷をお待ちいただくか、追加料金なしで同等の価値の別モデルをお選びいただくこともできます。ご希望をお知らせいただくため、本メールにご返信ください。\n3月21日までにご連絡をいただけない場合は、ヘッドフォンが入荷するまでご注文をお預かりいたします。\nご不便をおかけし申し訳ございません。\n敬具\nテックゾーン カスタマーサービス","【広告】\nグリーンリーフ・コワーキングスペース ― ダウンタウンにオープン！\n\n仕事がはかどる場所をお探しですか？グリーンリーフは、フリーランスや小規模チームの方向けに柔軟な会員プランをご用意しています。\n\n• デイパス：20ドル ― 午前8時から午後8時まで利用可能\n• 月額プラン：180ドル ― 24時間利用可能、専用デスク付き\n• チームルーム：月500ドル ― 最大6名用の個室\n\nすべての会員の方が、無料の高速インターネット、コーヒー飲み放題、会議室の利用をお楽しみいただけます。お申し込みの際にこの広告をご提示いただくと、最初の1週間が無料になります。\nwww.greenleafspace.com にアクセスするか、555-0192 までお電話いただければ見学が可能です。","【掲示】\nお知らせ：ビル エレベーター点検\n\nエレベーターBは、4月8日（土）の午前7時から午後1時まで、定期点検を行います。この時間帯は、入居者の皆様にはエレベーターAまたは階段をご利用いただきますようお願いいたします。\nこの点検は、定期的な安全検査の一環です。当日に大きな荷物を運ぶ必要がある場合は、あらかじめ計画を立てておくことをお勧めします。\nご質問は、内線210番までビル管理人へお問い合わせください。","【Eメール①（問い合わせ）】\n宛先：events@harborhotel.com\n差出人：l.nakamura@brightcorp.com\n日付：9月2日\n件名：会議の予約について\n\nこんにちは。\n弊社では、10月15日に約40名規模の1日会議を予定しております。プロジェクター付きで、ビュッフェ形式の昼食を取れるスペースのある会議室が必要です。\n御ホテルでこの人数を受け入れていただけるか、また費用はどのくらいになるかをお教えいただけますでしょうか。あわせて、来場者向けの駐車場についても情報をいただけると幸いです。\nよろしくお願いいたします。\nブライト社 リサ・ナカムラ\n\n【Eメール②（返信）】\n宛先：l.nakamura@brightcorp.com\n差出人：events@harborhotel.com\n日付：9月3日\n件名：RE: 会議の予約について\n\nナカムラ様\nお問い合わせいただきありがとうございます。当ホテルのガーデンホールは50名様までゆったりとご着席いただけ、プロジェクターも追加料金なしでご利用いただけます。1日あたりの部屋のレンタル料は800ドル、ビュッフェ形式の昼食は1名様あたり25ドルです。イベントにご参加のお客様全員に、地下駐車場の無料駐車をご利用いただけます。\nご予約を確定するには、9月30日までに20％の手付金をお送りください。事前に下見をご希望の場合は、お知らせください。\n敬具\nハーバーホテル イベントチーム マーク・オルセン","【求人広告】\nスタッフ募集：メープルコーナー・カフェのカフェスタッフ\n\nダウンタウンの中心に位置するメープルコーナー・カフェでは、フレンドリーで頼りになるパートタイムスタッフを募集しています。当店は、淹れたてのコーヒー、サンドイッチ、手作りデザートを提供する活気あるコーヒーショップです。\n\n仕事内容：\n- お客様からの注文を受け、ドリンクや食事を提供する\n- レジの操作\n- 店内を清潔に整える\n\n応募条件：\n- 前向きな姿勢と良好なコミュニケーション能力\n- 週末に勤務できること\n- 経験は歓迎しますが必須ではありません（しっかりとした研修を行います）\n\n柔軟なシフト、フレンドリーな職場環境、勤務中の無料ドリンクをご用意しています。初任給は時給15ドルです。\n\nご応募は、平日の午後2時から4時の間に履歴書をお持ちのうえ直接ご来店いただくか、jobs@maplecorner.com まで履歴書をメールでお送りください。","【記事】\nリバーサイド春フェスティバル、この5月に再び開催\n\nグリーンフィールド町は、5月18日と19日にグリーンフィールド・リバーサイド公園で、毎年恒例のリバーサイド春フェスティバルを開催します。今年で10回目を迎えるこのフェスティバルは、昨年は2万人を超える来場者を集め、地域で最も人気のあるイベントの一つとなっています。\n\n今年のフェスティバルでは、2つのステージでのライブ音楽、ファーマーズマーケット、そして世界各国の料理を提供する50を超える屋台が登場します。子ども向けの特設エリアには、ゲーム、フェイスペインティング、小さなふれあい動物園が用意されます。\n\n入場は無料ですが、すべての屋台がカードに対応しているわけではないため、来場者の方は食べ物や工芸品のために現金をご持参いただくことをお勧めします。公園周辺の駐車場には限りがあるため、主催者は公共交通機関、またはグリーンフィールド駅からの無料シャトルバスのご利用を勧めています。\n\nチャリティー抽選会の収益は、地元の学校プログラムに役立てられます。詳しいスケジュールは町のウェブサイトをご覧ください。","【お知らせ】\n全スタッフへのお知らせ\n\n件名：オフィス移転\n\nこのたび、弊社は7月1日（月）より新しいオフィスへ移転することをお知らせいたします。新オフィスはハーバー・アベニュー88番地に位置し、セントラル駅から徒歩わずか5分です。新しいビルには、より多くの会議室、より広い休憩スペース、そして改善された駐車設備が備わっています。\n\n移転は6月28日と29日の週末にかけて行われます。この間、現在のオフィスは閉鎖され、スタッフの出社は不要です。6月27日（金）までに、配布されたラベル付きの箱に私物を詰めてください。会社のノートパソコンは詰めないでください。電子機器はすべてITチームが別途対応します。\n\n7月1日より、新しい所在地で通常の営業時間を再開します。移転についてご質問がある場合は、事前に設備管理チームへお問い合わせください。\n\nこの移行期間中のご協力に感謝いたします。","【テキストメッセージ】\nミア・チェン（午前9時02分）：トム、こんにちは。午前10時のプレゼン用の配布資料はもう準備できてる？\nトム・ベイカー（午前9時04分）：もうすぐだよ。20部印刷したんだけど、最後の5部のところでプリンターの紙が切れちゃって。\nミア・チェン（午前9時05分）：問題ないよ。来るのは18人だけだから、20部あれば十分。\nトム・ベイカー（午前9時06分）：よかった。もう一つ、B室のプロジェクターは動いてる？先週は壊れてたよね。\nミア・チェン（午前9時07分）：昨日ITチームが直してくれたから、大丈夫。配布資料を9時45分までに部屋に持ってきてもらえる？\nトム・ベイカー（午前9時08分）：もちろん。自分の机に寄って取ってから、そのまま向かうよ。\nミア・チェン（午前9時09分）：完璧。本当に助かるよ。また後でね。","【案内状】\nブライトパス・コンサルティング主催のデジタルマーケティング・ワークショップに、謹んでご招待申し上げます。9月12日（木）午後1時から午後5時まで、レイクサイド・カンファレンスセンターにて開催いたします。\n\nこの実践型ワークショップは、オンラインでの存在感を高めたいと考える小規模事業のオーナーやマーケティングの専門家の方々を対象としています。テーマには、ソーシャルメディア戦略、メールキャンペーン、顧客データの分析が含まれます。メイン講師のローラ・キム氏は、この分野で15年以上の経験を持っています。\n\n参加は無料ですが、座席は40名様までに限られており、先着順となるため、事前のご登録が必要です。午後の休憩時間には軽食をご用意しています。\n\nお席を確保するには、9月5日までに当社ウェブサイトからご登録ください。登録が完了次第、駐車場の詳細を記載した確認メールをお送りします。皆様のご参加を心よりお待ちしております。","【求人広告①】\nグリーンフィールド・メディア ― マーケティング・コーディネーター募集\n\nグリーンフィールド・メディアでは、ダウンタウンのオフィスに加わっていただける常勤のマーケティング・コーディネーターを募集しています。採用される方には、ソーシャルメディアのキャンペーンの企画と、イベントチームのサポートを担当していただきます。\n\n応募条件：\n- マーケティングまたは関連分野の大学の学位\n- 広告分野で2年以上の経験\n- 高い文章力、流暢な英語\n\n競争力のある給与と柔軟な勤務時間をご用意しています。ご応募は、4月30日までに履歴書とカバーレターを jobs@greenfieldmedia.com までお送りください。面接は5月の第1週に行います。\n\n【応募メール②】\n宛先：jobs@greenfieldmedia.com\n差出人：daniel.kim@webmail.com\n日付：4月22日\n件名：マーケティング・コーディネーター職への応募\n\n採用ご担当者様\nマーケティング・コーディネーターの職に応募いたします。私はマーケティングの学位を持ち、広告分野で3年間勤務し、その中で複数のソーシャルメディアキャンペーンを担当してまいりました。\nご指示のとおり、履歴書とカバーレターを添付いたしました。5月中であればいつでも面接に伺えます。\nご検討いただきありがとうございます。\n敬具\nダニエル・キム","【イベント告知①】\n年次スモールビジネス・ワークショップ\n\n6月20日にシティ・コンベンションセンターで開催される年次スモールビジネス・ワークショップにぜひご参加ください。今年のテーマは「初心者のためのデジタルマーケティング」です。\n\nワークショップは午前9時から午後4時まで行われ、昼食と軽食が含まれます。参加費は1名60ドルですが、6月1日までの早期登録なら45ドルです。\n\n座席は100名様までに限られていますので、www.sbworkshop.org からお早めにご登録ください。当日の現地登録は受け付けておりません。\n\n【問い合わせメール②】\n宛先：info@sbworkshop.org\n差出人：rachel.t@startmail.com\n日付：5月28日\n件名：登録に関する質問\n\nこんにちは。\n6月20日のスモールビジネス・ワークショップに参加したいと思っています。本日5月28日に登録する予定なので、まだ割引価格で申し込めると思うのですが。\nまた、ワークショップの資料は提供されるのか、それとも自分のノートパソコンを持参すべきか教えていただけますか。最後に、コンベンションセンターに駐車場はありますか。\nよろしくお願いいたします。\nレイチェル・タン","【請求書①】\nオフィスプラス・サプライ ― 請求書 #2045\n\nお客様：ブライトタワー法律事務所\n注文日：3月5日\n配達日：3月9日\n\n商品：\n- プリンター用紙（10箱）… 120ドル\n- 黒インクカートリッジ（5個）… 150ドル\n- デスクランプ（4個）… 200ドル\n\n小計：470ドル\n配送料：無料\n合計：470ドル\n\nお支払いは30日以内にお願いいたします。ご注文ありがとうございました。\n\n【苦情メール②】\n宛先：support@officeplus.com\n差出人：office@brighttower.com\n日付：3月10日\n件名：注文 #2045 に関する問題\n\nこんにちは。\n昨日注文の品を受け取りましたが、4個のデスクランプのうち2個が破損した状態で届き、電源が入りません。プリンター用紙とインクカートリッジはすべて問題ありませんでした。\n壊れた2個のランプについて、できるだけ早く交換品をいただきたく存じます。また、交換品について再度請求されることはないか、ご確認いただけますか。\nよろしくお願いいたします。\nブライトタワー法律事務所 トーマス・リード","【予約確認①】\nレイクサイド・イン ― 予約確認\n\nご宿泊者：カレン・ロペス様\n確認番号：LK-7781\nチェックイン：5月12日\nチェックアウト：5月14日\n部屋タイプ：スタンダード・シングル\n1泊料金：90ドル\n泊数：2泊\n合計：180ドル\n\nチェックイン時刻は午後3時です。無料の朝食は午前7時から9時までご提供しています。変更がある場合は、少なくとも48時間前までにご連絡ください。\n\n【変更依頼メール②】\n宛先：reservations@lakesideinn.com\n差出人：k.lopez@traveler.com\n日付：5月8日\n件名：予約 LK-7781 の変更について\n\nこんにちは。\n確認番号 LK-7781 で予約をしている者です。出張が延長になったため、もう1泊して、5月14日ではなく5月15日にチェックアウトしたいと思っています。\n追加の1泊について同じ部屋が空いているか、また新しい合計金額がいくらになるか、ご確認いただけますか。お手数をおかけしますがよろしくお願いいたします。\n敬具\nカレン・ロペス","【広告①】\nベラ・クチーナ料理学校 ― 春のクラス\n\nプロのように料理を学びましょう！あらゆるレベルの方向けに夜間クラスをご用意しています。\n\n- イタリア料理の基礎（初級）\n- 寿司作り（中級）\n- フランス菓子（上級）\n\n各コースは週1回、全4回のセッションで構成されます。受講料は1コース160ドルで、すべての材料費を含みます。クラスは平日の夜間に行われます。お申し込みは info@bellacucina.com までメールでお送りください。\n\n【申込メール②】\n宛先：info@bellacucina.com\n差出人：emma.ward@mymail.com\n日付：3月3日\n件名：受講申し込み\n\nこんにちは。\n私は全くの初心者で、自分のレベルに合ったコースを受講したいと思っています。それが何曜日の夜に開かれるのか、また開始日を確認していただけますか。私は午後6時まで仕事があるので、午後7時開始のクラスが理想的です。\nよろしくお願いいたします。\nエマ・ウォード\n\n【週間スケジュール③】\nベラ・クチーナ ― 週間クラススケジュール\n\n月曜 午後7時 ― イタリア料理の基礎（3月9日開始）\n火曜 午後6時 ― フランス菓子\n水曜 午後7時 ― 寿司作り\n木曜 午後6時 ― フランス菓子（再開催）\n\nすべてのコースは4週間にわたって行われます。初回のセッションには10分前にお越しください。"];
+
 const LETTERS = ["A","B","C","D"];
 let state = null;
 let timerInt = null;
@@ -1444,7 +2255,80 @@ function saveHistory(h){ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }
 function fmtDate(ms){ const d=new Date(ms), p=n=>String(n).padStart(2,"0"); return `${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; }
 function fmtSecs(s){ return `${Math.floor(s/60)}分${s%60}秒`; }
 
-function show(sec){ ["home","quiz","records","result","vocabMenu"].forEach(s=>$("#"+s).classList.toggle("hidden", s!==sec)); window.scrollTo(0,0); }
+const ALL_SECS=["home","part6","part7","vocabMenu","records","quiz","result"];
+const MENU_SECS=["home","part6","part7","vocabMenu","records"];
+let currentTab="p5";
+function show(sec){
+  ALL_SECS.forEach(s=>$("#"+s).classList.toggle("hidden", s!==sec));
+  const isMenu=MENU_SECS.includes(sec);
+  $("#tabs").classList.toggle("hidden", !isMenu);
+  $("#mainbar").classList.toggle("hidden", !isMenu);
+  window.scrollTo(0,0);
+}
+function setActiveTab(tab){ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b.dataset.tab===tab)); }
+function goTab(tab){
+  currentTab=tab; setActiveTab(tab);
+  if(tab==="p5"){ renderHome(); show("home"); }
+  else if(tab==="p6"){ renderP6Menu(); show("part6"); }
+  else if(tab==="p7"){ renderP7Menu(); show("part7"); }
+  else if(tab==="vocab"){ renderVocabMenu(); show("vocabMenu"); }
+  else if(tab==="rec"){ renderRecords(); show("records"); }
+}
+
+/* ---- Part 6 / 7 メニュー＆組み立て ---- */
+function p6PassageHtml(set, cur){
+  let body=escapeHtml(set.passage).replace(/\[\[(\d)\]\]/g,(m,n)=>{
+    n=+n;
+    return n===cur+1 ? `<span class="pblank">( ${n} )</span>` : `<span class="pnum">( ${n} )</span>`;
+  }).replace(/\n/g,"<br>");
+  const g=set.gloss?`<div class="gloss">語注：${escapeHtml(set.gloss)}</div>`:"";
+  return `<h4>${escapeHtml(set.type)}　${escapeHtml(set.title)}</h4>${body}${g}`;
+}
+function buildP6Items(set){
+  return set.blanks.map((b,k)=>({
+    q:`空所 ( ${k+1} ) に入る最も適切なものを選びましょう。`,
+    c:b.c, a:b.a, cat:b.cat, e:b.e, d:b.d, passageHtml:p6PassageHtml(set,k), jpPassage:P6_JP[PART6.indexOf(set)]
+  }));
+}
+function startP6(set,i){ const id="6-"+i, t="Part6：" + set.title; startQuiz(buildP6Items(set), t, ()=>startP6(set,i), id); }
+function renderP6Menu(){
+  const list=$("#p6List"); list.innerHTML=""; const col="#1f9d7a";
+  PART6.forEach((set,i)=>{
+    const id="6-"+i, best=getBest(id), n=set.blanks.length;
+    const b=document.createElement("button"); b.className="set-btn"; b.style.borderLeft="5px solid "+col;
+    b.innerHTML=`<span class="set-num" style="background:${col}1f; color:${col}">${i+1}</span>
+      <span class="set-meta"><span class="set-title">${escapeHtml(set.type)}：${escapeHtml(set.title)}</span>
+      <span class="set-sub">本文1つ・全${n}問</span></span>
+      <span class="badge ${best===null?'none':''}">${best===null?'未挑戦':'最高 '+best+'/'+n}</span>`;
+    b.onclick=()=>startP6(set,i); list.appendChild(b);
+  });
+}
+function p7PassageHtml(set){
+  let h="";
+  set.passages.forEach(p=>{
+    const body=escapeHtml(p.text).replace(/\n/g,"<br>");
+    h+=`<div class="pdoc"><h4>${escapeHtml(p.label||"")}</h4>${body}</div>`;
+  });
+  if(set.gloss) h+=`<div class="gloss">語注：${escapeHtml(set.gloss)}</div>`;
+  return h;
+}
+function buildP7Items(set){
+  const ph=p7PassageHtml(set);
+  return set.qs.map(q=>({q:q.q, c:q.c, a:q.a, cat:q.cat, e:q.e, d:q.d, passageHtml:ph, jpPassage:P7_JP[PART7.indexOf(set)]}));
+}
+function startP7(set,i){ const id="7-"+i, t="Part7：" + set.title; startQuiz(buildP7Items(set), t, ()=>startP7(set,i), id); }
+function renderP7Menu(){
+  const list=$("#p7List"); list.innerHTML=""; const col="#7b5ea7";
+  PART7.forEach((set,i)=>{
+    const id="7-"+i, best=getBest(id), n=set.qs.length;
+    const b=document.createElement("button"); b.className="set-btn"; b.style.borderLeft="5px solid "+col;
+    b.innerHTML=`<span class="set-num" style="background:${col}1f; color:${col}">${i+1}</span>
+      <span class="set-meta"><span class="set-title">${escapeHtml(set.type)}：${escapeHtml(set.title)}</span>
+      <span class="set-sub">${escapeHtml(set.level||"")} ・全${n}問</span></span>
+      <span class="badge ${best===null?'none':''}">${best===null?'未挑戦':'最高 '+best+'/'+n}</span>`;
+    b.onclick=()=>startP7(set,i); list.appendChild(b);
+  });
+}
 
 /* ホーム */
 const GCOLORS=["#2f6db5","#1f9d7a","#e08a1e","#7b5ea7","#d65a7a"]; // ジャンル別の色
@@ -1557,6 +2441,10 @@ function renderQuestion(){
   $("#qCount").textContent=`第 ${state.idx+1} 問 / ${state.items.length}`;
   $("#progBar").style.width=((state.idx)/state.items.length*100)+"%";
   $("#qChip").textContent=it.cat;
+  const pas=$("#qPassage");
+  if(it.passageHtml){ pas.innerHTML=it.passageHtml; pas.classList.add("show"); pas.scrollTop=0; }
+  else { pas.classList.remove("show"); pas.innerHTML=""; }
+  $("#qText").classList.toggle("q-reading", !!it.passageHtml && !it.voc);
   if(it.voc){
     $("#qText").innerHTML=`<div style="text-align:center; padding:6px 0;">
       <span style="font-size:1.7rem; font-weight:800; letter-spacing:.5px;">${escapeHtml(it.q)}</span>
@@ -1575,6 +2463,14 @@ function renderQuestion(){
   $("#nextBtn").textContent=(state.idx===state.items.length-1)?"結果を見る →":"次へ →";
 }
 
+function nl2br(s){ return escapeHtml(s).replace(/\n/g,"<br>"); }
+function transHtml(it){
+  if(it.voc) return "";
+  if(it.jpPassage) return `<div class="qtrans"><div class="qtrans-h">📖 本文の日本語訳</div><div class="qtrans-b">${nl2br(it.jpPassage)}</div></div>`;
+  const jp = Q_JP[it.q];
+  if(jp) return `<div class="qtrans"><div class="qtrans-h">📝 問題文の訳</div><div class="qtrans-b">${escapeHtml(jp)}</div></div>`;
+  return "";
+}
 function pick(i,btn){
   if(state.answers[state.idx]!==null) return;
   const it=state.items[state.idx];
@@ -1589,7 +2485,7 @@ function pick(i,btn){
   const ex=$("#explain");
   ex.innerHTML=`<div class="verdict ${correct?'ok':'ng'}">${correct?'⭕ 正解！':'❌ 不正解'}</div>
     <div class="ans-line">正解：<b>${LETTERS[it.a]}. ${escapeHtml(it.c[it.a])}</b></div>
-    <div class="point">${escapeHtml(it.e)}</div>${choiceDetailHtml(it)}`;
+    ${transHtml(it)}<div class="point">${escapeHtml(it.e)}</div>${choiceDetailHtml(it)}`;
   ex.classList.add("show");
   $("#nextBtn").classList.add("show");
   $("#nextBtn").scrollIntoView({behavior:"smooth",block:"end"});
@@ -1689,14 +2585,11 @@ function copyRecords(){
 }
 
 /* ボタン */
+document.querySelectorAll(".tab-btn").forEach(b=>b.onclick=()=>goTab(b.dataset.tab));
 $("#retryBtn").onclick=()=>{ if(state&&state.retryFn) state.retryFn(); };
-$("#homeBtn").onclick=()=>{ clearInterval(timerInt); renderHome(); show("home"); };
-$("#quitBtn").onclick=()=>{ if(confirm("ホームに戻りますか？（進捗は保存されません）")){ clearInterval(timerInt); renderHome(); show("home"); } };
+$("#homeBtn").onclick=()=>{ clearInterval(timerInt); goTab(currentTab); };
+$("#quitBtn").onclick=()=>{ if(confirm("メニューに戻りますか？（進捗は保存されません）")){ clearInterval(timerInt); goTab(currentTab); } };
 $("#randomBtn").onclick=startRandomQuiz;
-$("#vocabBtn").onclick=()=>{ renderVocabMenu(); show("vocabMenu"); };
-$("#vmBack").onclick=()=>{ renderHome(); show("home"); };
-$("#recordsBtn").onclick=()=>{ renderRecords(); show("records"); };
-$("#recBack").onclick=()=>{ renderHome(); show("home"); };
 $("#recCopy").onclick=copyRecords;
 $("#recClear").onclick=()=>{ if(confirm("すべての学習記録を消去しますか？この操作は取り消せません。")){ localStorage.removeItem(HIST_KEY); renderRecords(); } };
 
@@ -1709,7 +2602,7 @@ async function downloadApp(){
     const blob=new Blob([html],{type:"text/html;charset=utf-8"});
     const url=URL.createObjectURL(blob);
     const a=document.createElement("a");
-    a.href=url; a.download="toeic-part5.html";
+    a.href=url; a.download="toeic-practice.html";
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }catch(e){
@@ -1720,7 +2613,7 @@ $("#downloadBtn").onclick=downloadApp;
 
 function escapeHtml(s){ return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
-renderHome(); show("home");
+goTab("p5");
 </script>
 </body>
 </html>
